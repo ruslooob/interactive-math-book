@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { ExampleData, MethodData, NoteData, ParagraphData, PropertyItem } from '../content/chapter3'
 import { Formula } from './Formula'
 
@@ -67,6 +68,7 @@ function ExampleDetails({ example }: { example: ExampleData }) {
 
 export function ExampleBlock({ example, variants = [], collectionTitle }: { example: ExampleData; variants?: ExampleData[]; collectionTitle?: string }) {
   const examples = [example, ...variants]
+  const [activeIndex, setActiveIndex] = useState(0)
 
   if (examples.length === 1) {
     return (
@@ -77,14 +79,45 @@ export function ExampleBlock({ example, variants = [], collectionTitle }: { exam
     )
   }
 
+  const showPrevious = () => setActiveIndex((index) => (index - 1 + examples.length) % examples.length)
+  const showNext = () => setActiveIndex((index) => (index + 1) % examples.length)
+
   return (
-    <section className="example-collection">
-      <div className="section-heading">
-        <span className="content-label">Примеры</span>
-        <h2>{collectionTitle ?? 'Варианты задач'}</h2>
+    <section
+      className="example-collection"
+      aria-label={collectionTitle ?? 'Варианты задач'}
+      aria-roledescription="слайдер"
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.key === 'ArrowLeft') showPrevious()
+        if (event.key === 'ArrowRight') showNext()
+      }}
+    >
+      <div className="example-collection__header">
+        <div className="section-heading">
+          <span className="content-label">Примеры</span>
+          <h2>{collectionTitle ?? 'Варианты задач'}</h2>
+        </div>
+        <div className="example-slider-controls">
+          <button type="button" aria-label="Предыдущая форма задачи" onClick={showPrevious}>←</button>
+          <span aria-live="polite">{activeIndex + 1} из {examples.length}</span>
+          <button type="button" aria-label="Следующая форма задачи" onClick={showNext}>→</button>
+        </div>
       </div>
-      <div className="example-grid">
-        {examples.map((item) => <ExampleDetails example={item} key={item.title} />)}
+      <div className="example-slide" key={examples[activeIndex].title}>
+        <ExampleDetails example={examples[activeIndex]} />
+      </div>
+      <div className="example-slider-dots" aria-label="Выбрать форму задачи">
+        {examples.map((item, index) => (
+          <button
+            className={index === activeIndex ? 'is-active' : ''}
+            type="button"
+            aria-label={`Форма ${index + 1}: ${item.title}`}
+            aria-current={index === activeIndex ? 'true' : undefined}
+            key={item.title}
+            onClick={() => setActiveIndex(index)}
+          />
+        ))}
       </div>
     </section>
   )

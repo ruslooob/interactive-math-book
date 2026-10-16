@@ -354,12 +354,17 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.58);
 }
-.example-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
-.example-grid .example-card { padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-strong); }
-.example-grid .section-heading h2 { min-height: 44px; font-size: 19px; line-height: 1.2; }
-.example-grid .example-steps li { grid-template-columns: 24px 1fr; align-items: start; gap: 7px 10px; }
-.example-grid .example-steps .example-step-formula { grid-column: 2; }
-.example-grid .example-steps .example-step-note { grid-column: 2; grid-row: 2; }
+.example-collection:focus-visible { outline-offset: 4px; }
+.example-collection__header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.example-slider-controls { display: flex; align-items: center; gap: 9px; padding-bottom: 12px; }
+.example-slider-controls button { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; background: #fff; font-size: 16px; cursor: pointer; }
+.example-slider-controls button:hover { color: #fff; border-color: var(--green); background: var(--green); }
+.example-slider-controls span { min-width: 48px; color: var(--muted); font-size: 10px; font-weight: 800; text-align: center; }
+.example-slide { max-width: 760px; margin-top: 6px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-strong); animation: equation-enter 240ms ease both; }
+.example-slide .section-heading h2 { font-size: 21px; line-height: 1.2; }
+.example-slider-dots { display: flex; gap: 7px; margin-top: 14px; }
+.example-slider-dots button { width: 28px; height: 5px; padding: 0; border: 0; border-radius: 999px; background: #d6dfd8; cursor: pointer; }
+.example-slider-dots button.is-active { background: var(--green); }
 .example-block table { margin-top: 18px; font-size: 13px; }
 .example-block th, .example-block td { padding: 11px 8px; }
 
@@ -710,8 +715,6 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   .animation-unit { grid-template-columns: 1fr; }
   .parameters-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
   .parameters-panel header, .interactive-table, .value-calculator { grid-column: 1 / -1; }
-  .example-grid { grid-template-columns: 1fr; }
-  .example-grid .section-heading h2 { min-height: 0; }
   .method-steps { grid-template-columns: 1fr 1fr; }
 }
 
@@ -721,6 +724,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   .paragraph-intro h1 { font-size: 33px; }
   .paragraph-goal { display: block; }
   .paragraph-goal p { margin-top: 5px; }
+  .example-collection__header { align-items: flex-start; }
   .definition-summary p { font-size: 14px; }
   .graph-card__header { display: block; }
   .base-state { max-width: none; margin-top: 12px; }
@@ -753,6 +757,9 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 @media (max-width: 480px) {
   .sequential-paragraph { padding: 20px 16px 26px; }
   .paragraph-intro h1 { font-size: 31px; }
+  .example-collection__header { display: block; }
+  .example-slider-controls { justify-content: flex-start; padding-bottom: 4px; }
+  .example-slide { padding: 18px; }
   .properties-block, .example-block, .example-collection, .method-block, .understanding-check { padding: 21px 18px; }
   .value-calculator { grid-template-columns: 1fr; }
   .value-calculator label { grid-column: 1; }
