@@ -1,0 +1,25 @@
+{
+  "name": "test-math",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "prototype/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace chapter-3-math-prototype",
+    "build": "npm run build --workspace chapter-3-math-prototype",
+    "preview": "npm run preview --workspace chapter-3-math-prototype"
+  },
+  "dependencies": {
+    "katex": "^0.19.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  }
+}
