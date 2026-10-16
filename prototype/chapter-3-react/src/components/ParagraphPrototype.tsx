@@ -29,8 +29,12 @@ export function ParagraphPrototype({
         <ExampleBlock example={paragraph.example} variants={paragraph.exampleVariants} collectionTitle={paragraph.examplesTitle} />
         {paragraph.method && <MethodBlock method={paragraph.method} />}
 
-        <div className="sequence-divider"><span>{paragraph.interactive.type === 'trainer' ? 'Тренажёры' : 'Анимация с параметрами'}</span></div>
-        <InteractiveStage kind={paragraph.interactive.kind} state={state} actions={actions} />
+        {paragraph.interactives.map((interactive) => (
+          <section className="paragraph-interactive" key={interactive.kind}>
+            <div className="sequence-divider"><span>{interactive.label ?? (interactive.type === 'trainer' ? 'Тренажёры' : 'Анимация с параметрами')}</span></div>
+            <InteractiveStage kind={interactive.kind} state={state} actions={actions} />
+          </section>
+        ))}
 
         {(paragraph.properties.length > 0 || paragraph.notes.length > 0) && (
           <>

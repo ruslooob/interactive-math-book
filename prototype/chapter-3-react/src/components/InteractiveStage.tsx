@@ -1,7 +1,9 @@
 import type { InteractiveKind } from '../content/chapter3'
+import { skillTrainerSets } from '../content/skillTrainers'
 import type { AnimationActions, AnimationState } from './AnimationParameters'
 import { AnimationUnit } from './AnimationUnit'
 import { ExponentialEquationTrainers } from './ExponentialEquationTrainers'
+import { SkillTrainerSet } from './SkillTrainer'
 import {
   ComparisonAnimation,
   DerivativeAnimation,
@@ -18,6 +20,12 @@ export function InteractiveStage({ kind, state, actions }: { kind: InteractiveKi
       return <ExponentialEquationTrainers />
     case 'exponential-inequality':
       return <ComparisonAnimation family="exponential" mode="inequality" />
+    case 'exponential-inequality-trainer':
+    case 'logarithm-properties-trainer':
+    case 'logarithmic-equation-trainer':
+    case 'logarithmic-inequality-trainer':
+    case 'derivatives-trainer':
+      return <SkillTrainerSet modules={skillTrainerSets[kind] ?? []} />
     case 'logarithm-definition':
       return <LogarithmDefinitionAnimation />
     case 'logarithmic-function':

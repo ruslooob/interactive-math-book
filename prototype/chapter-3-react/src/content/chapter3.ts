@@ -33,16 +33,22 @@ export type InteractiveKind =
   | 'exponential-function'
   | 'exponential-equation'
   | 'exponential-inequality'
+  | 'exponential-inequality-trainer'
   | 'logarithm-definition'
   | 'logarithmic-function'
   | 'logarithm-properties'
+  | 'logarithm-properties-trainer'
   | 'logarithmic-equation'
+  | 'logarithmic-equation-trainer'
   | 'logarithmic-inequality'
+  | 'logarithmic-inequality-trainer'
   | 'derivatives'
+  | 'derivatives-trainer'
 
 export type InteractiveData = {
   type: 'parameter-animation' | 'trainer'
   kind: InteractiveKind
+  label?: string
 }
 
 export type LearningGoal = {
@@ -58,7 +64,7 @@ export type ParagraphData = {
   formulaLead: string
   formula: string
   conditions?: string
-  interactive: InteractiveData
+  interactives: InteractiveData[]
   example: ExampleData
   exampleVariants?: ExampleData[]
   examplesTitle?: string
@@ -85,7 +91,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     formulaLead: 'На языке формул это записывается так:',
     formula: "y=a^x",
     conditions: "a>0,\\ a\\ne1,\\ x\\in\\mathbb{R}",
-    interactive: { type: 'parameter-animation', kind: 'exponential-function' },
+    interactives: [{ type: 'parameter-animation', kind: 'exponential-function' }],
     example: {
       title: 'Функция y = 2ˣ',
       table: { labels: ['x', 'y'], values: [['−2', '−1', '0', '1', '2'], ['0,25', '0,5', '1', '2', '4']] },
@@ -115,7 +121,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     formulaLead: 'При одинаковых допустимых основаниях показатели равны:',
     formula: "a^{f(x)}=a^{g(x)}\\iff f(x)=g(x)",
     conditions: "a>0,\\ a\\ne1",
-    interactive: { type: 'trainer', kind: 'exponential-equation' },
+    interactives: [{ type: 'trainer', kind: 'exponential-equation' }],
     example: {
       title: 'Основания уже одинаковы',
       steps: [
@@ -170,25 +176,50 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     formulaLead: 'Знак между показателями зависит от основания:',
     formula: "a>1:\\ a^u>a^v\\iff u>v;\\qquad 0<a<1:\\ a^u>a^v\\iff u<v",
     conditions: "a>0,\\ a\\ne1,\\ u,v\\in\\mathbb{R}",
-    interactive: { type: 'parameter-animation', kind: 'exponential-inequality' },
+    interactives: [
+      { type: 'parameter-animation', kind: 'exponential-inequality', label: 'Наглядность' },
+      { type: 'trainer', kind: 'exponential-inequality-trainer', label: 'Тренажёры' },
+    ],
     example: {
-      title: 'Неравенство (1/2)ˣ⁻¹ > (1/2)²',
+      title: 'Основание больше единицы',
       steps: [
-        { formula: "\\left(\\frac12\\right)^{x-1}>\\left(\\frac12\\right)^2", note: 'Основание находится между 0 и 1.' },
-        { formula: "x-1<2", note: 'При сравнении показателей знак меняется.' },
-        { formula: "x<3", note: 'Получаем множество решений.' },
+        { formula: "3^{2x-1}>3^5", note: 'Основание 3 больше единицы.' },
+        { formula: "2x-1>5", note: 'Знак между показателями сохраняется.' },
+        { formula: "x>3", note: 'Решаем линейное неравенство.' },
       ],
     },
-    propertiesTitle: 'Сравнение показателей',
-    properties: [
-      { term: 'Если a > 1', formula: "a^u>a^v\\iff u>v", explanation: 'Возрастающая функция сохраняет порядок.' },
-      { term: 'Если 0 < a < 1', formula: "a^u>a^v\\iff u<v", explanation: 'Убывающая функция меняет порядок на противоположный.' },
-      { term: 'Равенство', formula: "a^u=a^v\\iff u=v", explanation: 'Для равенства направление монотонности не влияет на результат.' },
+    exampleVariants: [
+      {
+        title: 'Основание между нулём и единицей',
+        steps: [
+          { formula: "\\left(\\frac12\\right)^{x-1}>\\left(\\frac12\\right)^2", note: 'Показательная функция убывает.' },
+          { formula: "x-1<2", note: 'Знак между показателями меняется.' },
+          { formula: "x<3", note: 'Решаем линейное неравенство.' },
+        ],
+      },
+      {
+        title: 'Основания нужно преобразовать',
+        steps: [
+          { formula: "4^x\\le8", note: 'Распознаём степени двойки.' },
+          { formula: "2^{2x}\\le2^3", note: 'Приводим обе части к основанию 2.' },
+          { formula: "x\\le\\frac32", note: 'Основание больше единицы, знак сохраняется.' },
+        ],
+      },
     ],
-    notes: [
-      { title: 'Перед сравнением', text: 'Обе части должны быть представлены как степени одного основания.' },
-      { title: 'Частая ошибка', text: 'При 0 < a < 1 знак неравенства между показателями обязательно меняется.' },
-    ],
+    examplesTitle: 'Три формы показательных неравенств',
+    method: {
+      title: 'Метод одинаковых оснований',
+      lead: 'После приведения к одному основанию направление неравенства определяется тем, возрастает или убывает показательная функция.',
+      steps: [
+        { title: 'Привести к одному основанию', formula: "a^{f(x)}\\gtrless a^{g(x)}", text: 'Представьте обе части как степени одного допустимого основания.' },
+        { title: 'Сравнить основание с единицей', formula: "a>1\\quad\\text{или}\\quad0<a<1", text: 'От этого зависит направление сравнения показателей.' },
+        { title: 'Перейти к показателям', formula: "f(x)\\gtrless g(x)", text: 'При a > 1 знак сохраняется, при 0 < a < 1 — меняется.' },
+        { title: 'Решить неравенство', formula: "x\\in X", text: 'Решите полученное неравенство и запишите множество решений.' },
+      ],
+    },
+    propertiesTitle: '',
+    properties: [],
+    notes: [],
     questions: [
       { text: 'Как сравниваются показатели при 3ᵘ > 3ᵛ?', answers: [{ id: 'same', label: 'u > v' }, { id: 'reverse', label: 'u < v' }], correct: 'same', explanation: 'Функция 3ˣ возрастает.' },
       { text: 'Как сравниваются показатели при (1/3)ᵘ > (1/3)ᵛ?', answers: [{ id: 'same', label: 'u > v' }, { id: 'reverse', label: 'u < v' }], correct: 'reverse', explanation: 'Функция (1/3)ˣ убывает.' },
@@ -203,7 +234,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     formulaLead: 'Логарифмическая и степенная записи равносильны:',
     formula: "\\log_a b=c\\iff a^c=b",
     conditions: "a>0,\\ a\\ne1,\\ b>0,\\ c\\in\\mathbb{R}",
-    interactive: { type: 'parameter-animation', kind: 'logarithm-definition' },
+    interactives: [{ type: 'parameter-animation', kind: 'logarithm-definition' }],
     example: {
       title: 'Логарифм log₂8',
       steps: [
@@ -235,7 +266,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     formulaLead: 'На языке формул это записывается так:',
     formula: "y=\\log_a x",
     conditions: "a>0,\\ a\\ne1,\\ x>0",
-    interactive: { type: 'parameter-animation', kind: 'logarithmic-function' },
+    interactives: [{ type: 'parameter-animation', kind: 'logarithmic-function' }],
     example: {
       title: 'Функция y = log₂x',
       table: { labels: ['x', 'y'], values: [['0,25', '0,5', '1', '2', '4'], ['−2', '−1', '0', '1', '2']] },
@@ -265,13 +296,45 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     formulaLead: 'Для положительных x и y выполняются равенства:',
     formula: "\\log_a(xy)=\\log_ax+\\log_ay,\\quad \\log_a\\frac{x}{y}=\\log_ax-\\log_ay",
     conditions: "a>0,\\ a\\ne1,\\ x>0,\\ y>0",
-    interactive: { type: 'parameter-animation', kind: 'logarithm-properties' },
+    interactives: [
+      { type: 'parameter-animation', kind: 'logarithm-properties', label: 'Наглядность' },
+      { type: 'trainer', kind: 'logarithm-properties-trainer', label: 'Тренажёр' },
+    ],
     example: {
-      title: 'Сумма log₂8 + log₂4',
+      title: 'Сумма превращается в произведение',
       steps: [
         { formula: "\\log_2 8+\\log_2 4", note: 'Складываем логарифмы с одним основанием.' },
         { formula: "=\\log_2(8\\cdot4)=\\log_2 32", note: 'Переходим к логарифму произведения.' },
         { formula: "=5", note: 'Поскольку 2⁵ = 32.' },
+      ],
+    },
+    exampleVariants: [
+      {
+        title: 'Разность превращается в частное',
+        steps: [
+          { formula: "\\log_3 81-\\log_3 3", note: 'Вычитаем логарифмы с одним основанием.' },
+          { formula: "=\\log_3\\frac{81}{3}=\\log_3 27", note: 'Переходим к логарифму частного.' },
+          { formula: "=3", note: 'Поскольку 3³ = 27.' },
+        ],
+      },
+      {
+        title: 'Множитель становится степенью',
+        steps: [
+          { formula: "2\\log_5 5", note: 'Множитель перед логарифмом можно внести в показатель.' },
+          { formula: "=\\log_5 5^2=\\log_5 25", note: 'Получаем один логарифм.' },
+          { formula: "=2", note: 'Поскольку 5² = 25.' },
+        ],
+      },
+    ],
+    examplesTitle: 'Три основных преобразования',
+    method: {
+      title: 'Как выбрать свойство',
+      lead: 'Сначала определите действие между логарифмами или положение степени, затем примените соответствующее свойство.',
+      steps: [
+        { title: 'Проверить условия', formula: "a>0,\\ a\\ne1,\\ x>0", text: 'Основания должны совпадать, а аргументы — быть положительными.' },
+        { title: 'Распознать действие', formula: "+,\\quad-,\\quad r\\log_a x", text: 'Сумма связана с произведением, разность — с частным, множитель — со степенью.' },
+        { title: 'Применить свойство', formula: "\\log_a x+\\log_a y=\\log_a(xy)", text: 'Замените исходную запись равносильной, не меняя основание.' },
+        { title: 'Упростить результат', formula: "\\log_a a^k=k", text: 'Вычислите логарифм или продолжите преобразование выражения.' },
       ],
     },
     propertiesTitle: 'Основные свойства',
@@ -299,26 +362,50 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     formulaLead: 'Уравнение с одним логарифмом переводится в степенную форму:',
     formula: "\\log_a f(x)=c\\iff f(x)=a^c",
     conditions: "a>0,\\ a\\ne1,\\ f(x)>0",
-    interactive: { type: 'parameter-animation', kind: 'logarithmic-equation' },
+    interactives: [
+      { type: 'parameter-animation', kind: 'logarithmic-equation', label: 'Наглядность' },
+      { type: 'trainer', kind: 'logarithmic-equation-trainer', label: 'Тренажёры' },
+    ],
     example: {
-      title: 'Уравнение log₃(x − 1) = 2',
+      title: 'Один логарифм',
       steps: [
         { formula: "x-1>0", note: 'Записываем условие существования логарифма.' },
         { formula: "x-1=3^2", note: 'Переходим к степенной форме.' },
         { formula: "x=10", note: 'Корень удовлетворяет условию x > 1.' },
       ],
     },
-    propertiesTitle: 'Решение уравнения',
-    properties: [
-      { term: 'Условия', formula: "f(x)>0", explanation: 'Каждый аргумент логарифма должен быть положительным.' },
-      { term: 'Определение', formula: "\\log_af(x)=c\\iff f(x)=a^c", explanation: 'Один логарифм удобно переводить в степенную запись.' },
-      { term: 'Одинаковые логарифмы', formula: "\\log_af(x)=\\log_ag(x)\\iff f(x)=g(x)", explanation: 'После приравнивания аргументов условия f(x) > 0 и g(x) > 0 сохраняются.' },
-      { term: 'Проверка', formula: "x\\in\\text{ОДЗ}", explanation: 'Корни, нарушающие условия существования логарифмов, исключаются.' },
+    exampleVariants: [
+      {
+        title: 'Логарифмы с одинаковым основанием',
+        steps: [
+          { formula: "\\log_3(x-1)=\\log_3 8", note: 'Записываем условие x > 1.' },
+          { formula: "x-1=8", note: 'Приравниваем аргументы.' },
+          { formula: "x=9", note: 'Корень входит в область допустимых значений.' },
+        ],
+      },
+      {
+        title: 'Сумма логарифмов',
+        steps: [
+          { formula: "\\log_2x+\\log_2(x-2)=3", note: 'Область допустимых значений: x > 2.' },
+          { formula: "x(x-2)=2^3", note: 'Объединяем логарифмы и переходим к степенной форме.' },
+          { formula: "x=4", note: 'Корень −2 исключается по области допустимых значений.' },
+        ],
+      },
     ],
-    notes: [
-      { title: 'Сначала условия', text: 'Запишите ограничения на аргументы до преобразования уравнения.' },
-      { title: 'После решения', text: 'Проверяйте корни по исходному уравнению, а не только по преобразованному.' },
-    ],
+    examplesTitle: 'Три формы логарифмических уравнений',
+    method: {
+      title: 'Решение с учётом ограничений',
+      lead: 'Преобразования выполняются только на области допустимых значений, поэтому ограничения записываются до решения.',
+      steps: [
+        { title: 'Записать ОДЗ', formula: "f(x)>0", text: 'Каждый аргумент логарифма должен быть строго положительным.' },
+        { title: 'Выбрать преобразование', formula: "\\log_a f(x)=c\\quad\\text{или}\\quad\\log_a f(x)=\\log_a g(x)", text: 'Перейдите к степенной форме или приравняйте аргументы.' },
+        { title: 'Решить уравнение', formula: "f(x)=a^c", text: 'Решите полученное алгебраическое уравнение.' },
+        { title: 'Отобрать корни', formula: "x\\in\\text{ОДЗ}", text: 'Проверьте каждый корень по ограничениям и исходному уравнению.' },
+      ],
+    },
+    propertiesTitle: '',
+    properties: [],
+    notes: [],
     questions: [
       { text: 'Какое условие нужно для log₂(x − 4)?', answers: [{ id: 'right', label: 'x > 4' }, { id: 'zero', label: 'x ≥ 4' }, { id: 'all', label: 'Любое x' }], correct: 'right', explanation: 'Аргумент x − 4 должен быть строго положительным.' },
       { text: 'Чему равен x в log₂x = 3?', answers: [{ id: '6', label: '6' }, { id: '8', label: '8' }, { id: '9', label: '9' }], correct: '8', explanation: 'x = 2³ = 8.' },
@@ -333,26 +420,50 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     formulaLead: 'При сравнении аргументов направление зависит от основания:',
     formula: "a>1:\\ \\log_au>\\log_av\\iff u>v;\\quad 0<a<1:\\ \\log_au>\\log_av\\iff u<v",
     conditions: "a>0,\\ a\\ne1,\\ u>0,\\ v>0",
-    interactive: { type: 'parameter-animation', kind: 'logarithmic-inequality' },
+    interactives: [
+      { type: 'parameter-animation', kind: 'logarithmic-inequality', label: 'Наглядность' },
+      { type: 'trainer', kind: 'logarithmic-inequality-trainer', label: 'Тренажёры' },
+    ],
     example: {
-      title: 'Неравенство log₂(x − 1) ≥ 3',
+      title: 'Основание больше единицы',
       steps: [
         { formula: "x-1>0", note: 'Аргумент должен быть положительным.' },
         { formula: "x-1\\ge2^3", note: 'Основание 2 > 1, поэтому знак сохраняется.' },
         { formula: "x\\ge9", note: 'Все такие x входят в область допустимых значений.' },
       ],
     },
-    propertiesTitle: 'Сравнение аргументов',
-    properties: [
-      { term: 'Область допустимых значений', formula: "u>0,\\ v>0", explanation: 'Сравнивать логарифмы можно только там, где оба определены.' },
-      { term: 'Если a > 1', formula: "\\log_au>\\log_av\\iff u>v", explanation: 'Возрастающая логарифмическая функция сохраняет знак.' },
-      { term: 'Если 0 < a < 1', formula: "\\log_au>\\log_av\\iff u<v", explanation: 'Убывающая логарифмическая функция меняет знак.' },
-      { term: 'Ответ', formula: "\\text{решение}\\cap\\text{ОДЗ}", explanation: 'В ответ входят только решения, где все логарифмы существуют.' },
+    exampleVariants: [
+      {
+        title: 'Основание между нулём и единицей',
+        steps: [
+          { formula: "\\log_{1/2}(x+1)>-2", note: 'Область допустимых значений: x > −1.' },
+          { formula: "x+1<\\left(\\frac12\\right)^{-2}", note: 'Функция убывает, поэтому знак меняется.' },
+          { formula: "-1<x<3", note: 'Пересекаем результат x < 3 с областью допустимых значений.' },
+        ],
+      },
+      {
+        title: 'Два логарифма',
+        steps: [
+          { formula: "\\log_3(x-2)\\le\\log_3 7", note: 'Область допустимых значений: x > 2.' },
+          { formula: "x-2\\le7", note: 'Основание 3 > 1, поэтому знак сохраняется.' },
+          { formula: "2<x\\le9", note: 'Пересекаем решение с областью допустимых значений.' },
+        ],
+      },
     ],
-    notes: [
-      { title: 'Два условия', text: 'Нужно одновременно решить неравенство и сохранить положительность каждого аргумента.' },
-      { title: 'Частая ошибка', text: 'При основании между нулём и единицей знак между аргументами меняется.' },
-    ],
+    examplesTitle: 'Три формы логарифмических неравенств',
+    method: {
+      title: 'Сравнение аргументов и ОДЗ',
+      lead: 'Ответ получается пересечением области допустимых значений и решения неравенства между аргументами.',
+      steps: [
+        { title: 'Записать ОДЗ', formula: "u(x)>0,\\quad v(x)>0", text: 'Каждый аргумент логарифма должен быть строго положительным.' },
+        { title: 'Определить монотонность', formula: "a>1\\quad\\text{или}\\quad0<a<1", text: 'При основании больше единицы функция возрастает, при основании меньше единицы — убывает.' },
+        { title: 'Сравнить аргументы', formula: "u(x)\\gtrless v(x)", text: 'Сохраните знак для a > 1 и измените его для 0 < a < 1.' },
+        { title: 'Пересечь решения', formula: "X_{\\text{ответ}}=X_{\\text{ОДЗ}}\\cap X_{\\text{неравенства}}", text: 'В ответ входят только допустимые значения.' },
+      ],
+    },
+    propertiesTitle: '',
+    properties: [],
+    notes: [],
     questions: [
       { text: 'Как изменится знак при основании 1/2?', answers: [{ id: 'same', label: 'Сохранится' }, { id: 'reverse', label: 'Изменится' }], correct: 'reverse', explanation: 'Функция log₁⧸₂x убывает.' },
       { text: 'Какое условие нужно добавить к log₃(x + 2) > 1?', answers: [{ id: 'right', label: 'x > −2' }, { id: 'wrong', label: 'x ≥ −2' }, { id: 'none', label: 'Никакое' }], correct: 'right', explanation: 'Аргумент x + 2 должен быть строго положительным.' },
@@ -367,12 +478,49 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     formulaLead: 'Основные формулы дифференцирования:',
     formula: "\\frac{d}{dx}a^x=a^x\\ln a,\\qquad \\frac{d}{dx}\\log_a x=\\frac{1}{x\\ln a}",
     conditions: "a>0,\\ a\\ne1,\\ x>0",
-    interactive: { type: 'parameter-animation', kind: 'derivatives' },
+    interactives: [
+      { type: 'parameter-animation', kind: 'derivatives', label: 'Наглядность' },
+      { type: 'trainer', kind: 'derivatives-trainer', label: 'Тренажёр' },
+    ],
     example: {
-      title: 'Производная функции y = 2ˣ',
+      title: 'Показательная функция',
       steps: [
         { formula: "y=2^x", note: 'Основание a = 2.' },
         { formula: "y'=2^x\\ln2", note: 'Применяем формулу (aˣ)′ = aˣ ln a.' },
+      ],
+    },
+    exampleVariants: [
+      {
+        title: 'Натуральная экспонента',
+        steps: [
+          { formula: "y=e^x", note: 'Для основания e натуральный логарифм основания равен единице.' },
+          { formula: "y'=e^x", note: 'Производная совпадает с исходной функцией.' },
+        ],
+      },
+      {
+        title: 'Натуральный логарифм',
+        steps: [
+          { formula: "y=\\ln x", note: 'Функция определена при x > 0.' },
+          { formula: "y'=\\frac1x", note: 'Применяем формулу производной натурального логарифма.' },
+        ],
+      },
+      {
+        title: 'Логарифм по основанию a',
+        steps: [
+          { formula: "y=\\log_3x", note: 'Основание a = 3.' },
+          { formula: "y'=\\frac{1}{x\\ln3}", note: 'Подставляем основание в общую формулу.' },
+        ],
+      },
+    ],
+    examplesTitle: 'Четыре основные формы производных',
+    method: {
+      title: 'Как выбрать формулу производной',
+      lead: 'Сначала определяется вид исходной функции, затем в соответствующую формулу подставляется основание.',
+      steps: [
+        { title: 'Распознать функцию', formula: "e^x,\\quad a^x,\\quad\\ln x,\\quad\\log_a x", text: 'Отделите показательные функции от логарифмических.' },
+        { title: 'Выбрать формулу', formula: "(a^x)'=a^x\\ln a", text: 'Используйте формулу, соответствующую виду функции.' },
+        { title: 'Подставить основание', formula: "a=2,3,\\ldots", text: 'Для произвольного основания сохраняется множитель ln a.' },
+        { title: 'Проверить область', formula: "x>0\\quad\\text{для логарифма}", text: 'Производная логарифмической функции рассматривается на её области определения.' },
       ],
     },
     propertiesTitle: 'Частные и общие формулы',

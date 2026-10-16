@@ -1,25 +1,19 @@
 import { useState } from 'react'
 import { Formula } from './Formula'
-
-type Choice = {
-  id: string
-  label: string
-  correct?: boolean
-  feedback: string
-}
+import { TrainerChoiceList, TrainerFeedback, type TrainerChoice } from './TrainerControls'
 
 type SolutionStep = {
   formula: string
   prompt: string
   insight: string
-  choices: Choice[]
+  choices: TrainerChoice[]
 }
 
 type CommonBaseTask = {
   equation: string
   commonBase: string
   rewrite: string
-  choices: Choice[]
+  choices: TrainerChoice[]
 }
 
 const commonBaseTasks: CommonBaseTask[] = [
@@ -100,29 +94,6 @@ const solutionSteps: SolutionStep[] = [
 
 const progressLabels = ['Основание', 'Показатели', 'Корень', 'Проверка']
 
-function ChoiceList({ choices, selected, onChoose }: { choices: Choice[]; selected: string | null; onChoose: (choice: Choice) => void }) {
-  const correctSelected = choices.some((choice) => choice.id === selected && choice.correct)
-
-  return (
-    <div className="equation-action-list">
-      {choices.map((choice) => {
-        const isSelected = selected === choice.id
-        const className = isSelected ? choice.correct ? 'is-correct' : 'is-wrong' : ''
-        return (
-          <button className={className} disabled={correctSelected} key={choice.id} type="button" onClick={() => onChoose(choice)}>
-            {choice.label}
-          </button>
-        )
-      })}
-    </div>
-  )
-}
-
-function TrainerFeedback({ choice }: { choice: Choice | null }) {
-  if (!choice) return null
-  return <p className={`equation-feedback ${choice.correct ? 'is-correct' : 'is-wrong'}`} aria-live="polite">{choice.feedback}</p>
-}
-
 function CommonBaseTrainer() {
   const [taskIndex, setTaskIndex] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
@@ -179,7 +150,7 @@ function CommonBaseTrainer() {
         ) : (
           <>
             <p className="equation-prompt">Какое число является общим основанием?</p>
-            <ChoiceList choices={task?.choices ?? []} selected={selected} onChoose={(choice) => setSelected(choice.id)} />
+            <TrainerChoiceList choices={task?.choices ?? []} selected={selected} onChoose={(choice) => setSelected(choice.id)} />
             <TrainerFeedback choice={selectedChoice} />
             {selectedChoice?.correct && <button className="trainer-next" type="button" onClick={next}>{taskIndex + 1 === commonBaseTasks.length ? 'Завершить' : 'Следующее задание'}</button>}
           </>
@@ -266,7 +237,7 @@ function CompleteEquationTrainer() {
         ) : (
           <>
             <p className="equation-prompt">{current?.prompt}</p>
-            <ChoiceList choices={current?.choices ?? []} selected={selected} onChoose={(choice) => setSelected(choice.id)} />
+            <TrainerChoiceList choices={current?.choices ?? []} selected={selected} onChoose={(choice) => setSelected(choice.id)} />
             <TrainerFeedback choice={selectedChoice} />
             {selectedChoice?.correct && <button className="trainer-next" type="button" onClick={next}>{step + 1 === solutionSteps.length ? 'Завершить решение' : 'Продолжить'}</button>}
           </>
