@@ -1,4 +1,4 @@
-import { paragraph11 } from '../content/paragraph11'
+import type { ExampleData, NoteData, ParagraphData, PropertyItem } from '../content/chapter3'
 import { Formula } from './Formula'
 
 function ExplanationHint({ children }: { children: string }) {
@@ -10,15 +10,15 @@ function ExplanationHint({ children }: { children: string }) {
   )
 }
 
-export function PropertiesBlock() {
+export function PropertiesBlock({ title, properties }: { title: string; properties: PropertyItem[] }) {
   return (
     <section className="properties-block">
       <div className="section-heading">
         <span className="content-label">Свойства</span>
-        <h2>Показательная функция</h2>
+        <h2>{title}</h2>
       </div>
       <ul className="property-list">
-        {paragraph11.properties.map((property) => (
+        {properties.map((property) => (
           <li key={property.term}>
             <div className="property-line">
               <strong>{property.term}:</strong>
@@ -32,46 +32,61 @@ export function PropertiesBlock() {
   )
 }
 
-export function ExampleBlock() {
+export function ExampleBlock({ example }: { example: ExampleData }) {
   return (
     <section className="example-block">
       <div className="section-heading">
         <span className="content-label">Пример</span>
-        <h2>Функция <Formula>{'y=2^x'}</Formula></h2>
+        <h2>{example.title}</h2>
       </div>
-      <table>
-        <tbody>
-          <tr>
-            <th scope="row">x</th>
-            {[-2, -1, 0, 1, 2].map((x) => <td key={x}>{x}</td>)}
-          </tr>
-          <tr>
-            <th scope="row">y</th>
-            {['0,25', '0,5', '1', '2', '4'].map((y) => <td key={y}>{y}</td>)}
-          </tr>
-        </tbody>
-      </table>
+      {example.formula && <Formula display>{example.formula}</Formula>}
+      {example.table && (
+        <table>
+          <tbody>
+            {example.table.values.map((row, rowIndex) => (
+              <tr key={example.table?.labels[rowIndex]}>
+                <th scope="row">{example.table?.labels[rowIndex]}</th>
+                {row.map((value, index) => <td key={`${rowIndex}-${index}`}>{value}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {example.steps && (
+        <ol className="example-steps">
+          {example.steps.map((step, index) => (
+            <li key={`${step.formula}-${index}`}>
+              <Formula>{step.formula}</Formula>
+              {step.note && <span>{step.note}</span>}
+            </li>
+          ))}
+        </ol>
+      )}
     </section>
   )
 }
 
-export function NotesBlock() {
+export function NotesBlock({ notes }: { notes: NoteData[] }) {
   return (
     <section className="notes-block">
-      <article>
-        <span className="attention-icon" aria-hidden="true">!</span>
-        <div>
-          <strong>Граничный случай</strong>
-          <p>{paragraph11.boundary}</p>
-        </div>
-      </article>
-      <article>
-        <span className="attention-icon" aria-hidden="true">!</span>
-        <div>
-          <strong>Обратите внимание</strong>
-          <p>{paragraph11.commonError}</p>
-        </div>
-      </article>
+      {notes.map((note) => (
+        <article key={note.title}>
+          <span className="attention-icon" aria-hidden="true">!</span>
+          <div>
+            <strong>{note.title}</strong>
+            <p>{note.text}</p>
+          </div>
+        </article>
+      ))}
     </section>
+  )
+}
+
+export function ParagraphConclusion({ paragraph }: { paragraph: ParagraphData }) {
+  return (
+    <>
+      <PropertiesBlock title={paragraph.propertiesTitle} properties={paragraph.properties} />
+      <NotesBlock notes={paragraph.notes} />
+    </>
   )
 }

@@ -1,30 +1,29 @@
-import { paragraph11 } from '../content/paragraph11'
+import type { ParagraphData } from '../content/chapter3'
+import { book } from '../content/book'
 import { Formula } from './Formula'
 
-export function ParagraphHeader() {
+export function BookBreadcrumb({ current, onOpenContents }: { current: string; onOpenContents: () => void }) {
   return (
     <header className="paragraph-header">
       <nav aria-label="Положение в книге">
-        <span>{paragraph11.book}</span>
+        <button type="button" onClick={onOpenContents}>{book.title}</button>
         <i aria-hidden="true">/</i>
-        <span>{paragraph11.chapter}</span>
-        <i aria-hidden="true">/</i>
-        <strong>{paragraph11.number}: {paragraph11.title}</strong>
+        <strong>{current}</strong>
       </nav>
     </header>
   )
 }
 
-export function ParagraphIntroduction() {
+export function ParagraphIntroduction({ paragraph }: { paragraph: ParagraphData }) {
   return (
     <section className="paragraph-intro">
-      <h1><span>{paragraph11.number}:</span> {paragraph11.title}</h1>
+      <h1><span>§ {paragraph.number}:</span> {paragraph.title}</h1>
       <div className="definition-summary">
         <span className="content-label">Определение</span>
-        <p>{paragraph11.introduction}</p>
+        <p>{paragraph.introduction}</p>
         <p className="formula-sentence">
-          <span>На языке формул это записывается так:</span>
-          <Formula>{'y=a^x,\\qquad \\text{где }a>0,\\ a\\ne1'}</Formula>
+          <span>{paragraph.formulaLead}</span>
+          <Formula>{paragraph.formula}</Formula>
         </p>
       </div>
     </section>
