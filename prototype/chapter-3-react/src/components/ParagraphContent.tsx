@@ -1,15 +1,26 @@
 import { paragraph11 } from '../content/paragraph11'
 import { Formula } from './Formula'
 
+function ExplanationHint({ children }: { children: string }) {
+  return (
+    <span className="explanation-hint" tabIndex={0} aria-label={children}>
+      <span aria-hidden="true">?</span>
+      <span role="tooltip">{children}</span>
+    </span>
+  )
+}
+
 export function DefinitionBlock() {
   return (
-    <section className="content-card definition-block">
+    <section className="definition-block">
       <span className="content-label">Определение</span>
-      <Formula display>{'y=a^x,\\qquad a>0,\\ a\\ne1'}</Formula>
-      <p>{paragraph11.definition}</p>
-      <div className="step-rule">
-        <Formula>{'a^{x+1}=a\\cdot a^x'}</Formula>
-        <span>{paragraph11.stepRule}</span>
+      <div className="definition-formula">
+        <Formula display>{'y=a^x,\\qquad a>0,\\ a\\ne1'}</Formula>
+        <ExplanationHint>Основание a постоянно, а показатель степени x принимает любые действительные значения.</ExplanationHint>
+      </div>
+      <div className="attention-note">
+        <Formula>{'f(x+1)=a\\cdot f(x)'}</Formula>
+        <ExplanationHint>При каждом шаге вправо значение функции умножается на основание a.</ExplanationHint>
       </div>
     </section>
   )
@@ -20,41 +31,41 @@ export function PropertiesBlock() {
     <section className="properties-block">
       <div className="section-heading">
         <span className="content-label">Свойства</span>
-        <h2>Что верно при любом допустимом основании</h2>
+        <h2>Показательная функция</h2>
       </div>
-      <dl>
-        {paragraph11.properties.map((property, index) => (
-          <div key={property.term}>
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <dt>{property.term}</dt>
-            <dd>{property.value}</dd>
-          </div>
+      <ul className="property-list">
+        {paragraph11.properties.map((property) => (
+          <li key={property.term}>
+            <strong>{property.term}</strong>
+            <span><Formula>{property.formula}</Formula></span>
+            <ExplanationHint>{property.explanation}</ExplanationHint>
+          </li>
         ))}
-      </dl>
+      </ul>
     </section>
   )
 }
 
 export function ExampleBlock() {
   return (
-    <section className="content-card example-block">
-      <span className="content-label">Разобранный пример</span>
-      <h2>{paragraph11.example.title}</h2>
-      <p>{paragraph11.example.body}</p>
-      <div className="example-sequence" aria-label="Значения функции два в степени икс">
-        <span><small>x</small>0</span>
-        <i aria-hidden="true">→</i>
-        <span><small>x</small>1</span>
-        <i aria-hidden="true">→</i>
-        <span><small>x</small>2</span>
+    <section className="example-block">
+      <div className="section-heading">
+        <span className="content-label">Пример</span>
+        <h2>Функция <Formula>{'y=2^x'}</Formula></h2>
       </div>
-      <div className="example-sequence example-sequence--values">
-        <span><small>y</small>1</span>
-        <i>× 2</i>
-        <span><small>y</small>2</span>
-        <i>× 2</i>
-        <span><small>y</small>4</span>
-      </div>
+      <table>
+        <caption>Каждый шаг вправо удваивает значение функции.</caption>
+        <tbody>
+          <tr>
+            <th scope="row">x</th>
+            {[-2, -1, 0, 1, 2].map((x) => <td key={x}>{x}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">y</th>
+            {['0,25', '0,5', '1', '2', '4'].map((y) => <td key={y}>{y}</td>)}
+          </tr>
+        </tbody>
+      </table>
     </section>
   )
 }
@@ -63,12 +74,18 @@ export function NotesBlock() {
   return (
     <section className="notes-block">
       <article>
-        <span className="content-label">Граничный случай</span>
-        <p>{paragraph11.boundary}</p>
+        <span className="attention-icon" aria-hidden="true">!</span>
+        <div>
+          <strong>Граничный случай</strong>
+          <p>{paragraph11.boundary}</p>
+        </div>
       </article>
       <article>
-        <span className="content-label">Типичная ошибка</span>
-        <p>{paragraph11.commonError}</p>
+        <span className="attention-icon" aria-hidden="true">!</span>
+        <div>
+          <strong>Обратите внимание</strong>
+          <p>{paragraph11.commonError}</p>
+        </div>
       </article>
     </section>
   )

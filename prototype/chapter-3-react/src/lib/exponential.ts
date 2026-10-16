@@ -15,7 +15,6 @@ export function describeBase(base: number) {
   if (base === 1) {
     return {
       title: 'Постоянная функция',
-      detail: 'a = 1 — граничный случай, исключённый из определения.',
       tone: 'boundary' as const,
     }
   }
@@ -23,14 +22,12 @@ export function describeBase(base: number) {
   if (base > 1) {
     return {
       title: 'Функция возрастает',
-      detail: 'При движении вправо значение умножается на число больше единицы.',
       tone: 'growth' as const,
     }
   }
 
   return {
     title: 'Функция убывает',
-    detail: 'При движении вправо значение умножается на число между нулём и единицей.',
     tone: 'decay' as const,
   }
 }

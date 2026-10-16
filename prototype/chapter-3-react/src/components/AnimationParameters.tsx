@@ -1,24 +1,13 @@
-import { describeBase, exponentialValue, formatNumber } from '../lib/exponential'
+import { useState } from 'react'
+import { exponentialValue, formatNumber } from '../lib/exponential'
+import { Formula } from './Formula'
 
 export type AnimationState = {
   base: number
-  selectedX: number
-  showAnchor: boolean
-  showAsymptote: boolean
-  showTable: boolean
 }
 
 export type AnimationActions = {
   setBase: (value: number) => void
-  setSelectedX: (value: number) => void
-  setShowAnchor: (value: boolean) => void
-  setShowAsymptote: (value: boolean) => void
-  setShowTable: (value: boolean) => void
-}
-
-type AnimationParametersProps = {
-  state: AnimationState
-  actions: AnimationActions
 }
 
 const presets = [
@@ -28,24 +17,17 @@ const presets = [
   { value: Math.E, label: 'e' },
 ]
 
-function Toggle({ checked, label, onChange }: { checked: boolean; label: string; onChange: (value: boolean) => void }) {
-  return (
-    <label className="parameter-toggle">
-      <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} />
-      <span aria-hidden="true" />
-      {label}
-    </label>
-  )
-}
-
-export function AnimationParameters({ state, actions }: AnimationParametersProps) {
-  const description = describeBase(state.base)
+export function AnimationParameters({ state, actions }: { state: AnimationState; actions: AnimationActions }) {
+  const [argument, setArgument] = useState('1')
+  const parsedArgument = Number(argument.replace(',', '.'))
+  const hasArgument = argument.trim() !== '' && Number.isFinite(parsedArgument)
+  const tableX = [-2, -1, 0, 1, 2]
 
   return (
     <aside className="parameters-panel">
       <header>
         <span className="content-label">Параметры анимации</span>
-        <h2>Измените и сравните</h2>
+        <h2>Основание функции</h2>
       </header>
 
       <div className="parameter-control">
@@ -68,26 +50,38 @@ export function AnimationParameters({ state, actions }: AnimationParametersProps
         </div>
       </div>
 
-      <div className="parameter-control">
-        <div className="parameter-control__label">
-          <label htmlFor="selected-x">Аргумент отмеченной точки x</label>
-          <output htmlFor="selected-x">{formatNumber(state.selectedX)}</output>
-        </div>
-        <input id="selected-x" type="range" min="-2" max="2" step="0.25" value={state.selectedX} onChange={(event) => actions.setSelectedX(Number(event.target.value))} />
+      <div className="interactive-table">
+        <h3>Таблица значений</h3>
+        <table>
+          <tbody>
+            <tr>
+              <th scope="row">x</th>
+              {tableX.map((x) => <td key={`x-${x}`}>{x}</td>)}
+            </tr>
+            <tr>
+              <th scope="row">y</th>
+              {tableX.map((x) => <td key={`y-${x}`}>{formatNumber(exponentialValue(state.base, x), 2)}</td>)}
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div className="current-result">
-        <span>Текущее значение</span>
-        <strong>{formatNumber(state.base)}<sup>{formatNumber(state.selectedX)}</sup> = {formatNumber(exponentialValue(state.base, state.selectedX))}</strong>
-        <p>{description.title}</p>
+      <div className="value-calculator">
+        <label htmlFor="argument">Вычислить значение при x</label>
+        <input
+          id="argument"
+          type="text"
+          inputMode="decimal"
+          value={argument}
+          onChange={(event) => setArgument(event.target.value)}
+          aria-describedby="calculated-value"
+        />
+        <output id="calculated-value" htmlFor="argument">
+          {hasArgument ? (
+            <><Formula>{`${formatNumber(state.base)}^{${formatNumber(parsedArgument)}}`}</Formula> = {formatNumber(exponentialValue(state.base, parsedArgument))}</>
+          ) : 'Введите число'}
+        </output>
       </div>
-
-      <fieldset className="display-controls">
-        <legend>Подсказки на анимации</legend>
-        <Toggle checked={state.showAnchor} label="Точка (0; 1)" onChange={actions.setShowAnchor} />
-        <Toggle checked={state.showAsymptote} label="Асимптота y = 0" onChange={actions.setShowAsymptote} />
-        <Toggle checked={state.showTable} label="Таблица значений" onChange={actions.setShowTable} />
-      </fieldset>
     </aside>
   )
 }

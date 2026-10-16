@@ -8,20 +8,17 @@ export function ParagraphHeader() {
         <i aria-hidden="true">/</i>
         <span>{paragraph11.chapter}</span>
         <i aria-hidden="true">/</i>
-        <strong>{paragraph11.number}</strong>
+        <strong>{paragraph11.number}: {paragraph11.title}</strong>
       </nav>
     </header>
   )
 }
 
-export function ParagraphIntroduction({ compact = false }: { compact?: boolean }) {
+export function ParagraphIntroduction() {
   return (
-    <section className={compact ? 'paragraph-intro paragraph-intro--compact' : 'paragraph-intro'}>
-      <span className="section-mark">{paragraph11.number}</span>
-      <h1>{paragraph11.title}</h1>
-      <div className="paragraph-intro__text">
-        {paragraph11.introduction.map((sentence) => <p key={sentence}>{sentence}</p>)}
-      </div>
+    <section className="paragraph-intro">
+      <h1><span>{paragraph11.number}:</span> {paragraph11.title}</h1>
+      <p>{paragraph11.introduction}</p>
     </section>
   )
 }

@@ -1,14 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { describeBase, exponentialValue, formatNumber } from '../lib/exponential'
 import { Formula } from './Formula'
-
-type ExponentialGraphProps = {
-  base: number
-  selectedX: number
-  showAnchor: boolean
-  showAsymptote: boolean
-  showTable: boolean
-}
 
 const width = 760
 const height = 430
@@ -43,10 +35,11 @@ function useAnimatedNumber(target: number) {
   return value
 }
 
-export function ExponentialGraph(props: ExponentialGraphProps) {
-  const animatedBase = useAnimatedNumber(props.base)
-  const animatedX = useAnimatedNumber(props.selectedX)
-  const yMax = Math.max(5, exponentialValue(animatedBase, 2.55), exponentialValue(animatedBase, -2.55)) * 1.06
+export function ExponentialGraph({ base }: { base: number }) {
+  const svgRef = useRef<SVGSVGElement>(null)
+  const animatedBase = useAnimatedNumber(base)
+  const [hoverX, setHoverX] = useState<number | null>(null)
+  const yMax = Math.max(4, exponentialValue(animatedBase, xMax), exponentialValue(animatedBase, xMin)) * 1.08
   const mapX = (x: number) => frame.left + ((x - xMin) / (xMax - xMin)) * plotWidth
   const mapY = (y: number) => frame.top + plotHeight - (y / yMax) * plotHeight
 
@@ -60,43 +53,54 @@ export function ExponentialGraph(props: ExponentialGraphProps) {
     return points.join(' ')
   }, [animatedBase, yMax])
 
-  const pointY = exponentialValue(animatedBase, animatedX)
-  const state = describeBase(props.base)
+  const state = describeBase(base)
   const xTicks = [-3, -2, -1, 0, 1, 2, 3]
   const yTicks = [0, 0.25, 0.5, 0.75, 1]
-  const tableX = [-2, -1, 0, 1, 2]
+  const hoverY = hoverX === null ? null : exponentialValue(base, hoverX)
+
+  const inspectPoint = (event: ReactPointerEvent<SVGSVGElement>) => {
+    const bounds = svgRef.current?.getBoundingClientRect()
+    if (!bounds) return
+    const svgX = ((event.clientX - bounds.left) / bounds.width) * width
+    const x = xMin + ((svgX - frame.left) / plotWidth) * (xMax - xMin)
+    if (x < xMin || x > xMax) {
+      setHoverX(null)
+      return
+    }
+    setHoverX(Number(x.toFixed(2)))
+  }
 
   return (
-    <section className="graph-card" aria-label="График показательной функции">
+    <section className="graph-card" aria-label="Интерактивный график показательной функции">
       <header className="graph-card__header">
         <div>
           <span className="content-label">Интерактивная анимация</span>
-          <h2><Formula>{`y=${formatNumber(props.base)}^x`}</Formula></h2>
+          <h2><Formula>{`y=${formatNumber(base)}^x`}</Formula></h2>
         </div>
         <div className={`base-state base-state--${state.tone}`}>
           <strong>{state.title}</strong>
-          <span>{state.detail}</span>
         </div>
       </header>
 
-      <svg className="graph" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`График функции при основании ${formatNumber(props.base)}`}>
-        <defs>
-          <clipPath id="plot-area">
-            <rect x={frame.left} y={frame.top} width={plotWidth} height={plotHeight} />
-          </clipPath>
-        </defs>
-
+      <svg
+        ref={svgRef}
+        className="graph"
+        viewBox={`0 0 ${width} ${height}`}
+        role="img"
+        aria-label={`График функции при основании ${formatNumber(base)}`}
+        onPointerMove={inspectPoint}
+        onPointerDown={inspectPoint}
+        onPointerLeave={() => setHoverX(null)}
+      >
         <g className="graph-grid">
           {xTicks.map((tick) => <line key={`x-${tick}`} x1={mapX(tick)} x2={mapX(tick)} y1={frame.top} y2={frame.top + plotHeight} />)}
           {yTicks.map((part) => <line key={`y-${part}`} x1={frame.left} x2={frame.left + plotWidth} y1={mapY(yMax * part)} y2={mapY(yMax * part)} />)}
         </g>
 
-        {props.showAsymptote && (
-          <g className="asymptote">
-            <line x1={frame.left} x2={frame.left + plotWidth} y1={mapY(0)} y2={mapY(0)} />
-            <text x={frame.left + 10} y={mapY(0) - 10}>асимптота y = 0</text>
-          </g>
-        )}
+        <g className="asymptote">
+          <line x1={frame.left} x2={frame.left + plotWidth} y1={mapY(0)} y2={mapY(0)} />
+          <text x={frame.left + 10} y={mapY(0) - 10}>y = 0</text>
+        </g>
 
         <g className="axes">
           <line x1={frame.left} x2={frame.left + plotWidth + 9} y1={mapY(0)} y2={mapY(0)} />
@@ -111,34 +115,33 @@ export function ExponentialGraph(props: ExponentialGraphProps) {
           <text x={mapX(0) - 25} y={mapY(1) + 4}>1</text>
         </g>
 
-        <g clipPath="url(#plot-area)">
-          <path className="exponential-curve" d={path} />
-          <line className="point-guide" x1={mapX(animatedX)} x2={mapX(animatedX)} y1={mapY(0)} y2={mapY(pointY)} />
-          <circle className="selected-point" cx={mapX(animatedX)} cy={mapY(pointY)} r="7" />
-          {props.showAnchor && <circle className="anchor-point" cx={mapX(0)} cy={mapY(1)} r="6" />}
-        </g>
+        <path className="exponential-curve" d={path} />
+        <circle className="anchor-point" cx={mapX(0)} cy={mapY(1)} r="6" />
+        <text className="point-label" x={mapX(0) + 11} y={mapY(1) - 9}>(0; 1)</text>
 
-        {props.showAnchor && <text className="point-label" x={mapX(0) + 11} y={mapY(1) - 9}>(0; 1)</text>}
-        <g className="selected-label" transform={`translate(${Math.min(mapX(animatedX) + 12, width - 145)} ${Math.max(mapY(pointY) - 36, 15)})`}>
-          <rect width="128" height="28" rx="7" />
-          <text x="10" y="19">({formatNumber(props.selectedX)}; {formatNumber(exponentialValue(props.base, props.selectedX))})</text>
-        </g>
+        {hoverX !== null && hoverY !== null && (
+          <g className="hover-point">
+            <line x1={mapX(hoverX)} x2={mapX(hoverX)} y1={mapY(0)} y2={mapY(hoverY)} />
+            <circle cx={mapX(hoverX)} cy={mapY(hoverY)} r="7" />
+            <g transform={`translate(${hoverX > 1.35 ? mapX(hoverX) - 142 : mapX(hoverX) + 12} ${Math.max(mapY(hoverY) - 37, 11)})`}>
+              <rect width="130" height="29" rx="7" />
+              <text x="10" y="19">({formatNumber(hoverX)}; {formatNumber(hoverY)})</text>
+            </g>
+          </g>
+        )}
       </svg>
 
-      {props.showTable && (
-        <div className="value-table" aria-label="Таблица значений">
-          <div className="value-table__head">x</div>
-          {tableX.map((x) => <div key={`x-${x}`}>{x}</div>)}
-          <div className="value-table__head">y</div>
-          {tableX.map((x) => <div key={`y-${x}`}>{formatNumber(exponentialValue(props.base, x), 2)}</div>)}
-        </div>
-      )}
-
-      <footer className="graph-readout">
-        <span>Точка на графике</span>
-        <strong>x = {formatNumber(props.selectedX)}</strong>
-        <i aria-hidden="true">→</i>
-        <strong>y = {formatNumber(exponentialValue(props.base, props.selectedX))}</strong>
+      <footer className="graph-readout" aria-live="polite">
+        {hoverX === null || hoverY === null ? (
+          <span>Наведите указатель на график, чтобы увидеть координаты точки</span>
+        ) : (
+          <>
+            <span>Точка на графике</span>
+            <strong>x = {formatNumber(hoverX)}</strong>
+            <i aria-hidden="true">→</i>
+            <strong>y = {formatNumber(hoverY)}</strong>
+          </>
+        )}
       </footer>
     </section>
   )
