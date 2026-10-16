@@ -1,44 +1,52 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { SectionId } from './content/chapter'
-import { VariantA, VariantB, VariantC, type SceneActions, type SceneState } from './components/Variants'
+import type { AnimationActions, AnimationState } from './components/AnimationParameters'
+import { PrototypeSwitcher, variants, type VariantId } from './components/PrototypeSwitcher'
+import { VariantA, VariantB, VariantC } from './components/Variants'
 
-type VariantId = 'A' | 'B' | 'C'
-const variants: VariantId[] = ['A', 'B', 'C']
+function query() {
+  return new URLSearchParams(window.location.search)
+}
 
-function getVariant(): VariantId {
-  const value = new URLSearchParams(window.location.search).get('variant')?.toUpperCase()
+function initialVariant(): VariantId {
+  const value = query().get('variant')?.toUpperCase()
   return value === 'B' || value === 'C' ? value : 'A'
 }
 
-function getInitialSection(): SectionId {
-  const value = Number(new URLSearchParams(window.location.search).get('section'))
-  return value >= 11 && value <= 19 ? value as SectionId : 11
+function initialNumber(name: string, fallback: number, minimum: number, maximum: number) {
+  const value = Number(query().get(name))
+  return Number.isFinite(value) && value >= minimum && value <= maximum ? value : fallback
 }
 
-function getInitialBase() {
-  const value = Number(new URLSearchParams(window.location.search).get('base'))
-  return value >= 0.25 && value <= 4 ? value : 2
+function initialBoolean(name: string, fallback: boolean) {
+  const value = query().get(name)
+  if (value === '1') return true
+  if (value === '0') return false
+  return fallback
+}
+
+function isEditableTarget(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) return false
+  return target.matches('input, textarea, select, [contenteditable="true"]')
 }
 
 export function App() {
-  const [variant, setVariant] = useState<VariantId>(getVariant)
-  const [sectionId, setSectionId] = useState<SectionId>(getInitialSection)
-  const [base, setBase] = useState(getInitialBase)
-  const [probeX, setProbeX] = useState(1)
-  const [target, setTarget] = useState(4)
-  const [showExp, setShowExp] = useState(true)
-  const [showLog, setShowLog] = useState(true)
-  const [showMirror, setShowMirror] = useState(true)
+  const [variant, setVariant] = useState<VariantId>(initialVariant)
+  const [base, setBase] = useState(() => initialNumber('base', 2, 0.2, 4))
+  const [selectedX, setSelectedX] = useState(() => initialNumber('x', 1, -2, 2))
+  const [showAnchor, setShowAnchor] = useState(() => initialBoolean('anchor', true))
+  const [showAsymptote, setShowAsymptote] = useState(() => initialBoolean('asymptote', true))
+  const [showTable, setShowTable] = useState(() => initialBoolean('table', true))
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+      if (isEditableTarget(event.target) || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')) return
       setVariant((current) => {
         const direction = event.key === 'ArrowRight' ? 1 : -1
         const index = (variants.indexOf(current) + direction + variants.length) % variants.length
         return variants[index]
       })
     }
+
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
@@ -46,23 +54,26 @@ export function App() {
   useEffect(() => {
     const url = new URL(window.location.href)
     url.searchParams.set('variant', variant)
+    url.searchParams.set('base', String(Number(base.toFixed(3))))
+    url.searchParams.set('x', String(selectedX))
+    url.searchParams.set('anchor', showAnchor ? '1' : '0')
+    url.searchParams.set('asymptote', showAsymptote ? '1' : '0')
+    url.searchParams.set('table', showTable ? '1' : '0')
     window.history.replaceState({}, '', url)
-  }, [variant])
+  }, [variant, base, selectedX, showAnchor, showAsymptote, showTable])
 
-  const state: SceneState = useMemo(() => ({ sectionId, base, probeX, target, showExp, showLog, showMirror }), [sectionId, base, probeX, target, showExp, showLog, showMirror])
-  const actions: SceneActions = { setSectionId, setBase, setProbeX, setTarget, setShowExp, setShowLog, setShowMirror }
+  const state: AnimationState = useMemo(
+    () => ({ base, selectedX, showAnchor, showAsymptote, showTable }),
+    [base, selectedX, showAnchor, showAsymptote, showTable],
+  )
+  const actions: AnimationActions = { setBase, setSelectedX, setShowAnchor, setShowAsymptote, setShowTable }
 
   return (
     <>
       {variant === 'A' && <VariantA state={state} actions={actions} />}
       {variant === 'B' && <VariantB state={state} actions={actions} />}
       {variant === 'C' && <VariantC state={state} actions={actions} />}
-      {import.meta.env.DEV && (
-        <div className="variant-switcher" aria-label="Переключатель композиций">
-          <span>Композиция</span>
-          {variants.map((item) => <button className={variant === item ? 'is-active' : ''} key={item} type="button" onClick={() => setVariant(item)}>{item}</button>)}
-        </div>
-      )}
+      {import.meta.env.DEV && <PrototypeSwitcher variant={variant} onChange={setVariant} />}
     </>
   )
 }
