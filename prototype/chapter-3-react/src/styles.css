@@ -395,6 +395,111 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   font-weight: 500;
 }
 
+.equation-workspace {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  min-height: 500px;
+}
+
+.equation-progress {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+  margin: 22px 0 12px;
+}
+
+.equation-progress div {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 7px;
+  padding-top: 10px;
+  border-top: 3px solid #dce3dc;
+  color: var(--muted);
+}
+
+.equation-progress div.is-current { color: var(--ink); border-color: var(--attention); }
+.equation-progress div.is-complete { color: var(--green); border-color: var(--green); }
+.equation-progress div > span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #edf1ec; font-size: 10px; font-weight: 850; }
+.equation-progress div.is-current > span { color: #554616; background: var(--attention-soft); }
+.equation-progress div.is-complete > span { color: #fff; background: var(--green); }
+.equation-progress strong { font-size: 10px; }
+
+.equation-stage {
+  display: grid;
+  place-content: center;
+  min-height: 330px;
+  padding: 35px 20px 12px;
+  text-align: center;
+}
+
+.equation-formula, .matching-bases {
+  animation: equation-enter 360ms ease both;
+}
+
+.equation-formula .katex { font-size: clamp(1.8em, 4vw, 2.8em); }
+
+.equation-stage > p {
+  max-width: 620px;
+  margin: 35px auto 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.matching-bases {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 18px;
+}
+
+.matching-bases article {
+  display: grid;
+  place-content: center;
+  min-height: 150px;
+  padding: 18px;
+  border: 2px solid #7bb2a6;
+  border-radius: 15px;
+  background: var(--green-soft);
+}
+
+.matching-base-label { margin-bottom: 14px; color: var(--green); font-size: 9px; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+.matching-bases article .katex { font-size: 1.65em; }
+.matching-bases > i { color: var(--curve); font-size: 28px; font-style: normal; }
+
+.equation-prompt { margin: 24px 0 13px; font-family: Georgia, "Times New Roman", serif; font-size: 18px; line-height: 1.35; }
+.equation-action-list { display: grid; gap: 8px; }
+.equation-action-list button {
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fff;
+  font-size: 11px;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+}
+.equation-action-list button:hover:not(:disabled) { border-color: var(--green); background: #f2f8f5; }
+.equation-action-list button.is-correct { color: #075d50; border-color: #66a598; background: var(--green-soft); }
+.equation-action-list button.is-wrong { color: var(--wrong); border-color: #d5b04c; background: var(--attention-soft); }
+.equation-action-list button:disabled { cursor: default; }
+
+.equation-feedback { margin: 14px 0 0; padding: 11px 12px; border-radius: 9px; font-size: 11px; line-height: 1.45; }
+.equation-feedback.is-correct { color: #075d50; background: var(--green-soft); }
+.equation-feedback.is-wrong { color: var(--wrong); background: var(--attention-soft); }
+
+.equation-complete { display: grid; place-items: center; margin-top: 30px; padding: 25px 15px; text-align: center; }
+.equation-complete > span { display: grid; place-items: center; width: 46px; height: 46px; margin-bottom: 15px; border-radius: 50%; color: #fff; background: var(--green); font-size: 22px; }
+.equation-complete strong { font-family: Georgia, "Times New Roman", serif; font-size: 23px; font-weight: 500; }
+.equation-complete p { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.equation-complete button { margin-top: 9px; padding: 9px 12px; border: 0; border-radius: 8px; color: #fff; background: var(--ink); font-size: 11px; cursor: pointer; }
+
+@keyframes equation-enter {
+  from { opacity: 0; transform: translateY(8px) scale(.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .conversion-equations {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -569,6 +674,10 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   .property-list li { padding: 8px 0; }
   .notes-block { grid-template-columns: 1fr; }
   .conversion-equations, .rule-equation { grid-template-columns: 1fr; }
+  .equation-progress strong { display: none; }
+  .equation-progress div { grid-template-columns: 1fr; justify-items: center; }
+  .matching-bases { grid-template-columns: 1fr; }
+  .matching-bases > i { transform: rotate(90deg); }
   .conversion-equations > i { transform: rotate(90deg); }
   .example-steps li { grid-template-columns: 24px 1fr; gap: 7px 10px; }
   .example-steps .example-step-formula { grid-column: 2; }

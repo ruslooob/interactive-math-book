@@ -95,11 +95,11 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     conditions: "a>0,\\ a\\ne1",
     animation: 'exponential-equation',
     example: {
-      title: 'Уравнение 3²ˣ⁻¹ = 3⁵',
+      title: 'Уравнение 3²ˣ⁻¹ = 27',
       steps: [
-        { formula: "3^{2x-1}=3^5", note: 'Основания одинаковы.' },
-        { formula: "2x-1=5", note: 'Приравниваем показатели.' },
-        { formula: "x=3", note: 'Получаем корень.' },
+        { formula: "3^{2x-1}=3^3", note: 'Представляем 27 как степень тройки.' },
+        { formula: "2x-1=3", note: 'Приравниваем показатели.' },
+        { formula: "x=2", note: 'Решаем линейное уравнение и проверяем корень.' },
       ],
     },
     propertiesTitle: 'Способ одинаковых оснований',

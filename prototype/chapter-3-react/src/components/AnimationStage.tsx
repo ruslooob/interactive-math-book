@@ -1,6 +1,7 @@
 import type { AnimationKind } from '../content/chapter3'
 import type { AnimationActions, AnimationState } from './AnimationParameters'
 import { AnimationUnit } from './AnimationUnit'
+import { ExponentialEquationAnimation } from './ExponentialEquationAnimation'
 import {
   ComparisonAnimation,
   DerivativeAnimation,
@@ -14,7 +15,7 @@ export function AnimationStage({ kind, state, actions }: { kind: AnimationKind; 
     case 'exponential-function':
       return <AnimationUnit state={state} actions={actions} />
     case 'exponential-equation':
-      return <ComparisonAnimation family="exponential" mode="equation" />
+      return <ExponentialEquationAnimation />
     case 'exponential-inequality':
       return <ComparisonAnimation family="exponential" mode="inequality" />
     case 'logarithm-definition':
