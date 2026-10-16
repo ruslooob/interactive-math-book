@@ -27,7 +27,6 @@ export function TableOfContents({ onOpenParagraph, onOpenChapter }: { onOpenPara
                     <li key={paragraph.number}>
                       <button type="button" onClick={() => implementedParagraphs.has(paragraph.number) ? onOpenParagraph(paragraph.number) : onOpenChapter(chapter)}>
                         <span>§ {paragraph.number}. {paragraph.title}</span>
-                        <small>{paragraph.page}</small>
                       </button>
                     </li>
                   ))}

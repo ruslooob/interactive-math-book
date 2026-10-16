@@ -22,7 +22,7 @@ export function PropertiesBlock({ title, properties }: { title: string; properti
           <li key={property.term}>
             <div className="property-line">
               <strong>{property.term}:</strong>
-              <Formula>{property.formula}</Formula>
+              <Formula className="property-formula">{property.formula}</Formula>
               <ExplanationHint>{property.explanation}</ExplanationHint>
             </div>
           </li>
@@ -56,8 +56,8 @@ export function ExampleBlock({ example }: { example: ExampleData }) {
         <ol className="example-steps">
           {example.steps.map((step, index) => (
             <li key={`${step.formula}-${index}`}>
-              <Formula>{step.formula}</Formula>
-              {step.note && <span>{step.note}</span>}
+              <Formula className="example-step-formula">{step.formula}</Formula>
+              {step.note && <span className="example-step-note">{step.note}</span>}
             </li>
           ))}
         </ol>

@@ -40,6 +40,7 @@ export type ParagraphData = {
   introduction: string
   formulaLead: string
   formula: string
+  conditions?: string
   animation: AnimationKind
   example: ExampleData
   propertiesTitle: string
@@ -61,7 +62,8 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     title: 'Показательная функция, её свойства и график',
     introduction: 'Показательная функция — функция с постоянным положительным основанием степени и переменным показателем.',
     formulaLead: 'На языке формул это записывается так:',
-    formula: "y=a^x,\\qquad \\text{где }a>0,\\ a\\ne1",
+    formula: "y=a^x",
+    conditions: "a>0,\\ a\\ne1,\\ x\\in\\mathbb{R}",
     animation: 'exponential-function',
     example: {
       title: 'Функция y = 2ˣ',
@@ -89,7 +91,8 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     title: 'Показательные уравнения',
     introduction: 'Показательное уравнение — уравнение, в котором неизвестная входит в показатель степени.',
     formulaLead: 'При одинаковых допустимых основаниях показатели равны:',
-    formula: "a^{f(x)}=a^{g(x)}\\iff f(x)=g(x),\\qquad a>0,\\ a\\ne1",
+    formula: "a^{f(x)}=a^{g(x)}\\iff f(x)=g(x)",
+    conditions: "a>0,\\ a\\ne1",
     animation: 'exponential-equation',
     example: {
       title: 'Уравнение 3²ˣ⁻¹ = 3⁵',
@@ -121,6 +124,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     introduction: 'Показательное неравенство — неравенство, в котором неизвестная входит в показатель степени.',
     formulaLead: 'Знак между показателями зависит от основания:',
     formula: "a>1:\\ a^u>a^v\\iff u>v;\\qquad 0<a<1:\\ a^u>a^v\\iff u<v",
+    conditions: "a>0,\\ a\\ne1,\\ u,v\\in\\mathbb{R}",
     animation: 'exponential-inequality',
     example: {
       title: 'Неравенство (1/2)ˣ⁻¹ > (1/2)²',
@@ -151,7 +155,8 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     title: 'Понятие логарифма',
     introduction: 'Логарифм положительного числа b по основанию a — показатель степени, в которую нужно возвести a, чтобы получить b.',
     formulaLead: 'Логарифмическая и степенная записи равносильны:',
-    formula: "\\log_a b=c\\iff a^c=b,\\qquad a>0,\\ a\\ne1,\\ b>0",
+    formula: "\\log_a b=c\\iff a^c=b",
+    conditions: "a>0,\\ a\\ne1,\\ b>0,\\ c\\in\\mathbb{R}",
     animation: 'logarithm-definition',
     example: {
       title: 'Логарифм log₂8',
@@ -181,7 +186,8 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     title: 'Логарифмическая функция, её свойства и график',
     introduction: 'Логарифмическая функция сопоставляет положительному числу показатель степени, необходимый для получения этого числа.',
     formulaLead: 'На языке формул это записывается так:',
-    formula: "y=\\log_a x,\\qquad \\text{где }a>0,\\ a\\ne1,\\ x>0",
+    formula: "y=\\log_a x",
+    conditions: "a>0,\\ a\\ne1,\\ x>0",
     animation: 'logarithmic-function',
     example: {
       title: 'Функция y = log₂x',
@@ -210,6 +216,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     introduction: 'Свойства логарифмов переводят умножение и деление аргументов в сложение и вычитание логарифмов, а степень — в множитель.',
     formulaLead: 'Для положительных x и y выполняются равенства:',
     formula: "\\log_a(xy)=\\log_ax+\\log_ay,\\quad \\log_a\\frac{x}{y}=\\log_ax-\\log_ay",
+    conditions: "a>0,\\ a\\ne1,\\ x>0,\\ y>0",
     animation: 'logarithm-properties',
     example: {
       title: 'Сумма log₂8 + log₂4',
@@ -241,7 +248,8 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     title: 'Логарифмические уравнения',
     introduction: 'Логарифмическое уравнение — уравнение, в котором неизвестная входит в аргумент логарифма или в его основание.',
     formulaLead: 'Уравнение с одним логарифмом переводится в степенную форму:',
-    formula: "\\log_a f(x)=c\\iff f(x)=a^c,\\qquad f(x)>0",
+    formula: "\\log_a f(x)=c\\iff f(x)=a^c",
+    conditions: "a>0,\\ a\\ne1,\\ f(x)>0",
     animation: 'logarithmic-equation',
     example: {
       title: 'Уравнение log₃(x − 1) = 2',
@@ -274,6 +282,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     introduction: 'Логарифмическое неравенство — неравенство, в котором неизвестная входит в аргумент логарифма или в его основание.',
     formulaLead: 'При сравнении аргументов направление зависит от основания:',
     formula: "a>1:\\ \\log_au>\\log_av\\iff u>v;\\quad 0<a<1:\\ \\log_au>\\log_av\\iff u<v",
+    conditions: "a>0,\\ a\\ne1,\\ u>0,\\ v>0",
     animation: 'logarithmic-inequality',
     example: {
       title: 'Неравенство log₂(x − 1) ≥ 3',
@@ -306,6 +315,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     introduction: 'Производные показательной и логарифмической функций выражаются через сами функции и натуральный логарифм основания.',
     formulaLead: 'Основные формулы дифференцирования:',
     formula: "\\frac{d}{dx}a^x=a^x\\ln a,\\qquad \\frac{d}{dx}\\log_a x=\\frac{1}{x\\ln a}",
+    conditions: "a>0,\\ a\\ne1,\\ x>0",
     animation: 'derivatives',
     example: {
       title: 'Производная функции y = 2ˣ',

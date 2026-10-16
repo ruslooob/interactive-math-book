@@ -125,6 +125,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   gap: 7px;
 }
 .formula-sentence .katex { color: var(--ink); font-size: 1.08em; }
+.definition-conditions { display: inline-flex; align-items: baseline; gap: 5px; }
 
 .explanation-hint {
   position: relative;
@@ -314,7 +315,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 .property-list li::marker { font-size: 0.8em; }
 .property-line { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; color: var(--ink); }
 .property-list strong { font-size: 13px; }
-.property-line > .katex { font-size: 1.05em; }
+.property-line > .property-formula { font-size: 1.05em; }
 
 .notes-block { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .notes-block article {
@@ -375,8 +376,8 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   content: counter(example-step);
 }
 
-.example-steps > li > .katex { grid-column: 2; grid-row: 1; font-size: 1.08em; }
-.example-steps li span { grid-column: 3; grid-row: 1; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.example-steps .example-step-formula { grid-column: 2; grid-row: 1; font-size: 1.08em; }
+.example-steps .example-step-note { grid-column: 3; grid-row: 1; color: var(--muted); font-size: 12px; line-height: 1.45; }
 
 .concept-card {
   min-width: 0;
@@ -413,7 +414,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   text-align: center;
 }
 
-.conversion-equations > div span { margin-bottom: 20px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.conversion-equations .conversion-label { margin-bottom: 20px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .conversion-equations > div .katex { font-size: 1.45em; }
 .conversion-equations > i { align-self: center; color: var(--curve); font-size: 30px; font-style: normal; }
 .logarithm-converter > p { margin: 22px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
@@ -428,7 +429,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   color: #075d50;
   background: var(--green-soft);
 }
-.animation-result span { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.animation-result__label { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .animation-result strong { font-size: 13px; }
 .comparison-line { stroke: var(--green); stroke-dasharray: 7 5; stroke-width: 2.5; }
 .solution-range { stroke: var(--attention); stroke-linecap: round; stroke-width: 10; }
@@ -467,17 +468,20 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 .paragraph-pagination button:hover { color: #fff; border-color: var(--ink); background: var(--ink); }
 
 .book-contents {
+  max-width: 780px;
+  margin: 0 auto;
   padding: 44px 50px 56px;
   border: 1px solid var(--line);
   border-radius: 20px;
   background: rgba(249, 251, 246, .88);
 }
 .contents-title { max-width: 760px; margin-bottom: 42px; }
-.contents-title h1, .chapter-placeholder h1 { margin: 9px 0 10px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(34px, 4.5vw, 58px); font-weight: 500; line-height: 1.04; letter-spacing: -.045em; }
+.contents-title h1 { margin: 9px 0 10px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(28px, 3.2vw, 40px); font-weight: 500; line-height: 1.08; letter-spacing: -.035em; }
+.chapter-placeholder h1 { margin: 9px 0 10px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(34px, 4.5vw, 58px); font-weight: 500; line-height: 1.04; letter-spacing: -.045em; }
 .contents-title p { margin: 0; color: var(--muted); font-size: 14px; text-transform: uppercase; letter-spacing: .12em; }
-.chapter-list { display: grid; gap: 15px; }
-.chapter-entry { overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, .65); }
-.chapter-entry--active { border-color: #83b5aa; box-shadow: 0 10px 30px rgba(18, 128, 111, .08); }
+.chapter-list { display: grid; border-top: 1px solid var(--line); }
+.chapter-entry { overflow: hidden; border-bottom: 1px solid var(--line); background: transparent; }
+.chapter-entry--active { border-left: 3px solid var(--green); }
 .chapter-title {
   display: grid;
   grid-template-columns: 90px 1fr auto;
@@ -486,19 +490,18 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   width: 100%;
   padding: 18px 20px;
   border: 0;
-  background: #f4f7f2;
+  background: transparent;
   text-align: left;
   cursor: pointer;
 }
-.chapter-entry--active .chapter-title { background: var(--green-soft); }
+.chapter-entry--active .chapter-title { background: rgba(220, 239, 233, .62); }
 .chapter-title span { color: var(--green); font-size: 10px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
 .chapter-title strong { font-family: Georgia, "Times New Roman", serif; font-size: 20px; font-weight: 500; }
 .chapter-title em { padding: 5px 8px; border-radius: 999px; color: var(--muted); background: #e4eae4; font-size: 9px; font-style: normal; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .chapter-entry ol { margin: 0; padding: 5px 20px 12px 110px; list-style: none; }
 .chapter-entry li + li { border-top: 1px solid #e3e8e2; }
-.chapter-entry li button { display: flex; justify-content: space-between; gap: 20px; width: 100%; padding: 11px 0; border: 0; color: var(--ink); background: transparent; font-size: 12px; line-height: 1.35; text-align: left; cursor: pointer; }
+.chapter-entry li button { display: block; width: 100%; padding: 11px 0; border: 0; color: var(--ink); background: transparent; font-size: 12px; line-height: 1.35; text-align: left; cursor: pointer; }
 .chapter-entry li button:hover span { color: var(--green); }
-.chapter-entry li small { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
 
 .chapter-placeholder {
   position: relative;
@@ -568,8 +571,8 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   .conversion-equations, .rule-equation { grid-template-columns: 1fr; }
   .conversion-equations > i { transform: rotate(90deg); }
   .example-steps li { grid-template-columns: 24px 1fr; gap: 7px 10px; }
-  .example-steps > li > .katex { grid-column: 2; }
-  .example-steps li span { grid-column: 2; grid-row: 2; }
+  .example-steps .example-step-formula { grid-column: 2; }
+  .example-steps .example-step-note { grid-column: 2; grid-row: 2; }
   .book-contents { padding: 30px 24px 36px; }
   .chapter-title { grid-template-columns: 1fr auto; }
   .chapter-title span { grid-column: 1 / -1; }

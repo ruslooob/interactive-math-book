@@ -1,6 +1,7 @@
-import { useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { useMemo, useState } from 'react'
 import { exponentialValue, formatNumber } from '../lib/exponential'
 import { Formula } from './Formula'
+import { GraphPoint, GraphReadout, useGraphInteraction } from './GraphInteraction'
 
 const width = 760
 const height = 420
@@ -51,6 +52,15 @@ function ComparisonGraph({ family, mode, base, level }: { family: 'exponential' 
   const mapX = (x: number) => frame.left + ((x - xMin) / (xMax - xMin)) * plotWidth
   const mapY = (y: number) => frame.top + ((yMax - y) / (yMax - yMin)) * plotHeight
   const functionValue = (x: number) => isExponential ? exponentialValue(base, x) : Math.log(x) / Math.log(base)
+  const { svgRef, point, graphInteractionProps } = useGraphInteraction({
+    width,
+    frameLeft: frame.left,
+    plotWidth,
+    xMin,
+    xMax,
+    valueAt: functionValue,
+    isValid: (x) => isExponential || x > 0,
+  })
 
   const path = useMemo(() => {
     const points: string[] = []
@@ -80,7 +90,7 @@ function ComparisonGraph({ family, mode, base, level }: { family: 'exponential' 
         <div><span className="content-label">Интерактивная анимация</span><h2><Formula>{formula}</Formula></h2></div>
         <div className="base-state"><strong>{mode === 'equation' ? `Решение: x = ${formatNumber(solution)}` : `Граница: x = ${formatNumber(solution)}`}</strong></div>
       </header>
-      <svg className="graph" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Графическое решение">
+      <svg ref={svgRef} className="graph" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Графическое решение" {...graphInteractionProps}>
         <g className="graph-grid">
           {[0, 0.25, 0.5, 0.75, 1].map((part) => <line key={`x-${part}`} x1={frame.left + plotWidth * part} x2={frame.left + plotWidth * part} y1={frame.top} y2={frame.top + plotHeight} />)}
           {[0, 0.25, 0.5, 0.75, 1].map((part) => <line key={`y-${part}`} x1={frame.left} x2={frame.left + plotWidth} y1={frame.top + plotHeight * part} y2={frame.top + plotHeight * part} />)}
@@ -96,11 +106,13 @@ function ComparisonGraph({ family, mode, base, level }: { family: 'exponential' 
         <path className="exponential-curve" d={path} />
         {solution >= xMin && solution <= xMax && horizontalValue >= yMin && horizontalValue <= yMax && <circle className="anchor-point" cx={mapX(solution)} cy={mapY(horizontalValue)} r="7" />}
         {family === 'logarithmic' && <line className="vertical-asymptote" x1={mapX(0)} x2={mapX(0)} y1={frame.top} y2={frame.top + plotHeight} />}
+        <GraphPoint point={point} mapX={mapX} mapY={mapY} baselineY={mapY(0)} graphWidth={width} yMin={yMin} yMax={yMax} />
       </svg>
-      <footer className="graph-readout">
-        <span>{mode === 'equation' ? 'Точка пересечения даёт решение' : 'Выделенная часть оси — решения'}</span>
-        <strong>{base > 1 ? 'a > 1: знак сохраняется' : '0 < a < 1: знак меняется'}</strong>
-      </footer>
+      <GraphReadout
+        point={point}
+        idleText="Наведите указатель на график, чтобы увидеть координаты точки"
+        detail={mode === 'equation' ? 'Точка пересечения даёт решение' : 'Выделенная часть оси — решения'}
+      />
     </section>
   )
 }
@@ -117,7 +129,7 @@ export function ComparisonAnimation({ family, mode }: { family: 'exponential' | 
         <BaseControl value={base} onChange={setBase} />
         <Slider id="comparison-level" label={family === 'exponential' ? 'Показатель k' : 'Значение c'} value={level} min={-2} max={2} step={0.25} onChange={setLevel} />
         <div className="animation-result">
-          <span>{mode === 'equation' ? 'Решение' : 'Граница'}</span>
+          <span className="animation-result__label">{mode === 'equation' ? 'Решение' : 'Граница'}</span>
           <Formula>{`x=${formatNumber(result)}`}</Formula>
           {mode === 'inequality' && <strong>{base > 1 ? 'решения справа' : 'решения слева'}</strong>}
         </div>
@@ -135,9 +147,9 @@ export function LogarithmDefinitionAnimation() {
       <section className="concept-card logarithm-converter">
         <header><span className="content-label">Интерактивная анимация</span><h2>Две записи одного равенства</h2></header>
         <div className="conversion-equations">
-          <div><span>Степенная запись</span><Formula display>{`${formatNumber(base)}^{${formatNumber(exponent)}}=${formatNumber(value)}`}</Formula></div>
+          <div><span className="conversion-label">Степенная запись</span><Formula display>{`${formatNumber(base)}^{${formatNumber(exponent)}}=${formatNumber(value)}`}</Formula></div>
           <i aria-hidden="true">⇄</i>
-          <div><span>Логарифмическая запись</span><Formula display>{`\\log_{${formatNumber(base)}}${formatNumber(value)}=${formatNumber(exponent)}`}</Formula></div>
+          <div><span className="conversion-label">Логарифмическая запись</span><Formula display>{`\\log_{${formatNumber(base)}}${formatNumber(value)}=${formatNumber(exponent)}`}</Formula></div>
         </div>
         <p>Основание остаётся основанием, результат степени становится аргументом, показатель становится значением логарифма.</p>
       </section>
@@ -145,7 +157,7 @@ export function LogarithmDefinitionAnimation() {
         <header><span className="content-label">Параметры анимации</span><h2>Основание и показатель</h2></header>
         <BaseControl value={base} onChange={setBase} />
         <Slider id="log-exponent" label="Показатель c" value={exponent} min={-3} max={4} step={0.5} onChange={setExponent} />
-        <div className="animation-result"><span>Число b</span><strong>{formatNumber(value)}</strong></div>
+        <div className="animation-result"><span className="animation-result__label">Число b</span><strong>{formatNumber(value)}</strong></div>
       </aside>
     </div>
   )
@@ -153,46 +165,46 @@ export function LogarithmDefinitionAnimation() {
 
 export function LogarithmicFunctionAnimation() {
   const [base, setBase] = useState(2)
-  const [hoverX, setHoverX] = useState<number | null>(null)
-  const svgRef = useRef<SVGSVGElement>(null)
   const xMin = 0
   const xMax = 8
   const yMin = -4
   const yMax = 4
   const mapX = (x: number) => frame.left + (x / xMax) * plotWidth
   const mapY = (y: number) => frame.top + ((yMax - y) / (yMax - yMin)) * plotHeight
+  const logarithmValue = (x: number) => Math.log(x) / Math.log(base)
+  const { svgRef, point, graphInteractionProps } = useGraphInteraction({
+    width,
+    frameLeft: frame.left,
+    plotWidth,
+    xMin,
+    xMax,
+    valueAt: logarithmValue,
+    isValid: (x) => x > 0,
+  })
   const path = useMemo(() => {
     const points: string[] = []
     for (let index = 0; index <= 240; index += 1) {
       const x = 0.04 + ((xMax - 0.04) * index) / 240
-      const y = Math.log(x) / Math.log(base)
+      const y = logarithmValue(x)
       points.push(`${index === 0 ? 'M' : 'L'} ${mapX(x).toFixed(2)} ${mapY(Math.max(yMin - 1, Math.min(yMax + 1, y))).toFixed(2)}`)
     }
     return points.join(' ')
   }, [base])
-  const hoverY = hoverX === null ? null : Math.log(hoverX) / Math.log(base)
-  const inspectPoint = (event: ReactPointerEvent<SVGSVGElement>) => {
-    const bounds = svgRef.current?.getBoundingClientRect()
-    if (!bounds) return
-    const svgX = ((event.clientX - bounds.left) / bounds.width) * width
-    const x = ((svgX - frame.left) / plotWidth) * xMax
-    setHoverX(x > 0 && x <= xMax ? Number(x.toFixed(2)) : null)
-  }
   return (
     <div className="animation-unit">
       <section className="graph-card">
         <header className="graph-card__header"><div><span className="content-label">Интерактивная анимация</span><h2><Formula>{`y=\\log_{${formatNumber(base)}}x`}</Formula></h2></div><div className="base-state"><strong>{base > 1 ? 'Функция возрастает' : 'Функция убывает'}</strong></div></header>
-        <svg ref={svgRef} className="graph" viewBox={`0 0 ${width} ${height}`} onPointerMove={inspectPoint} onPointerLeave={() => setHoverX(null)}>
+        <svg ref={svgRef} className="graph" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="График логарифмической функции" {...graphInteractionProps}>
           <g className="graph-grid">{[0, .25, .5, .75, 1].map((part) => <line key={part} x1={frame.left + plotWidth * part} x2={frame.left + plotWidth * part} y1={frame.top} y2={frame.top + plotHeight} />)}</g>
           <g className="axes"><line x1={frame.left} x2={frame.left + plotWidth + 9} y1={mapY(0)} y2={mapY(0)} /><line x1={mapX(0)} x2={mapX(0)} y1={frame.top} y2={frame.top + plotHeight} /><text x={frame.left + plotWidth + 13} y={mapY(0) + 5}>x</text><text x={mapX(0) + 9} y={frame.top + 3}>y</text></g>
           <line className="vertical-asymptote" x1={mapX(0)} x2={mapX(0)} y1={frame.top} y2={frame.top + plotHeight} />
           <path className="exponential-curve" d={path} />
           <circle className="anchor-point" cx={mapX(1)} cy={mapY(0)} r="6" />
-          {hoverX !== null && hoverY !== null && hoverY >= yMin && hoverY <= yMax && <g className="hover-point"><circle cx={mapX(hoverX)} cy={mapY(hoverY)} r="7" /><g transform={`translate(${Math.min(mapX(hoverX) + 12, width - 150)} ${Math.max(mapY(hoverY) - 38, 10)})`}><rect width="138" height="29" rx="7" /><text x="10" y="19">({formatNumber(hoverX)}; {formatNumber(hoverY)})</text></g></g>}
+          <GraphPoint point={point} mapX={mapX} mapY={mapY} baselineY={mapY(0)} graphWidth={width} yMin={yMin} yMax={yMax} />
         </svg>
-        <footer className="graph-readout"><span>{hoverX === null ? 'Наведите указатель на график' : 'Точка на графике'}</span>{hoverX !== null && hoverY !== null && <strong>x = {formatNumber(hoverX)} → y = {formatNumber(hoverY)}</strong>}</footer>
+        <GraphReadout point={point} idleText="Наведите указатель на график, чтобы увидеть координаты точки" />
       </section>
-      <aside className="parameters-panel"><header><span className="content-label">Параметры анимации</span><h2>Основание функции</h2></header><BaseControl value={base} onChange={setBase} /><div className="animation-result"><span>Точка для всех оснований</span><Formula>{'(1;0)'}</Formula></div></aside>
+      <aside className="parameters-panel"><header><span className="content-label">Параметры анимации</span><h2>Основание функции</h2></header><BaseControl value={base} onChange={setBase} /><div className="animation-result"><span className="animation-result__label">Точка для всех оснований</span><Formula>{'(1;0)'}</Formula></div></aside>
     </div>
   )
 }
@@ -252,6 +264,15 @@ export function DerivativeAnimation() {
   const safePoint = isLog ? Math.max(0.25, point) : point
   const pointY = fn(safePoint)
   const slope = derivative(safePoint)
+  const { svgRef, point: inspectedPoint, graphInteractionProps } = useGraphInteraction({
+    width,
+    frameLeft: frame.left,
+    plotWidth,
+    xMin,
+    xMax,
+    valueAt: fn,
+    isValid: (x) => !isLog || x > 0,
+  })
   const path = useMemo(() => {
     const points: string[] = []
     for (let index = 0; index <= 220; index += 1) {
@@ -266,21 +287,22 @@ export function DerivativeAnimation() {
     <div className="animation-unit">
       <section className="graph-card">
         <header className="graph-card__header"><div><span className="content-label">Интерактивная анимация</span><h2>Касательная к <span>{labels[kind]}</span></h2></div><div className="base-state"><strong>Наклон: {formatNumber(slope)}</strong></div></header>
-        <svg className="graph" viewBox={`0 0 ${width} ${height}`}>
+        <svg ref={svgRef} className="graph" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="График функции и касательной" {...graphInteractionProps}>
           <g className="graph-grid">{[0, .25, .5, .75, 1].map((part) => <line key={part} x1={frame.left + plotWidth * part} x2={frame.left + plotWidth * part} y1={frame.top} y2={frame.top + plotHeight} />)}</g>
           <g className="axes"><line x1={frame.left} x2={frame.left + plotWidth} y1={mapY(0)} y2={mapY(0)} /><line x1={mapX(0)} x2={mapX(0)} y1={frame.top} y2={frame.top + plotHeight} /></g>
           <path className="exponential-curve" d={path} />
           <line className="tangent-line" x1={mapX(xMin)} y1={mapY(tangentY(xMin))} x2={mapX(xMax)} y2={mapY(tangentY(xMax))} />
           <circle className="anchor-point" cx={mapX(safePoint)} cy={mapY(pointY)} r="7" />
+          <GraphPoint point={inspectedPoint} mapX={mapX} mapY={mapY} baselineY={mapY(0)} graphWidth={width} yMin={yMin} yMax={yMax} />
         </svg>
-        <footer className="graph-readout"><span>Производная — наклон касательной</span><strong>f′({formatNumber(safePoint)}) = {formatNumber(slope)}</strong></footer>
+        <GraphReadout point={inspectedPoint} idleText="Наведите указатель на график, чтобы увидеть координаты точки" detail={`f′(${formatNumber(safePoint)}) = ${formatNumber(slope)}`} />
       </section>
       <aside className="parameters-panel">
         <header><span className="content-label">Параметры анимации</span><h2>Функция и точка</h2></header>
         <div className="function-buttons">{(Object.keys(labels) as DerivativeFunction[]).map((id) => <button className={kind === id ? 'is-active' : ''} key={id} type="button" onClick={() => { setKind(id); if ((id === 'ln' || id === 'log') && point <= 0) setPoint(1) }}>{labels[id]}</button>)}</div>
         {(kind === 'general-exp' || kind === 'log') && <BaseControl value={base} onChange={setBase} />}
         <Slider id="derivative-point" label="Точка x₀" value={safePoint} min={isLog ? 0.25 : -2} max={isLog ? 5 : 2} step={0.25} onChange={setPoint} />
-        <div className="animation-result"><span>Производная в точке</span><strong>{formatNumber(slope)}</strong></div>
+        <div className="animation-result"><span className="animation-result__label">Производная в точке</span><strong>{formatNumber(slope)}</strong></div>
       </aside>
     </div>
   )

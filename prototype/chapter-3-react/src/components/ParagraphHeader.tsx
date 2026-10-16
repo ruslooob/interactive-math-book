@@ -24,6 +24,11 @@ export function ParagraphIntroduction({ paragraph }: { paragraph: ParagraphData 
         <p className="formula-sentence">
           <span>{paragraph.formulaLead}</span>
           <Formula>{paragraph.formula}</Formula>
+          {paragraph.conditions && (
+            <span className="definition-conditions">
+              где <Formula>{paragraph.conditions}</Formula>
+            </span>
+          )}
         </p>
       </div>
     </section>
