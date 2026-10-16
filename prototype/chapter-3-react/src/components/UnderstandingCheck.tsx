@@ -84,7 +84,7 @@ export function UnderstandingCheck({ base }: { base: number }) {
   }
 
   const verdict = score === items.length
-    ? 'Все свойства применены верно.'
+    ? 'Все ответы верны. 🙂'
     : score >= 2
       ? 'Основная идея понятна. Проверьте свойство, в котором была ошибка.'
       : 'Вернитесь к списку свойств и повторите проверку.'
@@ -93,7 +93,7 @@ export function UnderstandingCheck({ base }: { base: number }) {
     <section className="understanding-check">
       <div className="section-heading">
         <span className="content-label">Проверка понимания</span>
-        <h2>Проверьте себя</h2>
+        <h2>Проверь себя</h2>
       </div>
 
       <div className="question-progress" aria-label={`Вопрос ${Math.min(questionIndex + 1, items.length)} из ${items.length}`}>

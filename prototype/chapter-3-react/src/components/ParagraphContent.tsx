@@ -10,22 +10,6 @@ function ExplanationHint({ children }: { children: string }) {
   )
 }
 
-export function DefinitionBlock() {
-  return (
-    <section className="definition-block">
-      <span className="content-label">Определение</span>
-      <div className="definition-formula">
-        <Formula display>{'y=a^x,\\qquad a>0,\\ a\\ne1'}</Formula>
-        <ExplanationHint>Основание a постоянно, а показатель степени x принимает любые действительные значения.</ExplanationHint>
-      </div>
-      <div className="attention-note">
-        <Formula>{'f(x+1)=a\\cdot f(x)'}</Formula>
-        <ExplanationHint>При каждом шаге вправо значение функции умножается на основание a.</ExplanationHint>
-      </div>
-    </section>
-  )
-}
-
 export function PropertiesBlock() {
   return (
     <section className="properties-block">
@@ -36,9 +20,11 @@ export function PropertiesBlock() {
       <ul className="property-list">
         {paragraph11.properties.map((property) => (
           <li key={property.term}>
-            <strong>{property.term}</strong>
-            <span><Formula>{property.formula}</Formula></span>
-            <ExplanationHint>{property.explanation}</ExplanationHint>
+            <div className="property-line">
+              <strong>{property.term}:</strong>
+              <Formula>{property.formula}</Formula>
+              <ExplanationHint>{property.explanation}</ExplanationHint>
+            </div>
           </li>
         ))}
       </ul>
@@ -54,7 +40,6 @@ export function ExampleBlock() {
         <h2>Функция <Formula>{'y=2^x'}</Formula></h2>
       </div>
       <table>
-        <caption>Каждый шаг вправо удваивает значение функции.</caption>
         <tbody>
           <tr>
             <th scope="row">x</th>
