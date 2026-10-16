@@ -16,6 +16,12 @@ export type NoteData = {
   text: string
 }
 
+export type MethodData = {
+  title: string
+  lead: string
+  steps: { title: string; formula?: string; text: string }[]
+}
+
 export type QuizQuestion = {
   text: string
   answers: { id: string; label: string }[]
@@ -23,7 +29,7 @@ export type QuizQuestion = {
   explanation: string
 }
 
-export type AnimationKind =
+export type InteractiveKind =
   | 'exponential-function'
   | 'exponential-equation'
   | 'exponential-inequality'
@@ -34,15 +40,29 @@ export type AnimationKind =
   | 'logarithmic-inequality'
   | 'derivatives'
 
+export type InteractiveData = {
+  type: 'parameter-animation' | 'trainer'
+  kind: InteractiveKind
+}
+
+export type LearningGoal = {
+  type: 'introduce-concept' | 'develop-skill'
+  text: string
+}
+
 export type ParagraphData = {
   number: number
   title: string
+  goal: LearningGoal
   introduction: string
   formulaLead: string
   formula: string
   conditions?: string
-  animation: AnimationKind
+  interactive: InteractiveData
   example: ExampleData
+  exampleVariants?: ExampleData[]
+  examplesTitle?: string
+  method?: MethodData
   propertiesTitle: string
   properties: PropertyItem[]
   notes: NoteData[]
@@ -60,11 +80,12 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
   11: {
     number: 11,
     title: 'Показательная функция, её свойства и график',
+    goal: { type: 'introduce-concept', text: 'Понять, как основание определяет значения и график показательной функции.' },
     introduction: 'Показательная функция — функция с постоянным положительным основанием степени и переменным показателем.',
     formulaLead: 'На языке формул это записывается так:',
     formula: "y=a^x",
     conditions: "a>0,\\ a\\ne1,\\ x\\in\\mathbb{R}",
-    animation: 'exponential-function',
+    interactive: { type: 'parameter-animation', kind: 'exponential-function' },
     example: {
       title: 'Функция y = 2ˣ',
       table: { labels: ['x', 'y'], values: [['−2', '−1', '0', '1', '2'], ['0,25', '0,5', '1', '2', '4']] },
@@ -89,29 +110,52 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
   12: {
     number: 12,
     title: 'Показательные уравнения',
+    goal: { type: 'develop-skill', text: 'Научиться решать показательные уравнения методом одинаковых оснований.' },
     introduction: 'Показательное уравнение — уравнение, в котором неизвестная входит в показатель степени.',
     formulaLead: 'При одинаковых допустимых основаниях показатели равны:',
     formula: "a^{f(x)}=a^{g(x)}\\iff f(x)=g(x)",
     conditions: "a>0,\\ a\\ne1",
-    animation: 'exponential-equation',
+    interactive: { type: 'trainer', kind: 'exponential-equation' },
     example: {
-      title: 'Уравнение 3²ˣ⁻¹ = 27',
+      title: 'Основания уже одинаковы',
       steps: [
-        { formula: "3^{2x-1}=3^3", note: 'Представляем 27 как степень тройки.' },
-        { formula: "2x-1=3", note: 'Приравниваем показатели.' },
-        { formula: "x=2", note: 'Решаем линейное уравнение и проверяем корень.' },
+        { formula: "2^{x+1}=2^5", note: 'Основания обеих степеней равны 2.' },
+        { formula: "x+1=5", note: 'Приравниваем показатели.' },
+        { formula: "x=4", note: 'Решаем полученное линейное уравнение.' },
       ],
     },
-    propertiesTitle: 'Способ одинаковых оснований',
-    properties: [
-      { term: 'Шаг 1', formula: "\\text{привести обе части к основанию }a", explanation: 'Используйте свойства степеней, чтобы получить одинаковые основания.' },
-      { term: 'Шаг 2', formula: "a^{f(x)}=a^{g(x)}", explanation: 'Проверьте, что основание положительно и не равно единице.' },
-      { term: 'Шаг 3', formula: "f(x)=g(x)", explanation: 'Показательная функция взаимно однозначна, поэтому равенство значений означает равенство показателей.' },
+    exampleVariants: [
+      {
+        title: 'Число нужно записать как степень',
+        steps: [
+          { formula: "3^{2x-1}=27", note: 'Распознаём: 27 = 3³.' },
+          { formula: "3^{2x-1}=3^3", note: 'Получаем одинаковое основание 3.' },
+          { formula: "x=2", note: 'Приравниваем показатели и решаем уравнение.' },
+        ],
+      },
+      {
+        title: 'Оба основания нужно преобразовать',
+        steps: [
+          { formula: "4^x=8^{x-1}", note: 'Распознаём: 4 = 2², а 8 = 2³.' },
+          { formula: "2^{2x}=2^{3x-3}", note: 'Приводим обе части к основанию 2.' },
+          { formula: "x=3", note: 'Решаем уравнение 2x = 3x − 3.' },
+        ],
+      },
     ],
-    notes: [
-      { title: 'Если основания различны', text: 'Сначала попробуйте представить их как степени одного числа. Например, 8 = 2³.' },
-      { title: 'Проверка', text: 'Подставьте найденный корень в исходное уравнение.' },
-    ],
+    examplesTitle: 'Три формы одной задачи',
+    method: {
+      title: 'Метод одинаковых оснований',
+      lead: 'Цель метода — получить одинаковые основания степеней, а затем перейти к уравнению без степеней.',
+      steps: [
+        { title: 'Найти общее основание', formula: "4=2^2,\\quad 8=2^3", text: 'Распознайте числа, которые являются степенями одного положительного числа, не равного единице.' },
+        { title: 'Переписать обе части', formula: "a^{f(x)}=a^{g(x)}", text: 'Используйте свойства степеней и приведите левую и правую части к одному основанию.' },
+        { title: 'Приравнять показатели', formula: "f(x)=g(x)", text: 'При одинаковом допустимом основании равенство степеней равносильно равенству показателей.' },
+        { title: 'Решить и проверить', formula: "x=x_0", text: 'Решите полученное уравнение и подставьте корень в исходное.' },
+      ],
+    },
+    propertiesTitle: '',
+    properties: [],
+    notes: [],
     questions: [
       { text: 'Чему равен x в уравнении 2ˣ = 2⁴?', answers: [{ id: '2', label: '2' }, { id: '4', label: '4' }, { id: '8', label: '8' }], correct: '4', explanation: 'При одинаковом основании показатели равны: x = 4.' },
       trueFalse('Равенство 5²ˣ = 5ˣ⁺³ можно заменить равенством 2x = x + 3?', 'yes', 'Основания одинаковы и допустимы.'),
@@ -121,11 +165,12 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
   13: {
     number: 13,
     title: 'Показательные неравенства',
+    goal: { type: 'develop-skill', text: 'Научиться решать показательные неравенства с учётом величины основания.' },
     introduction: 'Показательное неравенство — неравенство, в котором неизвестная входит в показатель степени.',
     formulaLead: 'Знак между показателями зависит от основания:',
     formula: "a>1:\\ a^u>a^v\\iff u>v;\\qquad 0<a<1:\\ a^u>a^v\\iff u<v",
     conditions: "a>0,\\ a\\ne1,\\ u,v\\in\\mathbb{R}",
-    animation: 'exponential-inequality',
+    interactive: { type: 'parameter-animation', kind: 'exponential-inequality' },
     example: {
       title: 'Неравенство (1/2)ˣ⁻¹ > (1/2)²',
       steps: [
@@ -153,11 +198,12 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
   14: {
     number: 14,
     title: 'Понятие логарифма',
+    goal: { type: 'introduce-concept', text: 'Понять логарифм как показатель степени и переводить записи между двумя формами.' },
     introduction: 'Логарифм положительного числа b по основанию a — показатель степени, в которую нужно возвести a, чтобы получить b.',
     formulaLead: 'Логарифмическая и степенная записи равносильны:',
     formula: "\\log_a b=c\\iff a^c=b",
     conditions: "a>0,\\ a\\ne1,\\ b>0,\\ c\\in\\mathbb{R}",
-    animation: 'logarithm-definition',
+    interactive: { type: 'parameter-animation', kind: 'logarithm-definition' },
     example: {
       title: 'Логарифм log₂8',
       steps: [
@@ -184,11 +230,12 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
   15: {
     number: 15,
     title: 'Логарифмическая функция, её свойства и график',
+    goal: { type: 'introduce-concept', text: 'Понять свойства логарифмической функции и влияние основания на её график.' },
     introduction: 'Логарифмическая функция сопоставляет положительному числу показатель степени, необходимый для получения этого числа.',
     formulaLead: 'На языке формул это записывается так:',
     formula: "y=\\log_a x",
     conditions: "a>0,\\ a\\ne1,\\ x>0",
-    animation: 'logarithmic-function',
+    interactive: { type: 'parameter-animation', kind: 'logarithmic-function' },
     example: {
       title: 'Функция y = log₂x',
       table: { labels: ['x', 'y'], values: [['0,25', '0,5', '1', '2', '4'], ['−2', '−1', '0', '1', '2']] },
@@ -213,11 +260,12 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
   16: {
     number: 16,
     title: 'Свойства логарифмов',
+    goal: { type: 'develop-skill', text: 'Научиться преобразовывать выражения с помощью свойств логарифмов.' },
     introduction: 'Свойства логарифмов переводят умножение и деление аргументов в сложение и вычитание логарифмов, а степень — в множитель.',
     formulaLead: 'Для положительных x и y выполняются равенства:',
     formula: "\\log_a(xy)=\\log_ax+\\log_ay,\\quad \\log_a\\frac{x}{y}=\\log_ax-\\log_ay",
     conditions: "a>0,\\ a\\ne1,\\ x>0,\\ y>0",
-    animation: 'logarithm-properties',
+    interactive: { type: 'parameter-animation', kind: 'logarithm-properties' },
     example: {
       title: 'Сумма log₂8 + log₂4',
       steps: [
@@ -246,11 +294,12 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
   17: {
     number: 17,
     title: 'Логарифмические уравнения',
+    goal: { type: 'develop-skill', text: 'Научиться решать логарифмические уравнения с учётом области допустимых значений.' },
     introduction: 'Логарифмическое уравнение — уравнение, в котором неизвестная входит в аргумент логарифма или в его основание.',
     formulaLead: 'Уравнение с одним логарифмом переводится в степенную форму:',
     formula: "\\log_a f(x)=c\\iff f(x)=a^c",
     conditions: "a>0,\\ a\\ne1,\\ f(x)>0",
-    animation: 'logarithmic-equation',
+    interactive: { type: 'parameter-animation', kind: 'logarithmic-equation' },
     example: {
       title: 'Уравнение log₃(x − 1) = 2',
       steps: [
@@ -279,11 +328,12 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
   18: {
     number: 18,
     title: 'Логарифмические неравенства',
+    goal: { type: 'develop-skill', text: 'Научиться решать логарифмические неравенства и учитывать область допустимых значений.' },
     introduction: 'Логарифмическое неравенство — неравенство, в котором неизвестная входит в аргумент логарифма или в его основание.',
     formulaLead: 'При сравнении аргументов направление зависит от основания:',
     formula: "a>1:\\ \\log_au>\\log_av\\iff u>v;\\quad 0<a<1:\\ \\log_au>\\log_av\\iff u<v",
     conditions: "a>0,\\ a\\ne1,\\ u>0,\\ v>0",
-    animation: 'logarithmic-inequality',
+    interactive: { type: 'parameter-animation', kind: 'logarithmic-inequality' },
     example: {
       title: 'Неравенство log₂(x − 1) ≥ 3',
       steps: [
@@ -312,11 +362,12 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
   19: {
     number: 19,
     title: 'Дифференцирование показательной и логарифмической функций',
+    goal: { type: 'develop-skill', text: 'Научиться находить производные показательных и логарифмических функций.' },
     introduction: 'Производные показательной и логарифмической функций выражаются через сами функции и натуральный логарифм основания.',
     formulaLead: 'Основные формулы дифференцирования:',
     formula: "\\frac{d}{dx}a^x=a^x\\ln a,\\qquad \\frac{d}{dx}\\log_a x=\\frac{1}{x\\ln a}",
     conditions: "a>0,\\ a\\ne1,\\ x>0",
-    animation: 'derivatives',
+    interactive: { type: 'parameter-animation', kind: 'derivatives' },
     example: {
       title: 'Производная функции y = 2ˣ',
       steps: [

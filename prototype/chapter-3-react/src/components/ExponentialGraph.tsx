@@ -68,7 +68,7 @@ export function ExponentialGraph({ base }: { base: number }) {
     <section className="graph-card" aria-label="Интерактивный график показательной функции">
       <header className="graph-card__header">
         <div>
-          <span className="content-label">Интерактивная анимация</span>
+          <span className="content-label">Анимация с параметрами</span>
           <h2><Formula>{`y=${formatNumber(base)}^x`}</Formula></h2>
         </div>
         <div className={`base-state base-state--${state.tone}`}>

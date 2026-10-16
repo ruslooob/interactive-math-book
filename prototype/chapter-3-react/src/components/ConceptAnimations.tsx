@@ -87,7 +87,7 @@ function ComparisonGraph({ family, mode, base, level }: { family: 'exponential' 
   return (
     <section className="graph-card">
       <header className="graph-card__header">
-        <div><span className="content-label">Интерактивная анимация</span><h2><Formula>{formula}</Formula></h2></div>
+        <div><span className="content-label">Анимация с параметрами</span><h2><Formula>{formula}</Formula></h2></div>
         <div className="base-state"><strong>{mode === 'equation' ? `Решение: x = ${formatNumber(solution)}` : `Граница: x = ${formatNumber(solution)}`}</strong></div>
       </header>
       <svg ref={svgRef} className="graph" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Графическое решение" {...graphInteractionProps}>
@@ -145,7 +145,7 @@ export function LogarithmDefinitionAnimation() {
   return (
     <div className="animation-unit">
       <section className="concept-card logarithm-converter">
-        <header><span className="content-label">Интерактивная анимация</span><h2>Две записи одного равенства</h2></header>
+        <header><span className="content-label">Анимация с параметрами</span><h2>Две записи одного равенства</h2></header>
         <div className="conversion-equations">
           <div><span className="conversion-label">Степенная запись</span><Formula display>{`${formatNumber(base)}^{${formatNumber(exponent)}}=${formatNumber(value)}`}</Formula></div>
           <i aria-hidden="true">⇄</i>
@@ -193,7 +193,7 @@ export function LogarithmicFunctionAnimation() {
   return (
     <div className="animation-unit">
       <section className="graph-card">
-        <header className="graph-card__header"><div><span className="content-label">Интерактивная анимация</span><h2><Formula>{`y=\\log_{${formatNumber(base)}}x`}</Formula></h2></div><div className="base-state"><strong>{base > 1 ? 'Функция возрастает' : 'Функция убывает'}</strong></div></header>
+        <header className="graph-card__header"><div><span className="content-label">Анимация с параметрами</span><h2><Formula>{`y=\\log_{${formatNumber(base)}}x`}</Formula></h2></div><div className="base-state"><strong>{base > 1 ? 'Функция возрастает' : 'Функция убывает'}</strong></div></header>
         <svg ref={svgRef} className="graph" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="График логарифмической функции" {...graphInteractionProps}>
           <g className="graph-grid">{[0, .25, .5, .75, 1].map((part) => <line key={part} x1={frame.left + plotWidth * part} x2={frame.left + plotWidth * part} y1={frame.top} y2={frame.top + plotHeight} />)}</g>
           <g className="axes"><line x1={frame.left} x2={frame.left + plotWidth + 9} y1={mapY(0)} y2={mapY(0)} /><line x1={mapX(0)} x2={mapX(0)} y1={frame.top} y2={frame.top + plotHeight} /><text x={frame.left + plotWidth + 13} y={mapY(0) + 5}>x</text><text x={mapX(0) + 9} y={frame.top + 3}>y</text></g>
@@ -227,7 +227,7 @@ export function LogarithmPropertiesAnimation() {
   return (
     <div className="animation-unit">
       <section className="concept-card rule-checker">
-        <header><span className="content-label">Интерактивная анимация</span><h2>Проверка свойств числами</h2></header>
+        <header><span className="content-label">Анимация с параметрами</span><h2>Проверка свойств числами</h2></header>
         <div className="rule-tabs">
           {([['product', 'Произведение'], ['quotient', 'Частное'], ['power', 'Степень']] as const).map(([id, label]) => <button className={rule === id ? 'is-active' : ''} type="button" key={id} onClick={() => setRule(id)}>{label}</button>)}
         </div>
@@ -286,7 +286,7 @@ export function DerivativeAnimation() {
   return (
     <div className="animation-unit">
       <section className="graph-card">
-        <header className="graph-card__header"><div><span className="content-label">Интерактивная анимация</span><h2>Касательная к <span>{labels[kind]}</span></h2></div><div className="base-state"><strong>Наклон: {formatNumber(slope)}</strong></div></header>
+        <header className="graph-card__header"><div><span className="content-label">Анимация с параметрами</span><h2>Касательная к <span>{labels[kind]}</span></h2></div><div className="base-state"><strong>Наклон: {formatNumber(slope)}</strong></div></header>
         <svg ref={svgRef} className="graph" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="График функции и касательной" {...graphInteractionProps}>
           <g className="graph-grid">{[0, .25, .5, .75, 1].map((part) => <line key={part} x1={frame.left + plotWidth * part} x2={frame.left + plotWidth * part} y1={frame.top} y2={frame.top + plotHeight} />)}</g>
           <g className="axes"><line x1={frame.left} x2={frame.left + plotWidth} y1={mapY(0)} y2={mapY(0)} /><line x1={mapX(0)} x2={mapX(0)} y1={frame.top} y2={frame.top + plotHeight} /></g>

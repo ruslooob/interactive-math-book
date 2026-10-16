@@ -1,4 +1,4 @@
-import type { ExampleData, NoteData, ParagraphData, PropertyItem } from '../content/chapter3'
+import type { ExampleData, MethodData, NoteData, ParagraphData, PropertyItem } from '../content/chapter3'
 import { Formula } from './Formula'
 
 function ExplanationHint({ children }: { children: string }) {
@@ -32,11 +32,10 @@ export function PropertiesBlock({ title, properties }: { title: string; properti
   )
 }
 
-export function ExampleBlock({ example }: { example: ExampleData }) {
+function ExampleDetails({ example }: { example: ExampleData }) {
   return (
-    <section className="example-block">
+    <article className="example-card">
       <div className="section-heading">
-        <span className="content-label">Пример</span>
         <h2>{example.title}</h2>
       </div>
       {example.formula && <Formula display>{example.formula}</Formula>}
@@ -62,6 +61,54 @@ export function ExampleBlock({ example }: { example: ExampleData }) {
           ))}
         </ol>
       )}
+    </article>
+  )
+}
+
+export function ExampleBlock({ example, variants = [], collectionTitle }: { example: ExampleData; variants?: ExampleData[]; collectionTitle?: string }) {
+  const examples = [example, ...variants]
+
+  if (examples.length === 1) {
+    return (
+      <section className="example-block">
+        <span className="content-label">Пример</span>
+        <ExampleDetails example={example} />
+      </section>
+    )
+  }
+
+  return (
+    <section className="example-collection">
+      <div className="section-heading">
+        <span className="content-label">Примеры</span>
+        <h2>{collectionTitle ?? 'Варианты задач'}</h2>
+      </div>
+      <div className="example-grid">
+        {examples.map((item) => <ExampleDetails example={item} key={item.title} />)}
+      </div>
+    </section>
+  )
+}
+
+export function MethodBlock({ method }: { method: MethodData }) {
+  return (
+    <section className="method-block">
+      <div className="section-heading">
+        <span className="content-label">Методика решения</span>
+        <h2>{method.title}</h2>
+      </div>
+      <p className="method-lead">{method.lead}</p>
+      <ol className="method-steps">
+        {method.steps.map((step) => (
+          <li key={step.title}>
+            <div>
+              <strong>{step.title}</strong>
+              <p>{step.text}</p>
+            </div>
+            {step.formula && <Formula>{step.formula}</Formula>}
+          </li>
+        ))}
+      </ol>
     </section>
   )
 }
@@ -85,8 +132,8 @@ export function NotesBlock({ notes }: { notes: NoteData[] }) {
 export function ParagraphConclusion({ paragraph }: { paragraph: ParagraphData }) {
   return (
     <>
-      <PropertiesBlock title={paragraph.propertiesTitle} properties={paragraph.properties} />
-      <NotesBlock notes={paragraph.notes} />
+      {paragraph.properties.length > 0 && <PropertiesBlock title={paragraph.propertiesTitle} properties={paragraph.properties} />}
+      {paragraph.notes.length > 0 && <NotesBlock notes={paragraph.notes} />}
     </>
   )
 }

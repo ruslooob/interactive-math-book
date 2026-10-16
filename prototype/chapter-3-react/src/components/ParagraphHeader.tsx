@@ -18,6 +18,10 @@ export function ParagraphIntroduction({ paragraph }: { paragraph: ParagraphData 
   return (
     <section className="paragraph-intro">
       <h1><span>§ {paragraph.number}:</span> {paragraph.title}</h1>
+      <div className={`paragraph-goal paragraph-goal--${paragraph.goal.type}`}>
+        <span className="content-label">Цель параграфа</span>
+        <p>{paragraph.goal.text}</p>
+      </div>
       <div className="definition-summary">
         <span className="content-label">Определение</span>
         <p>{paragraph.introduction}</p>

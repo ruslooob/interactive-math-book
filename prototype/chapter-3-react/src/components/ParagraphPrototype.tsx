@@ -1,7 +1,7 @@
 import type { ParagraphData } from '../content/chapter3'
 import type { AnimationActions, AnimationState } from './AnimationParameters'
-import { AnimationStage } from './AnimationStage'
-import { ExampleBlock, ParagraphConclusion } from './ParagraphContent'
+import { InteractiveStage } from './InteractiveStage'
+import { ExampleBlock, MethodBlock, ParagraphConclusion } from './ParagraphContent'
 import { BookBreadcrumb, ParagraphIntroduction } from './ParagraphHeader'
 import { UnderstandingCheck } from './UnderstandingCheck'
 
@@ -26,13 +26,18 @@ export function ParagraphPrototype({
       <BookBreadcrumb current={`§ ${paragraph.number}. ${paragraph.title}`} onOpenContents={onOpenContents} />
       <article className="sequential-paragraph">
         <ParagraphIntroduction paragraph={paragraph} />
-        <ExampleBlock example={paragraph.example} />
+        <ExampleBlock example={paragraph.example} variants={paragraph.exampleVariants} collectionTitle={paragraph.examplesTitle} />
+        {paragraph.method && <MethodBlock method={paragraph.method} />}
 
-        <div className="sequence-divider"><span>Анимация</span></div>
-        <AnimationStage kind={paragraph.animation} state={state} actions={actions} />
+        <div className="sequence-divider"><span>{paragraph.interactive.type === 'trainer' ? 'Тренажёры' : 'Анимация с параметрами'}</span></div>
+        <InteractiveStage kind={paragraph.interactive.kind} state={state} actions={actions} />
 
-        <div className="sequence-divider"><span>Вывод</span></div>
-        <ParagraphConclusion paragraph={paragraph} />
+        {(paragraph.properties.length > 0 || paragraph.notes.length > 0) && (
+          <>
+            <div className="sequence-divider"><span>Вывод</span></div>
+            <ParagraphConclusion paragraph={paragraph} />
+          </>
+        )}
         <UnderstandingCheck questions={paragraph.questions} resetKey={paragraph.number} />
 
         <nav className="paragraph-pagination" aria-label="Переход между параграфами">

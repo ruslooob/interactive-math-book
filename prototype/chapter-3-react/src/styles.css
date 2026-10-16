@@ -112,6 +112,14 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 }
 
 .paragraph-intro h1 span { color: var(--green); }
+.paragraph-goal {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+.paragraph-goal p { margin: 0; color: var(--ink); font-size: 13px; font-weight: 650; line-height: 1.45; }
+.paragraph-goal--develop-skill .content-label { color: #7a5b0a; }
 .definition-summary {
   display: grid;
   gap: 8px;
@@ -337,6 +345,21 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   border-radius: 16px;
   background: var(--paper-strong);
 }
+.example-block > .content-label { display: block; margin-bottom: 7px; }
+.example-card { min-width: 0; }
+.example-card .section-heading h2 { margin-top: 0; }
+.example-collection {
+  padding: 24px 28px 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.58);
+}
+.example-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.example-grid .example-card { padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper-strong); }
+.example-grid .section-heading h2 { min-height: 44px; font-size: 19px; line-height: 1.2; }
+.example-grid .example-steps li { grid-template-columns: 24px 1fr; align-items: start; gap: 7px 10px; }
+.example-grid .example-steps .example-step-formula { grid-column: 2; }
+.example-grid .example-steps .example-step-note { grid-column: 2; grid-row: 2; }
 .example-block table { margin-top: 18px; font-size: 13px; }
 .example-block th, .example-block td { padding: 11px 8px; }
 
@@ -379,6 +402,20 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 .example-steps .example-step-formula { grid-column: 2; grid-row: 1; font-size: 1.08em; }
 .example-steps .example-step-note { grid-column: 3; grid-row: 1; color: var(--muted); font-size: 12px; line-height: 1.45; }
 
+.method-block {
+  padding: 26px 28px 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--paper-strong);
+}
+.method-lead { max-width: 760px; margin: 0 0 20px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.method-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; counter-reset: method-step; }
+.method-steps li { position: relative; min-width: 0; padding: 42px 16px 17px; border: 1px solid var(--line); border-radius: 11px; background: #f7f9f5; counter-increment: method-step; }
+.method-steps li::before { position: absolute; top: 14px; left: 16px; display: grid; place-items: center; width: 21px; height: 21px; border-radius: 50%; color: #fff; background: var(--green); font-size: 10px; font-weight: 850; content: counter(method-step); }
+.method-steps strong { font-size: 12px; }
+.method-steps p { margin: 7px 0 13px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.method-steps .katex { font-size: .92em; }
+
 .concept-card {
   min-width: 0;
   padding: 22px 24px;
@@ -400,6 +437,21 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   grid-template-rows: auto auto 1fr;
   min-height: 500px;
 }
+
+.trainer-stack { display: grid; gap: 26px; }
+.trainer-unit { scroll-margin-top: 20px; }
+.common-base-workspace { min-height: 390px; }
+.trainer-counter { display: block; margin-top: 24px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.common-base-equation { display: grid; place-items: center; min-height: 190px; padding: 28px; }
+.common-base-equation .katex { font-size: clamp(1.8em, 4vw, 2.8em); }
+.common-base-rewrite { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 15px 18px; border-radius: 11px; color: #075d50; background: var(--green-soft); animation: equation-enter 250ms ease both; }
+.common-base-rewrite span { font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+.trainer-next { width: 100%; margin-top: 10px; padding: 10px 12px; border: 0; border-radius: 9px; color: #fff; background: var(--ink); font-size: 11px; font-weight: 750; cursor: pointer; }
+.trainer-next:hover { background: var(--green); }
+.trainer-result { display: grid; place-items: center; min-height: 260px; text-align: center; }
+.trainer-result > span { display: grid; place-items: center; width: 46px; height: 46px; margin-bottom: 14px; border-radius: 50%; color: #fff; background: var(--green); font-size: 22px; }
+.trainer-result strong { font-family: Georgia, "Times New Roman", serif; font-size: 24px; font-weight: 500; }
+.trainer-result p { color: var(--muted); font-size: 12px; }
 
 .equation-progress {
   display: grid;
@@ -658,12 +710,17 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   .animation-unit { grid-template-columns: 1fr; }
   .parameters-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
   .parameters-panel header, .interactive-table, .value-calculator { grid-column: 1 / -1; }
+  .example-grid { grid-template-columns: 1fr; }
+  .example-grid .section-heading h2 { min-height: 0; }
+  .method-steps { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 720px) {
   .prototype-page { padding: 14px 12px 30px; }
   .sequential-paragraph { gap: 18px; padding: 25px 24px 30px; }
   .paragraph-intro h1 { font-size: 33px; }
+  .paragraph-goal { display: block; }
+  .paragraph-goal p { margin-top: 5px; }
   .definition-summary p { font-size: 14px; }
   .graph-card__header { display: block; }
   .base-state { max-width: none; margin-top: 12px; }
@@ -682,6 +739,8 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   .example-steps li { grid-template-columns: 24px 1fr; gap: 7px 10px; }
   .example-steps .example-step-formula { grid-column: 2; }
   .example-steps .example-step-note { grid-column: 2; grid-row: 2; }
+  .method-steps { grid-template-columns: 1fr; }
+  .common-base-rewrite { display: grid; }
   .book-contents { padding: 30px 24px 36px; }
   .chapter-title { grid-template-columns: 1fr auto; }
   .chapter-title span { grid-column: 1 / -1; }
@@ -694,7 +753,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 @media (max-width: 480px) {
   .sequential-paragraph { padding: 20px 16px 26px; }
   .paragraph-intro h1 { font-size: 31px; }
-  .properties-block, .example-block, .understanding-check { padding: 21px 18px; }
+  .properties-block, .example-block, .example-collection, .method-block, .understanding-check { padding: 21px 18px; }
   .value-calculator { grid-template-columns: 1fr; }
   .value-calculator label { grid-column: 1; }
   .question-card, .final-verdict { padding: 19px; }
