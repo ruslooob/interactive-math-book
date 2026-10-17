@@ -2,3 +2,4 @@
 node_modules/
 **/dist/
 *.tsbuildinfo
+books/Алгебра_11_Мордкович.pdf
