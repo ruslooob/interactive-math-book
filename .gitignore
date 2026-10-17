@@ -1,4 +1,6 @@
 .idea/
+.playwright-mcp/
+.tmp-issues/
 node_modules/
 **/dist/
 *.tsbuildinfo
