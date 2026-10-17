@@ -1,14 +1,14 @@
 {
-  "name": "test-math",
+  "name": "interactive-math-book",
   "private": true,
   "version": "0.0.0",
   "workspaces": [
     "app"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace paragraph-11-prototype",
-    "build": "npm run build --workspace paragraph-11-prototype",
-    "preview": "npm run preview --workspace paragraph-11-prototype"
+    "dev": "npm run dev --workspace interactive-math-book-app",
+    "build": "npm run build --workspace interactive-math-book-app",
+    "preview": "npm run preview --workspace interactive-math-book-app"
   },
   "dependencies": {
     "katex": "^0.19.0",
