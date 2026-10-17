@@ -11,12 +11,14 @@ export function ParagraphPage({
   actions,
   onOpenContents,
   onOpenParagraph,
+  embedded = false,
 }: {
   paragraph: ParagraphData
   state: AnimationState
   actions: AnimationActions
   onOpenContents: () => void
   onOpenParagraph: (number: number) => void
+  embedded?: boolean
 }) {
   const previous = paragraph.number > 11 ? paragraph.number - 1 : null
   const next = paragraph.number < 19 ? paragraph.number + 1 : null
@@ -34,11 +36,11 @@ export function ParagraphPage({
     </section>
   ))
 
-  return (
-    <main className="book-page">
+  const content = (
+    <>
       <BookBreadcrumb current={`§ ${paragraph.number}. ${paragraph.title}`} onOpenContents={onOpenContents} />
       <article className="sequential-paragraph">
-        <ParagraphIntroduction paragraph={paragraph} />
+        <ParagraphIntroduction paragraph={paragraph} showTitle={!embedded} />
         {developsSkill ? (
           <>
             {properties}
@@ -73,6 +75,10 @@ export function ParagraphPage({
           {next ? <button type="button" onClick={() => onOpenParagraph(next)}>§ {next} →</button> : <span />}
         </nav>
       </article>
-    </main>
+    </>
   )
+
+  return embedded
+    ? <div className="book-page book-page--embedded">{content}</div>
+    : <main className="book-page">{content}</main>
 }

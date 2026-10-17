@@ -14,10 +14,10 @@ export function BookBreadcrumb({ current, onOpenContents }: { current: string; o
   )
 }
 
-export function ParagraphIntroduction({ paragraph }: { paragraph: ParagraphData }) {
+export function ParagraphIntroduction({ paragraph, showTitle = true }: { paragraph: ParagraphData; showTitle?: boolean }) {
   return (
     <section className="paragraph-intro">
-      <h1><span>§ {paragraph.number}:</span> {paragraph.title}</h1>
+      {showTitle && <h1><span>§{paragraph.number}.</span> {paragraph.title}</h1>}
       <div className={`paragraph-goal paragraph-goal--${paragraph.goal.type}`}>
         <span className="content-label">Цель параграфа</span>
         <p>{paragraph.goal.text}</p>

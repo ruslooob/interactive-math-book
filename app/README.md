@@ -29,6 +29,7 @@ npm run dev
 ```text
 ?view=contents
 ?section=14
+?section=11&page=compare-values
 ?chapter=4
 ```
 
@@ -54,7 +55,7 @@ npm run dev
 npm run build
 ```
 
-В текущей версии MVP нет хранения прогресса, блокировки материала и производственной серверной маршрутизации.
+Каркас §11 открывается с подтверждённым снимком прогресса `68 из 282 решено`. Новые решённые подпункты страницы сравнения хранятся локально в браузере. Серверная синхронизация и блокировка материала не используются.
 
 ## Источники определений и формул
 
@@ -66,6 +67,8 @@ npm run build
 - [логарифмические неравенства](https://math.libretexts.org/Courses/Cosumnes_River_College/Corequisite_Codex/07%3A_Solving_Inequalities/7.08%3A_Solving_Logarithmic_Inequalities);
 - [производные показательных и логарифмических функций](https://openstax.org/books/calculus-volume-1/pages/3-9-derivatives-of-exponential-and-logarithmic-functions);
 - [формулы для произвольного основания](https://openstax.org/books/calculus-volume-1/pages/6-7-integrals-exponential-functions-and-logarithms).
+
+Условия подпунктов упражнений 11.17–11.18 и их группировка перенесены из [согласованного одноразового прототипа](../output/visualizations/paragraph-11-progress.html), зафиксированного в коммите `a780087`. Производственный каркас и границы переноса описаны в [issue #21](https://github.com/ruslooob/interactive-math-book/issues/21).
 
 Общие выводы ревью записаны в [`docs/LEARNING-DESIGN-RULES.md`](../docs/LEARNING-DESIGN-RULES.md). Три исходных варианта компоновки сохранены в истории Git в коммите `63917d2`.
 
