@@ -365,7 +365,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     example: {
       title: 'Один логарифм',
       steps: [
-        { formula: "x-1>0", note: 'Записываем условие существования логарифма.' },
+        { formula: "\\log_3(x-1)=2", note: 'Область допустимых значений: x − 1 > 0, то есть x > 1.' },
         { formula: "x-1=3^2", note: 'Переходим к степенной форме.' },
         { formula: "x=10", note: 'Корень удовлетворяет условию x > 1.' },
       ],
