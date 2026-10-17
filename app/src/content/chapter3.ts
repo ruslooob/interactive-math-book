@@ -67,7 +67,6 @@ export type ParagraphData = {
   interactives: InteractiveData[]
   example: ExampleData
   exampleVariants?: ExampleData[]
-  examplesTitle?: string
   method?: MethodData
   propertiesTitle: string
   properties: PropertyItem[]
@@ -148,7 +147,6 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
         ],
       },
     ],
-    examplesTitle: 'Три формы одной задачи',
     method: {
       title: 'Метод одинаковых оснований',
       lead: 'Цель метода — получить одинаковые основания степеней, а затем перейти к уравнению без степеней.',
@@ -206,7 +204,6 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
         ],
       },
     ],
-    examplesTitle: 'Три формы показательных неравенств',
     method: {
       title: 'Метод одинаковых оснований',
       lead: 'После приведения к одному основанию направление неравенства определяется тем, возрастает или убывает показательная функция.',
@@ -326,7 +323,6 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
         ],
       },
     ],
-    examplesTitle: 'Три основных преобразования',
     method: {
       title: 'Как выбрать свойство',
       lead: 'Сначала определите действие между логарифмами или положение степени, затем примените соответствующее свойство.',
@@ -337,7 +333,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
         { title: 'Упростить результат', formula: "\\log_a a^k=k", text: 'Вычислите логарифм или продолжите преобразование выражения.' },
       ],
     },
-    propertiesTitle: 'Основные свойства',
+    propertiesTitle: 'Правила преобразования логарифмов',
     properties: [
       { term: 'Произведение', formula: "\\log_a(xy)=\\log_ax+\\log_ay", explanation: 'Логарифм произведения равен сумме логарифмов множителей.' },
       { term: 'Частное', formula: "\\log_a\\frac{x}{y}=\\log_ax-\\log_ay", explanation: 'Логарифм частного равен разности логарифмов.' },
@@ -369,7 +365,7 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
     example: {
       title: 'Один логарифм',
       steps: [
-        { formula: "x-1>0", note: 'Записываем условие существования логарифма.' },
+        { formula: "\\log_3(x-1)=2", note: 'Область допустимых значений: x − 1 > 0, то есть x > 1.' },
         { formula: "x-1=3^2", note: 'Переходим к степенной форме.' },
         { formula: "x=10", note: 'Корень удовлетворяет условию x > 1.' },
       ],
@@ -392,7 +388,6 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
         ],
       },
     ],
-    examplesTitle: 'Три формы логарифмических уравнений',
     method: {
       title: 'Решение с учётом ограничений',
       lead: 'Преобразования выполняются только на области допустимых значений, поэтому ограничения записываются до решения.',
@@ -450,7 +445,6 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
         ],
       },
     ],
-    examplesTitle: 'Три формы логарифмических неравенств',
     method: {
       title: 'Сравнение аргументов и ОДЗ',
       lead: 'Ответ получается пересечением области допустимых значений и решения неравенства между аргументами.',
@@ -512,7 +506,6 @@ export const chapter3Paragraphs: Record<number, ParagraphData> = {
         ],
       },
     ],
-    examplesTitle: 'Четыре основные формы производных',
     method: {
       title: 'Как выбрать формулу производной',
       lead: 'Сначала определяется вид исходной функции, затем в соответствующую формулу подставляется основание.',

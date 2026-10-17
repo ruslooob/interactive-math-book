@@ -92,8 +92,6 @@ const solutionSteps: SolutionStep[] = [
   },
 ]
 
-const progressLabels = ['Основание', 'Показатели', 'Корень', 'Проверка']
-
 function CommonBaseTrainer() {
   const [taskIndex, setTaskIndex] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
@@ -207,17 +205,16 @@ function CompleteEquationTrainer() {
         </header>
 
         <div className="equation-progress" aria-label={`Шаг ${Math.min(step + 1, solutionSteps.length)} из ${solutionSteps.length}`}>
-          {progressLabels.map((label, index) => (
-            <div className={index < step ? 'is-complete' : index === step ? 'is-current' : ''} key={label}>
+          {solutionSteps.map((_, index) => (
+            <div className={index < step ? 'is-complete' : index === step ? 'is-current' : ''} key={index}>
               <span>{index + 1}</span>
-              <strong>{label}</strong>
             </div>
           ))}
         </div>
 
         <div className="equation-stage">
           <EquationView step={step} />
-          <p>{complete ? 'Подстановка подтверждает корень x = 3.' : current?.insight}</p>
+          {(complete || selectedChoice) && <p>{complete ? 'Подстановка подтверждает корень x = 3.' : current?.insight}</p>}
         </div>
       </section>
 
