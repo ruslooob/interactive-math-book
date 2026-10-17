@@ -32,6 +32,13 @@ Use this template for writing the PR body:
 <optional: potential ramifications of merge>
 ```
 
+## Публикация
+
+1. Сохрани описание во временный Markdown-файл с настоящими переводами строк.
+2. Передай файл в GitHub CLI через `gh pr create --body-file <file>` или `gh pr edit <number> --body-file <file>`. Этот способ одинаково работает в разных оболочках и операционных системах.
+3. Прочитай опубликованное описание командой `gh pr view <number> --json body --jq .body`. Этап завершён, когда вывод сохраняет абзацы и списки отдельными строками, а последовательность `\n` не используется как разделитель строк.
+4. Удали временный файл.
+
 ## Sections
 
 Skip all preambles and keep prose brief. Use the user's domain language from `GLOSSARY.md`.
