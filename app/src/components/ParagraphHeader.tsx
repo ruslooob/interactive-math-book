@@ -1,18 +1,5 @@
 import type { ParagraphData } from '../content/chapter3'
-import { book } from '../content/book'
 import { Formula } from './Formula'
-
-export function BookBreadcrumb({ current, onOpenContents }: { current: string; onOpenContents: () => void }) {
-  return (
-    <header className="paragraph-header">
-      <nav aria-label="Положение в книге">
-        <button type="button" onClick={onOpenContents}>{book.title}</button>
-        <i aria-hidden="true">/</i>
-        <strong>{current}</strong>
-      </nav>
-    </header>
-  )
-}
 
 export function ParagraphIntroduction({ paragraph, showTitle = true }: { paragraph: ParagraphData; showTitle?: boolean }) {
   return (

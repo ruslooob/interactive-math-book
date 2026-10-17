@@ -86,6 +86,3 @@ export const book = {
   ] satisfies BookChapter[],
 }
 
-export const implementedParagraphs = new Set(
-  book.chapters.find((chapter) => chapter.number === 3)?.paragraphs.map((paragraph) => paragraph.number),
-)

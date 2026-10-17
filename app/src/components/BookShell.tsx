@@ -1,63 +1,53 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { book, type BookChapter } from '../content/book'
 import {
-  paragraph11Pages,
   paragraph11SolvedSubpointCount,
   paragraph11TotalSubpoints,
   type Paragraph11PageId,
 } from '../content/practice11'
+import { pagesForParagraph, type BookPageTarget } from '../content/navigation'
 
 type BookShellProps = {
-  paragraphNumber: number
-  paragraphTitle: string
-  currentPageId: Paragraph11PageId
+  currentChapterNumber: number
+  currentParagraphNumber?: number
+  currentPageId?: Paragraph11PageId
   solvedComparisonSubpointCount: number
+  previousPage?: BookPageTarget
+  nextPage?: BookPageTarget
   children: ReactNode
   onOpenPage: (paragraphNumber: number, pageId: Paragraph11PageId) => void
   onOpenChapter: (chapter: BookChapter) => void
 }
 
-type TreePage = {
-  id: Paragraph11PageId
-  title: string
-  solved: number
-  total?: number
-}
-
-function pagesForParagraph(paragraphNumber: number, solvedComparisonSubpointCount: number): TreePage[] {
-  if (paragraphNumber !== 11) return [{ id: 'theory' as const, title: '📖 Теория', solved: 0 }]
-  return paragraph11Pages.map((page) => ({
-    id: page.id,
-    title: page.title,
-    total: 'total' in page ? page.total : undefined,
-    solved: page.id === 'compare-values' ? solvedComparisonSubpointCount : ('initiallySolved' in page ? page.initiallySolved : 0),
-  }))
-}
-
 export function BookShell({
-  paragraphNumber,
-  paragraphTitle,
+  currentChapterNumber,
+  currentParagraphNumber,
   currentPageId,
   solvedComparisonSubpointCount,
+  previousPage,
+  nextPage,
   children,
   onOpenPage,
   onOpenChapter,
 }: BookShellProps) {
   const [treeOpen, setTreeOpen] = useState(false)
+  const contentRef = useRef<HTMLElement>(null)
   const solvedCount = paragraph11SolvedSubpointCount(solvedComparisonSubpointCount)
 
-  useEffect(() => setTreeOpen(false), [currentPageId, paragraphNumber])
+  useEffect(() => {
+    if (contentRef.current) contentRef.current.scrollTop = 0
+  }, [currentChapterNumber, currentParagraphNumber, currentPageId])
 
   return (
     <main className={`book-shell${treeOpen ? ' is-tree-open' : ''}`}>
       <header className="book-shell-header">
-        <h1>{paragraphTitle}</h1>
-        <div className="header-progress" aria-label="Прогресс параграфа">
+        <h1>Interactive Books</h1>
+        <div className="header-progress" aria-label="Прогресс параграфа §11">
           <div className="progress-copy">{solvedCount} из {paragraph11TotalSubpoints} решено</div>
           <div
             className="progress-track"
             role="progressbar"
-            aria-label="Выполнение практики"
+            aria-label="Выполнение практики §11"
             aria-valuemin={0}
             aria-valuemax={paragraph11TotalSubpoints}
             aria-valuenow={solvedCount}
@@ -83,14 +73,14 @@ export function BookShell({
           <div className="tree-title"><strong>{book.title}</strong></div>
           <div className="tree-root">
             {book.chapters.map((chapter) => {
-              const currentChapter = chapter.paragraphs.some((paragraph) => paragraph.number === paragraphNumber)
+              const currentChapter = chapter.number === currentChapterNumber
               return (
                 <details className="tree-group" open={currentChapter || undefined} key={chapter.number}>
                   <summary><span>Глава {chapter.number}. {chapter.title}</span></summary>
                   <div className="tree-children">
                     {chapter.paragraphs.map((paragraph) => {
-                      const currentParagraph = paragraph.number === paragraphNumber
-                      const pages = pagesForParagraph(paragraph.number, solvedComparisonSubpointCount)
+                      const currentParagraph = paragraph.number === currentParagraphNumber
+                      const pages = pagesForParagraph(paragraph.number)
                       return (
                         <details className="tree-group" open={currentParagraph || undefined} key={paragraph.number}>
                           <summary>
@@ -100,18 +90,24 @@ export function BookShell({
                           <div className="tree-children">
                             {pages.map((page) => {
                               const isCurrent = currentParagraph && page.id === currentPageId
-                              const isComplete = page.total !== undefined && page.solved === page.total
+                              const total = 'total' in page ? page.total : undefined
+                              const solved = page.id === 'compare-values'
+                                ? solvedComparisonSubpointCount
+                                : ('initiallySolved' in page ? page.initiallySolved : 0)
+                              const isComplete = total !== undefined && solved === total
                               const opensPlaceholder = chapter.number !== 3
+                              const accessibleName = `§${paragraph.number}. ${paragraph.title} — ${page.title}`
                               return (
                                 <button
                                   className={`tree-entry${isCurrent ? ' is-current' : ''}${isComplete ? ' is-complete' : ''}`}
                                   type="button"
+                                  aria-label={accessibleName}
                                   aria-current={isCurrent ? 'page' : undefined}
                                   key={page.id}
                                   onClick={() => opensPlaceholder ? onOpenChapter(chapter) : onOpenPage(paragraph.number, page.id)}
                                 >
                                   <span>{page.title}</span>
-                                  {page.total !== undefined && <span className="tree-count">{page.solved}/{page.total}</span>}
+                                  {total !== undefined && <span className="tree-count">{solved}/{total}</span>}
                                 </button>
                               )
                             })}
@@ -126,7 +122,25 @@ export function BookShell({
           </div>
         </nav>
 
-        <section className="book-shell-content" data-testid="book-content">{children}</section>
+        <section className="book-shell-content" data-testid="book-content" ref={contentRef}>
+          <div className="book-shell-page">
+            {children}
+            {(previousPage || nextPage) && (
+              <nav className="paragraph-pagination" aria-label="Переход между страницами книги">
+                {previousPage ? (
+                  <button type="button" onClick={() => onOpenPage(previousPage.paragraphNumber, previousPage.pageId)}>
+                    <span aria-hidden="true">← </span>{previousPage.label}
+                  </button>
+                ) : <span />}
+                {nextPage ? (
+                  <button type="button" onClick={() => onOpenPage(nextPage.paragraphNumber, nextPage.pageId)}>
+                    {nextPage.label}<span aria-hidden="true"> →</span>
+                  </button>
+                ) : <span />}
+              </nav>
+            )}
+          </div>
+        </section>
       </div>
     </main>
   )

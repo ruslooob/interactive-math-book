@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { AnimationActions, AnimationState } from './components/AnimationParameters'
 import { BookShell } from './components/BookShell'
-import { ChapterPlaceholder, TableOfContents } from './components/BookViews'
+import { ChapterPlaceholder } from './components/BookViews'
 import { ComparisonPracticePage } from './components/ComparisonPracticePage'
 import { ParagraphPage } from './components/ParagraphPage'
 import { PracticePagePlaceholder } from './components/PracticePagePlaceholder'
 import { book, type BookChapter } from './content/book'
 import { chapter3Paragraphs } from './content/chapter3'
+import { chapter3PageSequence } from './content/navigation'
 import {
   comparisonSubpoints,
   isParagraph11PageId,
@@ -16,7 +17,6 @@ import {
 } from './content/practice11'
 
 type Route =
-  | { kind: 'contents' }
   | { kind: 'paragraph'; number: number; pageId: Paragraph11PageId; subpointIndex: number }
   | { kind: 'chapter'; number: number }
 
@@ -28,7 +28,6 @@ function practiceSubpointFromLocation() {
 
 function routeFromLocation(): Route {
   const params = new URLSearchParams(window.location.search)
-  if (params.get('view') === 'contents') return { kind: 'contents' }
   const chapter = Number(params.get('chapter'))
   if (book.chapters.some((item) => item.number === chapter && chapter !== 3)) return { kind: 'chapter', number: chapter }
   const paragraph = Number(params.get('section'))
@@ -73,9 +72,7 @@ export function App() {
       ? route.number === 11 && route.pageId !== 'theory'
         ? `${paragraph11Pages.find((page) => page.id === route.pageId)?.title} — §${route.number}`
         : `§${route.number}. ${chapter3Paragraphs[route.number].title}`
-      : route.kind === 'contents'
-        ? 'Оглавление'
-        : `Глава ${route.number}`
+      : `Глава ${route.number}`
     document.title = `${title} — ${book.title}`
   }, [route])
 
@@ -83,8 +80,15 @@ export function App() {
     const url = new URL(window.location.href)
     url.searchParams.set('base', String(Number(base.toFixed(3))))
     for (const obsoleteParameter of ['variant', 'x', 'anchor', 'asymptote', 'table']) url.searchParams.delete(obsoleteParameter)
+    if (url.searchParams.has('view')) {
+      url.searchParams.delete('view')
+      if (route.kind === 'paragraph') {
+        url.searchParams.set('section', String(route.number))
+        url.searchParams.set('page', route.pageId)
+      }
+    }
     window.history.replaceState({}, '', url)
-  }, [base])
+  }, [base, route])
 
   useEffect(() => {
     try {
@@ -102,7 +106,6 @@ export function App() {
     url.searchParams.delete('page')
     url.searchParams.delete('step')
     url.searchParams.delete('subpoint')
-    if (next.kind === 'contents') url.searchParams.set('view', 'contents')
     if (next.kind === 'chapter') url.searchParams.set('chapter', String(next.number))
     if (next.kind === 'paragraph') {
       url.searchParams.set('section', String(next.number))
@@ -111,13 +114,10 @@ export function App() {
     }
     window.history.pushState({}, '', url)
     setRoute(next)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const state: AnimationState = useMemo(() => ({ base }), [base])
   const actions: AnimationActions = { setBase }
-  const openContents = () => navigate({ kind: 'contents' })
-  const openParagraph = (number: number) => navigate({ kind: 'paragraph', number, pageId: 'theory', subpointIndex: 0 })
   const openPage = (number: number, pageId: Paragraph11PageId) => navigate({ kind: 'paragraph', number, pageId, subpointIndex: 0 })
   const openChapter = (chapter: BookChapter) => navigate({ kind: 'chapter', number: chapter.number })
   const selectPracticeSubpoint = (subpointIndex: number) => {
@@ -128,57 +128,49 @@ export function App() {
     setSolvedComparisonSubpointIds((solved) => solved.has(subpointId) ? solved : new Set([...solved, subpointId]))
   }
 
-  if (route.kind === 'contents') return <TableOfContents onOpenParagraph={openParagraph} onOpenChapter={openChapter} />
+  const currentChapterNumber = route.kind === 'chapter' ? route.number : 3
+  const currentPageIndex = route.kind === 'paragraph'
+    ? chapter3PageSequence.findIndex((page) => page.paragraphNumber === route.number && page.pageId === route.pageId)
+    : -1
+  const previousPage = currentPageIndex > 0 ? chapter3PageSequence[currentPageIndex - 1] : undefined
+  const nextPage = currentPageIndex >= 0 ? chapter3PageSequence[currentPageIndex + 1] : undefined
 
+  let content
   if (route.kind === 'chapter') {
     const chapter = book.chapters.find((item) => item.number === route.number)!
-    return <ChapterPlaceholder chapter={chapter} onOpenContents={openContents} />
-  }
+    content = <ChapterPlaceholder chapter={chapter} />
+  } else {
+    const paragraph = chapter3Paragraphs[route.number]
+    const currentPage = route.number === 11
+      ? paragraph11Pages.find((page) => page.id === route.pageId)!
+      : { id: 'theory', title: '📖 Теория', kind: 'theory' as const }
 
-  const paragraph = chapter3Paragraphs[route.number]
-  if (route.number !== 11) {
-    return (
-      <ParagraphPage
-        key={route.number}
-        paragraph={paragraph}
-        state={state}
-        actions={actions}
-        onOpenContents={openContents}
-        onOpenParagraph={openParagraph}
+    content = currentPage.kind === 'comparison' ? (
+      <ComparisonPracticePage
+        currentIndex={route.subpointIndex}
+        solvedSubpointIds={solvedComparisonSubpointIds}
+        onSelectSubpoint={selectPracticeSubpoint}
+        onSolveSubpoint={solvePracticeSubpoint}
       />
+    ) : currentPage.kind === 'theory' ? (
+      <ParagraphPage paragraph={paragraph} state={state} actions={actions} />
+    ) : (
+      <PracticePagePlaceholder title={currentPage.title} />
     )
   }
 
-  const currentPage = paragraph11Pages.find((page) => page.id === route.pageId)!
-
   return (
     <BookShell
-      paragraphNumber={route.number}
-      paragraphTitle={`§${paragraph.number}. ${paragraph.title}`}
-      currentPageId={route.pageId}
+      currentChapterNumber={currentChapterNumber}
+      currentParagraphNumber={route.kind === 'paragraph' ? route.number : undefined}
+      currentPageId={route.kind === 'paragraph' ? route.pageId : undefined}
       solvedComparisonSubpointCount={solvedComparisonSubpointIds.size}
+      previousPage={previousPage}
+      nextPage={nextPage}
       onOpenPage={openPage}
       onOpenChapter={openChapter}
     >
-      {currentPage.kind === 'comparison' ? (
-        <ComparisonPracticePage
-          currentIndex={route.subpointIndex}
-          solvedSubpointIds={solvedComparisonSubpointIds}
-          onSelectSubpoint={selectPracticeSubpoint}
-          onSolveSubpoint={solvePracticeSubpoint}
-        />
-      ) : currentPage.kind === 'theory' ? (
-        <ParagraphPage
-          paragraph={paragraph}
-          state={state}
-          actions={actions}
-          onOpenContents={openContents}
-          onOpenParagraph={openParagraph}
-          embedded
-        />
-      ) : (
-        <PracticePagePlaceholder title={currentPage.title} />
-      )}
+      {content}
     </BookShell>
   )
 }

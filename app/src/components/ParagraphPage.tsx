@@ -2,26 +2,18 @@ import type { ParagraphData } from '../content/chapter3'
 import type { AnimationActions, AnimationState } from './AnimationParameters'
 import { InteractiveStage } from './InteractiveStage'
 import { ExampleBlock, MethodBlock, NotesBlock, ParagraphConclusion, PropertiesBlock } from './ParagraphContent'
-import { BookBreadcrumb, ParagraphIntroduction } from './ParagraphHeader'
+import { ParagraphIntroduction } from './ParagraphHeader'
 import { UnderstandingCheck } from './UnderstandingCheck'
 
 export function ParagraphPage({
   paragraph,
   state,
   actions,
-  onOpenContents,
-  onOpenParagraph,
-  embedded = false,
 }: {
   paragraph: ParagraphData
   state: AnimationState
   actions: AnimationActions
-  onOpenContents: () => void
-  onOpenParagraph: (number: number) => void
-  embedded?: boolean
 }) {
-  const previous = paragraph.number > 11 ? paragraph.number - 1 : null
-  const next = paragraph.number < 19 ? paragraph.number + 1 : null
   const developsSkill = paragraph.goal.type === 'develop-skill'
 
   const examples = <ExampleBlock key={paragraph.number} example={paragraph.example} variants={paragraph.exampleVariants} />
@@ -36,11 +28,10 @@ export function ParagraphPage({
     </section>
   ))
 
-  const content = (
-    <>
-      <BookBreadcrumb current={`§ ${paragraph.number}. ${paragraph.title}`} onOpenContents={onOpenContents} />
+  return (
+    <div className="book-page book-page--embedded">
       <article className="sequential-paragraph">
-        <ParagraphIntroduction paragraph={paragraph} showTitle={!embedded} />
+        <ParagraphIntroduction paragraph={paragraph} />
         {developsSkill ? (
           <>
             {properties}
@@ -68,17 +59,7 @@ export function ParagraphPage({
           </>
         )}
         <UnderstandingCheck questions={paragraph.questions} resetKey={paragraph.number} />
-
-        <nav className="paragraph-pagination" aria-label="Переход между параграфами">
-          {previous ? <button type="button" onClick={() => onOpenParagraph(previous)}>← § {previous}</button> : <span />}
-          <button type="button" onClick={onOpenContents}>Оглавление</button>
-          {next ? <button type="button" onClick={() => onOpenParagraph(next)}>§ {next} →</button> : <span />}
-        </nav>
       </article>
-    </>
+    </div>
   )
-
-  return embedded
-    ? <div className="book-page book-page--embedded">{content}</div>
-    : <main className="book-page">{content}</main>
 }
