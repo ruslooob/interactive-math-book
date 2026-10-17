@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { AnimationActions, AnimationState } from './components/AnimationParameters'
 import { ChapterPlaceholder, TableOfContents } from './components/BookViews'
-import { ParagraphPrototype } from './components/ParagraphPrototype'
+import { ParagraphPage } from './components/ParagraphPage'
 import { book, type BookChapter } from './content/book'
 import { chapter3Paragraphs } from './content/chapter3'
 
@@ -78,7 +78,7 @@ export function App() {
   }
 
   return (
-    <ParagraphPrototype
+    <ParagraphPage
       key={route.number}
       paragraph={chapter3Paragraphs[route.number]}
       state={state}

@@ -39,7 +39,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
   outline-offset: 2px;
 }
 
-.prototype-page {
+.book-page {
   max-width: 1320px;
   min-height: 100vh;
   margin: 0 auto;
@@ -730,7 +730,7 @@ button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
 }
 
 @media (max-width: 720px) {
-  .prototype-page { padding: 14px 12px 30px; }
+  .book-page { padding: 14px 12px 30px; }
   .sequential-paragraph { gap: 18px; padding: 25px 24px 30px; }
   .paragraph-intro h1 { font-size: 33px; }
   .paragraph-goal { display: block; }

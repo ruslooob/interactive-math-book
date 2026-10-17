@@ -3,7 +3,7 @@ import { BookBreadcrumb } from './ParagraphHeader'
 
 export function TableOfContents({ onOpenParagraph, onOpenChapter }: { onOpenParagraph: (number: number) => void; onOpenChapter: (chapter: BookChapter) => void }) {
   return (
-    <main className="prototype-page">
+    <main className="book-page">
       <BookBreadcrumb current="Оглавление" onOpenContents={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
       <article className="book-contents">
         <header className="contents-title">
@@ -42,7 +42,7 @@ export function TableOfContents({ onOpenParagraph, onOpenChapter }: { onOpenPara
 
 export function ChapterPlaceholder({ chapter, onOpenContents }: { chapter: BookChapter; onOpenContents: () => void }) {
   return (
-    <main className="prototype-page">
+    <main className="book-page">
       <BookBreadcrumb current={`Глава ${chapter.number}. ${chapter.title}`} onOpenContents={onOpenContents} />
       <article className="chapter-placeholder">
         <span className="placeholder-number">{chapter.number.toString().padStart(2, '0')}</span>

@@ -5,7 +5,7 @@ import { ExampleBlock, MethodBlock, ParagraphConclusion } from './ParagraphConte
 import { BookBreadcrumb, ParagraphIntroduction } from './ParagraphHeader'
 import { UnderstandingCheck } from './UnderstandingCheck'
 
-export function ParagraphPrototype({
+export function ParagraphPage({
   paragraph,
   state,
   actions,
@@ -22,7 +22,7 @@ export function ParagraphPrototype({
   const next = paragraph.number < 19 ? paragraph.number + 1 : null
 
   return (
-    <main className="prototype-page">
+    <main className="book-page">
       <BookBreadcrumb current={`§ ${paragraph.number}. ${paragraph.title}`} onOpenContents={onOpenContents} />
       <article className="sequential-paragraph">
         <ParagraphIntroduction paragraph={paragraph} />
