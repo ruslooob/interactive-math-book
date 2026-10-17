@@ -41,7 +41,7 @@ function SkillTrainerModuleView({ module, number }: { module: SkillTrainerModule
             </div>
             <span className="trainer-counter">Задание {taskIndex + 1} из {module.tasks.length}</span>
             <div className="skill-trainer-formula"><Formula display>{task?.formula ?? ''}</Formula></div>
-            <p className="skill-trainer-note">{task?.note}</p>
+            {selectedChoice && <p className="skill-trainer-note">{task?.note}</p>}
             {selectedChoice?.correct && selectedChoice.result && (
               <div className="skill-trainer-result">
                 <span>Результат действия</span>
