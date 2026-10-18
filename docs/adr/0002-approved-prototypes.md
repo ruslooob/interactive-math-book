@@ -2,10 +2,10 @@
 status: proposed
 ---
 
-# Подтверждённые прототипы сохраняются как свидетельства решений
+# Keep approved prototypes as decision evidence
 
-Одноразовые прототипы используются для выбора содержания, взаимодействия и компоновки. Выбранный прототип фиксируется отдельным Git-коммитом, а в связанной GitHub Issue сохраняется permalink на файл в этом коммите.
+Disposable prototypes help select content, interactions, and layouts. Record the selected prototype in a separate Git commit. Add a permalink to the file in that commit to the related GitHub Issue.
 
-После этого файл прототипа не хранится постоянно в актуальном дереве проекта: он остаётся доступен через историю Git и permalink из Issue. Производственная реализация создаётся отдельно в приложении.
+After that, do not keep the prototype file in the current project tree. It remains available through Git history and the Issue permalink. Build the production version separately in the application.
 
-Прототип показывает выбранный вариант, но не является производственным кодом или актуальной спецификацией после дальнейших изменений.
+The prototype records the selected option. It is not production code or a current specification after later changes.

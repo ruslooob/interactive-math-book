@@ -1,103 +1,103 @@
-# Правила проектирования интерактивного параграфа
+# Rules for Designing an Interactive Section
 
-Правила сформулированы по итогам ревью прототипа §11 «Показательная функция». Они применяются к следующим параграфам, если для конкретной темы не принято другое решение.
+These rules follow the review of the prototype for §11, «Показательная функция». They apply to later sections unless a specific topic has a different decision.
 
-## Учебная цель
+## Learning goal
 
-1. У каждого параграфа есть одна явно сформулированная учебная цель. Содержание параграфа строится от этой цели, а не от единого обязательного шаблона.
-2. Цель «ввести в курс дела» означает, что ученик должен понять новое понятие, объект или зависимость. В таком параграфе основными средствами являются краткое объяснение, примеры и анимация с параметрами.
-3. Цель «научить решать» означает, что ученик должен освоить конкретное действие или метод. В таком параграфе основными средствами являются разные формы задач, методика решения, тренажёры и средства самопроверки.
-4. В параграфе с целью «научить решать» анимация с параметрами может использоваться для наглядности, но не заменяет тренажёр. Ученик должен самостоятельно выполнить действия, составляющие изучаемый навык.
-5. Каждый элемент параграфа должен помогать достичь его учебной цели. Элемент удаляется, если его роль нельзя объяснить через эту цель.
-6. Учебная цель не совпадает с темой: тема называет предмет изучения, а цель описывает результат для ученика.
+1. Each section has one stated learning goal. Build its content around that goal, not a mandatory template.
+2. A goal to introduce a concept means the learner must understand a new concept, object, or relationship. Use a brief explanation, examples, and a parameterized animation as the main tools.
+3. A goal to teach problem solving means the learner must learn a specific action or method. Use problem forms, a solution method, trainers, and ways to check the result.
+4. A parameterized animation can clarify a section that teaches problem solving, but it does not replace a trainer. The learner must perform the actions that make up the skill.
+5. Every section element must support its learning goal. Remove an element if its role in that goal is unclear.
+6. A learning goal differs from a topic. The topic names the subject, while the goal describes the learner's result.
 
-## Текст
+## Text
 
-1. Не повторять одну мысль одинаковым способом во введении, определении, формуле и примере.
-2. Краткое словесное описание можно сразу дополнить его точной математической записью. Такое сопоставление текста и формулы является объяснением, а не лишним повтором.
-3. Удалять служебные фразы о намерениях автора, например «исследуем» или «рассмотрим», если они не сообщают математических сведений.
-4. Если утверждение можно точно и кратко записать формулой, основной формой является формула.
-5. Рядом с краткой формулой или записью можно поставить знак вопроса. Он располагается непосредственно после поясняемого материала, а при наведении или фокусе показывает объяснение обычным языком.
-6. Пояснение раскрывает смысл записи, а не повторяет её другими обозначениями.
-7. Ограничения на переменные и параметры присоединяются к определяющей формуле словом «где»: `y = aˣ, где a > 0, a ≠ 1`.
+1. Do not repeat the same idea in the same way in the introduction, definition, formula, and example.
+2. A short verbal description can appear with its exact mathematical notation. Pairing text and a formula explains the idea and is not needless repetition.
+3. Remove phrases about the author's intentions, such as "let us explore" or "let us consider," when they give no mathematical information.
+4. If a formula states a claim precisely and briefly, use the formula as the main form.
+5. A question mark can follow a short formula or notation. On hover or focus, it shows a plain-language explanation of the material beside it.
+6. An explanation gives the meaning of notation instead of repeating it with different symbols.
+7. Attach restrictions on variables and parameters to the defining formula with the word «где»: `y = aˣ, где a > 0, a ≠ 1`.
 
-## Иерархия параграфа
+## Section hierarchy
 
-1. В навигации указываются номер и тема текущего параграфа.
-2. Заголовок имеет вид `§11. Показательная функция`: номер и тема находятся на одной строке и имеют одинаковый визуальный уровень.
-3. Заголовок не должен занимать основную часть первого экрана.
-4. Порядок частей определяется учебной целью. Для объяснения понятия используется последовательность `введение → пример → анимация с параметрами → свойства → проверка понимания`.
-5. Для обучения решению используется последовательность `введение, определение и формулы → свойства и методика → примеры и формы задач → тренажёры и наглядные интерактивы → дополнительная информация и ограничения → самопроверка`.
-6. В параграфе, вводящем понятие, пример располагается отдельным блоком сразу после определения, а не на одном уровне с ним.
+1. Navigation shows the number and topic of the current section.
+2. Use a heading such as `§11. Показательная функция`. Put the number and topic on one line at the same visual level.
+3. The heading must not occupy most of the first screen.
+4. The learning goal determines the order. To introduce a concept, use `introduction → example → parameterized animation → properties → check of understanding`.
+5. To teach problem solving, use `introduction, definition, and formulas → properties and method → examples and problem forms → trainers and visual interactives → additional information and restrictions → self-check`.
+6. In a section that introduces a concept, place the example in a separate block immediately after the definition. Do not put it at the same level as the definition.
 
-## Представление информации
+## Presentation of information
 
-1. Свойства оформляются обычным маркированным списком, если между ними нет отношения, требующего схемы. Выравнивание в колонки, разделительные строки и другие признаки таблицы для такого списка не используются.
-2. Табличные значения оформляются семантической таблицей, а не набором визуально похожих блоков.
-3. Предупреждение или важное ограничение выделяется жёлтым цветом внимания. Выделенный блок должен иметь понятную подпись; один цветной фон без назначения не используется. Красный текст не является основным способом такого выделения.
-4. Декоративная структура не должна делать простой список сложнее для чтения.
-5. Подпись или пояснение удаляется, если не добавляет новых математических сведений к соседней формуле, таблице или примеру.
-6. Если параграф содержит несколько альтернативных форм одной задачи, одновременно показывается одна форма. Остальные доступны в слайдере по желанию ученика.
-7. Первой в слайдере показывается самая простая или основная форма задачи. Следующие формы добавляют по одному новому затруднению.
-8. Слайдер занимает компактную область по ширине содержимого и выравнивается по левому краю основного потока.
-9. Под текущей формой слайдер показывает текущую позицию и общее число форм, предоставляет явные кнопки перехода назад и вперёд и поддерживает клавиши со стрелками.
-10. Слайдер не предоставляет точки, вкладки и другие элементы прямого перехода к произвольной форме.
-11. Формы показываются одновременно только тогда, когда их непосредственное сопоставление является частью учебной цели.
-12. Не показывать ученику служебные пояснения устройства интерфейса. Навигация и состояние должны быть понятны по самим элементам управления; текст добавляется только тогда, когда сообщает учебную информацию.
+1. Use an ordinary bulleted list for properties unless their relationship requires a diagram. Do not use columns, separator lines, or other table features for that list.
+2. Use a semantic table for tabular values instead of a set of blocks that only look like a table.
+3. Mark a warning or important restriction with attention yellow. Give the highlighted block a clear label. Do not rely on a colored background alone or use red text as the main emphasis.
+4. Decorative structure must not make a simple list harder to read.
+5. Remove a caption or explanation if it adds no mathematical information to the adjacent formula, table, or example.
+6. If a section has several alternative forms of one problem, show one form at a time. Let the learner choose the others in a slider.
+7. Show the simplest or main problem form first. Each later form adds one new difficulty.
+8. Keep the slider as wide as its content needs and align it with the left edge of the main flow.
+9. Below the current form, show its position and the total number of forms. Provide clear previous and next buttons, and support arrow keys.
+10. Do not add dots, tabs, or other controls that jump directly to an arbitrary form.
+11. Show forms together only when direct comparison is part of the learning goal.
+12. Do not show learners explanatory text about how the interface works. Controls must show their purpose and state. Add text only when it gives learning information.
 
-## Интерактивы
+## Interactives
 
-1. В проекте используются два вида интерактивов: анимации с параметрами и тренажёры.
-2. Вид интерактива выбирается по учебной цели параграфа. Наличие движения или графика само по себе не делает материал полезным.
-3. Интерактивные элементы соответствуют осмысленным действиям ученика. Ползунки и кнопки не добавляются только ради наличия взаимодействия.
+1. The project uses two kinds of interactives: parameterized animations and trainers.
+2. Select the interactive by the section's learning goal. Motion or a graph alone does not make material useful.
+3. Interactive controls must match meaningful learner actions. Do not add sliders or buttons only to create interaction.
 
-### Анимация с параметрами
+### Parameterized animation
 
-1. Анимация с параметрами помогает понять понятие, связь или зависимость через изменение математической модели.
-2. Тип визуализации определяется учебной задачей. График используется только тогда, когда пространственное представление помогает понять материал.
-3. График поддерживает прямое исследование: наведение или касание любой точки кривой показывает её координаты.
-4. Отдельный параметр не добавляется, если то же действие естественнее выполнить непосредственно на анимации. Поэтому для выбора точки графика не нужен ползунок аргумента.
-5. Параметры анимации содержат только действия, которые изменяют математическое состояние модели.
-6. Отдельный раздел переключаемых подсказок не используется. Постоянно необходимые ориентиры являются частью анимации.
-7. Таблица значений пересчитывается при изменении параметров анимации.
-8. Ученик может ввести собственное значение аргумента и сразу получить вычисленное значение функции.
+1. A parameterized animation helps learners understand a concept or relationship by changing a mathematical model.
+2. The learning task determines the visualization. Use a graph only when a spatial view helps explain the material.
+3. A graph supports direct exploration. Hovering over or touching any point on a curve shows its coordinates.
+4. Do not add a separate parameter if the learner can act more naturally on the animation itself. A graph needs no argument slider to select a point.
+5. Animation parameters contain only actions that change the mathematical state of the model.
+6. Do not use a separate block of toggleable hints. Place essential guides in the animation itself.
+7. Recalculate the value table when animation parameters change.
+8. Let the learner enter an argument value and immediately see the calculated function value.
 
-### Тренажёр
+### Trainer
 
-1. Каждый тренажёр развивает один явно названный навык.
-2. Задания идут от отдельного действия к применению полного метода.
-3. Ошибочный ответ получает содержательную обратную связь и не блокирует повторную попытку.
-4. Правильный ответ показывает результат действия до перехода к следующему заданию.
-5. Тренажёр завершается явным результатом и позволяет начать заново.
-6. До выбора ответа тренажёр показывает только условие, вопрос и доступные действия; текст, раскрывающий правило, направление решения или правильную операцию, не показывается.
-7. После выбора ответа тренажёр показывает содержательное объяснение ошибки или подтверждение применённого правила.
+1. Each trainer develops one stated skill.
+2. Tasks progress from one action to use of the full method.
+3. Give a wrong answer meaningful feedback and allow another attempt.
+4. After a correct answer, show the result of the action before moving to the next task.
+5. End a trainer with an explicit result and allow the learner to start again.
+6. Before an answer is selected, show only the problem, question, and available actions. Do not show text that reveals the rule, solution direction, or correct operation.
+7. After the learner selects an answer, explain the error or show how the applied rule works.
 
-## Проверка понимания
+## Check of understanding
 
-1. Одновременно показывается один вопрос в виде отдельной карточки.
-2. После ответа открывается следующий вопрос.
-3. После последнего вопроса показывается итоговый результат и краткая рекомендация.
-4. Проверка понимания остаётся самостоятельной частью параграфа после объяснения и примера.
-5. Заголовок проверки формулируется прямо: «Проверь себя».
-6. Если все ответы правильные, итоговый текст имеет вид «Все ответы верны. 🙂».
+1. Show one question at a time in a separate card.
+2. After an answer, show the next question.
+3. After the last question, show the final result and a short recommendation.
+4. Keep the check of understanding as a separate part of the section after the explanation and example.
+5. Use the direct check heading «Проверь себя».
+6. If every answer is correct, show «Все ответы верны. 🙂» as the final text.
 
-## Выбранная компоновка
+## Selected layout
 
-Текущий MVP использует последовательный параграф из варианта C. Он выбран за ясный порядок чтения и достаточное место для объяснения темы. Варианты A и B сохранены в истории Git и не развиваются дальше.
+The current MVP uses the sequential section layout from variant C. It was selected for its clear reading order and adequate space to explain the topic. Variants A and B remain in Git history and are no longer in development.
 
-## Навигация книги
+## Book navigation
 
-1. В верхнем заголовке оболочки постоянно показано название приложения `Interactive Books`, а название книги находится в шапке открытого дерева слева от кнопки-гамбургера.
-2. Кнопка-гамбургер и единое дерево книги доступны на всех страницах реализованной главы.
-3. Дерево остаётся открытым при переходах, пока пользователь сам не закроет его кнопкой-гамбургером.
-4. Дерево и основное учебное содержание прокручиваются независимо.
-5. Отдельное оглавление и хлебные крошки не используются: переходы по книге выполняются через дерево.
-6. Нижняя навигация переходит между соседними страницами дерева реализованной главы. Если параграф содержит теорию и практические рубрики, они входят в эту последовательность.
-7. Нереализованная глава открывает плейсхолдер, а не блокировку или скрытый пункт.
-8. Любой реализованный параграф можно открыть напрямую независимо от прохождения предыдущих.
+1. The shell header always shows the application name `Interactive Books`. The open tree header shows the book title to the left of the hamburger button.
+2. The hamburger button and one book tree are available on every page of the implemented chapter.
+3. The tree stays open during navigation until the user closes it with the hamburger button.
+4. The tree and main learning content scroll independently.
+5. Do not use a separate table of contents or breadcrumbs. Navigate the book through the tree.
+6. Bottom navigation moves between adjacent pages in the implemented chapter tree. Theory and practice pages take part in this sequence when a section contains both.
+7. An unimplemented chapter opens a placeholder. Do not block access or hide its entry.
+8. The learner can open any implemented section directly, regardless of progress in earlier sections.
 
-## Источники учебного содержания
+## Learning content sources
 
-1. Скан учебника используется для структуры книги и названий разделов, если его текст не требуется извлекать.
-2. Недостающие определения и формулы проверяются по открытым учебным источникам.
-3. Источники фиксируются рядом с приложением, чтобы формулировки можно было проверить и пересмотреть.
+1. Use the textbook scan for book structure and section titles when text extraction is not required.
+2. Check missing definitions and formulas against open learning sources.
+3. Record sources beside the application so their wording can be checked and revised.

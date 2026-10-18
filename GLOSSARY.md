@@ -1,77 +1,77 @@
-# Интерактивное обучение математике
+# Interactive Mathematics Learning
 
-Канонические термины проекта для обсуждения учебного содержания и интерактивных материалов.
+Canonical project terms for discussing learning content and interactive materials.
 
-## Язык
+## Terms
 
-**Тема**:
-Математический предмет параграфа, отражённый в его названии, объяснении, анимации и заданиях. Более широкая тема может объединять главу или книгу.
-_Не использовать как синонимы_: Ключевая концепция, режим, материал
+**Topic**:
+The mathematical subject of a section, reflected in its title, explanation, animation, and tasks. A broader topic can connect a chapter or a book.
+_Do not use as synonyms_: Key concept, mode, material
 
-**Книга**:
-Учебный материал, посвящённый определённой области знаний и состоящий из упорядоченных глав.
-_Не использовать как синонимы_: Курс, приложение, учебный маршрут
+**Book**:
+Learning material about a field of knowledge, organized into chapters.
+_Do not use as synonyms_: Course, application, learning path
 
-**Глава**:
-Часть книги, объединяющая несколько параграфов общей темой. Порядок параграфов выражает зависимость тем, но не ограничивает свободный переход между ними.
-_Не использовать как синонимы_: Учебный маршрут, модуль, уровень
+**Chapter**:
+A part of a book that connects several sections through a shared topic. Section order shows topic dependencies but does not restrict navigation between sections.
+_Do not use as synonyms_: Learning path, module, level
 
-**Параграф**:
-Основная учебная единица главы с собственной темой и учебной целью. Содержание, интерактивы и проверка понимания параграфа подчинены этой цели.
-_Не использовать как синонимы_: Учебная сцена, режим, экран
+**Section**:
+The main learning unit of a chapter, with its own topic and learning goal. The goal determines the section's content, interactives, and check of understanding.
+_Do not use as synonyms_: Learning scene, mode, screen
 
-**Прототип параграфа**:
-Временная версия параграфа, созданная для проверки его содержания, интерактивов и компоновки до производственной реализации.
-_Не использовать как синонимы_: Карточка содержания, техническое задание, готовый параграф
+**Section prototype**:
+A temporary version of a section used to check its content, interactives, and layout before production implementation.
+_Do not use as synonyms_: Content card, technical specification, finished section
 
-**Учебная цель**:
-Конкретный результат изучения параграфа: понимание нового понятия или приобретение определённого навыка. Учебная цель определяет состав и порядок материала параграфа.
-_Не использовать как синонимы_: Тема, заголовок, содержание
+**Learning goal**:
+A specific result of studying a section: understanding a new concept or gaining a defined skill. The goal determines the section's content and its order.
+_Do not use as synonyms_: Topic, title, content
 
-**Форма задачи**:
-Способ записи задачи одного типа, который влияет на начальные преобразования, но не меняет основной метод решения. Например, в показательном уравнении основания могут уже совпадать или требовать приведения к общему основанию.
-_Не использовать как синонимы_: Тип задачи, отдельный пример, способ решения
+**Problem form**:
+A way to present a problem of one type that affects the first transformations but does not change the main solution method. For example, the bases in an exponential equation can already match or require conversion to a common base.
+_Do not use as synonyms_: Problem type, individual example, solution method
 
-**Упражнение**:
-Нумерованная единица практики из учебника, например `11.17`, которая содержит один или несколько подпунктов.
-_Не использовать как синонимы_: Подпункт упражнения, тип задачи, тренажёр
+**Exercise**:
+A numbered practice unit from the textbook, such as `11.17`, with one or more parts.
+_Do not use as synonyms_: Exercise part, problem type, trainer
 
-**Подпункт упражнения**:
-Минимальная независимо проверяемая часть упражнения, обозначенная буквой или представленная единственным условием. Подпункт является единицей прогресса ученика.
-_Не использовать как синонимы_: Упражнение, попытка, форма задачи
+**Exercise part**:
+The smallest part of an exercise that can be checked independently. A letter can identify the part, or the exercise can have only one condition. The part is the unit of learner progress.
+_Do not use as synonyms_: Exercise, attempt, problem form
 
-**Решённый подпункт**:
-Подпункт, для которого ученик хотя бы один раз получил правильный результат. Новые попытки не отменяют этот статус.
-_Не использовать как синонимы_: Текущая попытка, завершённое упражнение
+**Solved exercise part**:
+An exercise part for which the learner obtained a correct result at least once. Later attempts do not remove this status.
+_Do not use as synonyms_: Current attempt, completed exercise
 
-**Завершённое упражнение**:
-Упражнение, у которого решены все подпункты.
-_Не использовать как синонимы_: Решённый подпункт, завершённый параграф
+**Completed exercise**:
+An exercise for which every part is solved.
+_Do not use as synonyms_: Solved exercise part, completed section
 
-**Прогресс параграфа**:
-Состояние прохождения всех подпунктов параграфа, показывающее решённые упражнения и оставшийся объём практики.
-_Не использовать как синонимы_: Результат текущей попытки, итоговая оценка
+**Section progress**:
+The state of all exercise parts in a section. It shows solved exercises and the amount of practice that remains.
+_Do not use as synonyms_: Current attempt result, final grade
 
-**Интерактив**:
-Часть параграфа, которая требует действия ученика и немедленно показывает результат этого действия. Интерактивами являются анимации с параметрами и тренажёры.
-_Не использовать как синонимы_: Иллюстрация, анимация с параметрами, тренажёр
+**Interactive**:
+A part of a section that requires a learner action and immediately shows its result. Parameterized animations and trainers are interactives.
+_Do not use as synonyms_: Illustration, parameterized animation, trainer
 
-**Анимация с параметрами**:
-Интерактивная математическая модель, параметры которой ученик изменяет и сразу наблюдает связанные изменения. Используется прежде всего для понимания понятия или зависимости.
-_Не использовать как синонимы_: Тренажёр, иллюстрация, общий график главы
+**Parameterized animation**:
+An interactive mathematical model whose parameters the learner changes to observe related changes immediately. It primarily helps the learner understand a concept or relationship.
+_Do not use as synonyms_: Trainer, illustration, shared chapter graph
 
-**Тренажёр**:
-Интерактив с последовательностью заданий, действиями ученика и обратной связью, предназначенный для развития конкретного навыка.
-_Не использовать как синонимы_: Анимация с параметрами, проверка понимания, пример
+**Trainer**:
+An interactive sequence of tasks, learner actions, and feedback that develops a specific skill.
+_Do not use as synonyms_: Parameterized animation, check of understanding, example
 
-**Параметры анимации**:
-Изменяемые учеником значения и переключатели, которые определяют состояние анимации с параметрами.
-_Не использовать как синонимы_: Пульт модели, настройки приложения, фильтры
+**Animation parameters**:
+Values and switches that the learner can change to set the state of a parameterized animation.
+_Do not use as synonyms_: Model control panel, application settings, filters
 
-**Прототип**:
-Одноразовая реализация, создаваемая для ответа на конкретный вопрос о содержании, взаимодействии или интерфейсе.
-_Не использовать как синонимы_: MVP, готовый продукт, производственная версия
+**Prototype**:
+A disposable implementation that answers a specific question about content, interaction, or interface.
+_Do not use as synonyms_: MVP, finished product, production version
 
-**Вариант прототипа**:
-Одна из структурно разных компоновок с одинаковыми содержанием параграфов и состоянием анимаций, созданная для проверки конкретной интерфейсной гипотезы.
-_Не использовать как синонимы_: Цветовая тема, стилистическая версия, новый материал
+**Prototype variant**:
+One of several structurally different layouts with the same section content and animation states, made to check a specific interface hypothesis.
+_Do not use as synonyms_: Color theme, visual style, new material

@@ -17,7 +17,7 @@ test.beforeEach(async ({ page }) => {
   await page.reload()
 })
 
-test('дерево книги доступно на теоретических страницах и остаётся открытым при переходах', async ({ page }) => {
+test('book tree is available on theory pages and stays open during navigation', async ({ page }) => {
   await page.goto('/?section=12')
   await expect(page.getByRole('heading', { name: 'Interactive Books' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '§12. Показательные уравнения' })).toBeVisible()
@@ -55,7 +55,7 @@ test('дерево книги доступно на теоретических �
   await expect(tree).toBeInViewport()
 })
 
-test('нижняя навигация идёт по страницам дерева без ссылки на оглавление', async ({ page }) => {
+test('bottom navigation follows tree pages without a contents link', async ({ page }) => {
   await page.goto('/?section=11&page=theory')
   const pagination = page.getByRole('navigation', { name: 'Переход между страницами книги' })
   await expect(pagination.getByRole('button', { name: 'Оглавление' })).toHaveCount(0)
@@ -72,7 +72,7 @@ test('нижняя навигация идёт по страницам дере�
   await expect(page).toHaveURL(/section=11&page=solve-inequality/)
 })
 
-test('устаревший маршрут оглавления открывает книгу без хлебных крошек', async ({ page }) => {
+test('legacy contents route opens the book without breadcrumbs', async ({ page }) => {
   await page.goto('/?view=contents')
   await expect(page).toHaveURL(/section=11&page=theory/)
   await expect(page.getByRole('navigation', { name: 'Положение в книге' })).toHaveCount(0)
@@ -80,7 +80,7 @@ test('устаревший маршрут оглавления открывае�
   await expect(page.getByRole('heading', { name: '§11. Показательная функция, её свойства и график' })).toBeVisible()
 })
 
-test('правильный ответ закрепляет прогресс при переходах, перезагрузке и повторном решении', async ({ page }) => {
+test('correct answers preserve progress across navigation, reload, and another attempt', async ({ page }) => {
   await expect(page.getByText('1 из 8')).toBeVisible()
   const currentSegment = page.getByRole('button', { name: '1 из 8: текущий, не решён' })
   await currentSegment.focus()
@@ -108,7 +108,7 @@ test('правильный ответ закрепляет прогресс пр
   await expect(page.getByRole('button', { name: '2 из 8: текущий, решён' })).toHaveClass(/is-solved/)
 })
 
-test('упражнение завершается только после решения всех его подпунктов', async ({ page }) => {
+test('exercise completes only after all its parts are solved', async ({ page }) => {
   const answers = ['less', 'less', 'greater', 'greater', 'less', 'less', 'less', 'less']
 
   for (let index = 0; index < answers.length; index += 1) {
@@ -130,7 +130,7 @@ test('упражнение завершается только после реш
 })
 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
-  test(`дерево и материал прокручиваются независимо без переполнения при ширине ${viewport.width} px`, async ({ page }) => {
+  test(`book tree and content scroll independently without overflow at ${viewport.width} px`, async ({ page }) => {
     await page.setViewportSize(viewport)
     await page.goto('/?section=11&page=theory')
     const content = page.getByTestId('book-content')

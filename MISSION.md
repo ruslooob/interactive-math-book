@@ -1,28 +1,28 @@
-# Миссия: интерактивное обучение математике
+# Mission: Interactive Mathematics Learning
 
-## Зачем
+## Purpose
 
-Создавать красивые и прежде всего понятные интерактивные анимации, которые помогают ученику быстро увидеть смысл сложной математической концепции. Ученик должен не только наблюдать за объяснением, но и менять параметры, исследовать поведение объектов и самостоятельно замечать закономерности.
+Create attractive, clear interactive animations that help a learner quickly understand a difficult mathematical concept. The learner does more than watch an explanation. The learner changes parameters, explores how objects behave, and discovers patterns.
 
-## Как выглядит успех
+## What success looks like
 
-- Ученик за одну короткую сессию понимает выбранную сложную концепцию лучше, чем после одного только текстового объяснения.
-- Анимация показывает связь между формулой, графиком и происходящими изменениями без лишней визуальной нагрузки.
-- Ученик может менять существенные параметры и сразу видеть математические последствия своих действий.
-- Первый прототип позволяет получить понятную обратную связь: полезен ли такой формат обучения и стоит ли развивать продукт дальше.
-- Новую математическую тему можно превратить в самостоятельную интерактивную демонстрацию без разработки полноценной образовательной платформы.
+- In one short session, a learner understands a selected difficult concept better than with a text explanation alone.
+- An animation shows the connection between a formula, a graph, and the changes taking place without unnecessary visual detail.
+- A learner can change important parameters and immediately see the mathematical results.
+- The first prototype gives clear feedback on whether this learning format is useful and whether to develop the product further.
+- A new mathematics topic can become a standalone interactive demonstration without building a complete education platform.
 
-## Ограничения
+## Constraints
 
-- Первый этап — небольшой MVP для проверки ценности идеи, а не законченный продукт.
-- Понятность и математическая корректность важнее количества эффектов и объёма охваченного материала.
-- Учебник по алгебре за 11 класс используется как источник тем и примеров; MVP не обязан покрывать его целиком.
-- Анимация должна поддерживать активное исследование: изменение параметров, наблюдение за результатом и понятную обратную связь.
-- Объём первой версии должен позволить быстро показать её ученикам и принять решение о дальнейшем развитии.
+- The first stage is a small MVP that tests the value of the idea. It is not a finished product.
+- Clarity and mathematical correctness take priority over visual effects and the amount of material covered.
+- The Grade 11 algebra textbook supplies topics and examples. The MVP does not need to cover the whole textbook.
+- An animation must support active exploration: changing parameters, observing the result, and receiving clear feedback.
+- The first version must be small enough to show learners soon and support a decision about further development.
 
-## Вне текущего объёма
+## Outside the current scope
 
-- Полный интерактивный курс по всему учебнику.
-- Большая библиотека анимаций до проверки первого прототипа.
-- Учётные записи, социальные функции, монетизация и сложная аналитика.
-- Масштабирование архитектуры и расширение функциональности до подтверждения пользы MVP.
+- A complete interactive course for the whole textbook.
+- A large animation library before the first prototype is evaluated.
+- Accounts, social features, monetization, and complex analytics.
+- Architecture scaling and feature expansion before the MVP shows value.

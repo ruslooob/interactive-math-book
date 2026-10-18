@@ -1,34 +1,34 @@
-# MVP интерактивной математической книги
+# Interactive mathematics book MVP
 
-React-приложение с полностью реализованными §§11–19 и единым деревом всей книги. Каждый параграф имеет учебную цель, которая определяет порядок содержания и вид интерактива.
+The React application implements §§11–19 and one tree for the whole book. Each section has a learning goal that determines the content order and the type of interaction.
 
-## Запуск
+## Run
 
-Нужен Node.js 20.19.x либо 22.12 или новее.
+Use Node.js 20.19.x or 22.12 or newer.
 
-Из корня проекта:
+From the project root, run:
 
 ```sh
 npm install
 npm run dev
 ```
 
-Команды одинаковы для Windows, macOS и Linux. После запуска нужно открыть адрес, который напечатает Vite.
+The commands are the same on Windows, macOS, and Linux. Open the address printed by Vite.
 
-## Навигация
+## Navigation
 
-- в верхнем заголовке постоянно показано название приложения `Interactive Books`;
-- название книги показано в шапке открытого дерева слева от кнопки-гамбургера;
-- кнопка-гамбургер открывает общее дерево книги на страницах §§11–19;
-- дерево остаётся открытым при переходах, пока пользователь не закроет его кнопкой-гамбургером;
-- дерево и учебный материал прокручиваются независимо;
-- названия глав, параграфов и страниц показаны в дереве;
-- §§11–19 открывают реализованный материал;
-- остальные главы открывают плейсхолдер;
-- нижние кнопки переходят между соседними страницами дерева реализованной главы;
-- материал не блокируется и не требует последовательного прохождения.
+- The top header always shows the application name, `Interactive Books`.
+- The book title appears in the open tree header, to the left of the hamburger button.
+- The hamburger button opens the shared book tree on pages in §§11–19.
+- The tree stays open during navigation until the learner closes it with the hamburger button.
+- The tree and learning material scroll independently.
+- The tree shows chapter, section, and page titles.
+- §§11–19 open implemented material.
+- Other chapters open a placeholder.
+- Bottom buttons move between adjacent pages in the implemented chapter's tree.
+- The material is not locked and does not require sequential completion.
 
-Прямые ссылки задаются параметрами адреса:
+Direct links use URL parameters:
 
 ```text
 ?section=14
@@ -36,43 +36,43 @@ npm run dev
 ?chapter=4
 ```
 
-## Интерактивы
+## Interactions
 
-- §11: интерактивный график показательной функции, таблица и вычисление значения;
-- §12: слайдер форм задачи, тренажёр поиска общего основания и тренажёр полного решения показательного уравнения;
-- §13: наглядная область решений, тренажёр направления знака и полное решение показательного неравенства;
-- §14: перевод между степенной и логарифмической записью;
-- §15: интерактивный график логарифмической функции;
-- §16: числовая проверка и тренажёр применения свойств логарифмов;
-- §17: графическая наглядность, тренажёр ОДЗ и полное решение логарифмического уравнения;
-- §18: наглядная область решений, тренажёр направления знака и полное решение логарифмического неравенства;
-- §19: касательная, тренажёр выбора формулы и вычисление производной.
+- §11: interactive exponential-function graph, table, and value calculation.
+- §12: problem-form slider, common-base trainer, and complete exponential-equation solver.
+- §13: visual solution region, inequality-direction trainer, and complete exponential-inequality solver.
+- §14: conversion between exponential and logarithmic notation.
+- §15: interactive logarithmic-function graph.
+- §16: numerical check and trainer for applying logarithm properties.
+- §17: graphical illustration, domain-restriction trainer, and complete logarithmic-equation solver.
+- §18: visual solution region, inequality-direction trainer, and complete logarithmic-inequality solver.
+- §19: tangent, formula-choice trainer, and derivative calculation.
 
-В MVP различаются анимации с параметрами для понимания математических зависимостей и тренажёры для развития конкретных навыков. Параметры анимации или действия тренажёра расположены справа от основной области на широком экране и непосредственно под ней на узком. Проверка понимания показывает по одному вопросу и завершается итоговым результатом.
+The MVP separates parameterized animations that explain mathematical relationships from trainers that develop specific skills. On a wide screen, animation parameters or trainer actions appear to the right of the main area. On a narrow screen, they appear directly below it. The understanding check shows one question at a time and ends with an overall result.
 
-## Сборка
+## Build
 
-Из корня проекта:
+From the project root, run:
 
 ```sh
 npm run build
 ```
 
-Каркас §11 открывается с подтверждённым снимком прогресса `68 из 282 решено`. Новые решённые подпункты страницы сравнения хранятся локально в браузере. Серверная синхронизация и блокировка материала не используются.
+The §11 shell opens with the confirmed progress snapshot `68 из 282 решено`. New solved exercise parts on the comparison page are stored locally in the browser. The app does not use server synchronization or content locking.
 
-## Источники определений и формул
+## Sources for definitions and formulas
 
-Скан учебника используется только для структуры книги и названий параграфов. Определения и формулы сверены со свободными учебниками OpenStax:
+The textbook scan supplies only the book structure and section titles. Definitions and formulas were checked against open OpenStax textbooks:
 
-- [ключевые понятия главы об экспонентах и логарифмах](https://openstax.org/books/precalculus-2e/pages/4-key-concepts);
-- [показательные и логарифмические уравнения](https://openstax.org/books/precalculus-2e/pages/4-6-exponential-and-logarithmic-equations);
-- [показательные неравенства](https://math.libretexts.org/Courses/Cosumnes_River_College/Corequisite_Codex/07%3A_Solving_Inequalities/7.07%3A_Solving_Exponential_Inequalities);
-- [логарифмические неравенства](https://math.libretexts.org/Courses/Cosumnes_River_College/Corequisite_Codex/07%3A_Solving_Inequalities/7.08%3A_Solving_Logarithmic_Inequalities);
-- [производные показательных и логарифмических функций](https://openstax.org/books/calculus-volume-1/pages/3-9-derivatives-of-exponential-and-logarithmic-functions);
-- [формулы для произвольного основания](https://openstax.org/books/calculus-volume-1/pages/6-7-integrals-exponential-functions-and-logarithms).
+- [Key concepts for the chapter on exponential and logarithmic functions](https://openstax.org/books/precalculus-2e/pages/4-key-concepts).
+- [Exponential and logarithmic equations](https://openstax.org/books/precalculus-2e/pages/4-6-exponential-and-logarithmic-equations).
+- [Exponential inequalities](https://math.libretexts.org/Courses/Cosumnes_River_College/Corequisite_Codex/07%3A_Solving_Inequalities/7.07%3A_Solving_Exponential_Inequalities).
+- [Logarithmic inequalities](https://math.libretexts.org/Courses/Cosumnes_River_College/Corequisite_Codex/07%3A_Solving_Inequalities/7.08%3A_Solving_Logarithmic_Inequalities).
+- [Derivatives of exponential and logarithmic functions](https://openstax.org/books/calculus-volume-1/pages/3-9-derivatives-of-exponential-and-logarithmic-functions).
+- [Formulas for arbitrary bases](https://openstax.org/books/calculus-volume-1/pages/6-7-integrals-exponential-functions-and-logarithms).
 
-Условия подпунктов упражнений 11.17–11.18 и их группировка перенесены из [согласованного одноразового прототипа](../output/visualizations/paragraph-11-progress.html), зафиксированного в коммите `a780087`. Производственный каркас и границы переноса описаны в [issue #21](https://github.com/ruslooob/interactive-math-book/issues/21).
+Exercise part statements and grouping for 11.17–11.18 came from the [approved disposable prototype](../output/visualizations/paragraph-11-progress.html), recorded in commit `a780087`. The production shell and transfer boundaries are described in [issue #21](https://github.com/ruslooob/interactive-math-book/issues/21).
 
-Общие выводы ревью записаны в [`docs/LEARNING-DESIGN-RULES.md`](../docs/LEARNING-DESIGN-RULES.md). Три исходных варианта компоновки сохранены в истории Git в коммите `63917d2`.
+General review conclusions are in [`docs/LEARNING-DESIGN-RULES.md`](../docs/LEARNING-DESIGN-RULES.md). The three original layout options remain in Git history at commit `63917d2`.
 
-Соответствие содержания §§11–19 их учебным целям проверено в [`docs/CHAPTER-3-LEARNING-GOAL-AUDIT.md`](../docs/CHAPTER-3-LEARNING-GOAL-AUDIT.md).
+The alignment of §§11–19 with their learning goals is checked in [`docs/CHAPTER-3-LEARNING-GOAL-AUDIT.md`](../docs/CHAPTER-3-LEARNING-GOAL-AUDIT.md).
