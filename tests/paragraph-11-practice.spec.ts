@@ -108,7 +108,7 @@ test('correct answers preserve progress across navigation, reload, and another a
   await expect(page.getByRole('button', { name: '2 из 8: текущий, решён' })).toHaveClass(/is-solved/)
 })
 
-test('exercise completes only after all its subpoints are solved', async ({ page }) => {
+test('exercise completes only after all its parts are solved', async ({ page }) => {
   const answers = ['less', 'less', 'greater', 'greater', 'less', 'less', 'less', 'less']
 
   for (let index = 0; index < answers.length; index += 1) {
