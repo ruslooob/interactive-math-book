@@ -1,53 +1,53 @@
 # AGENTS.md
 
-## Общие правила
+## General rules
 
-Пиши коротко и понятно. Команды рекомендуется выполнять через Bash.
+Write briefly and clearly. Prefer Bash for commands.
 
-Если пишешь на английском, используй простой и однозначный язык: короткие предложения, последовательные термины и явный исполнитель действия. Сохраняй факты, условия и степень уверенности исходного текста. Для английских инструкций агентам, описаний инструментов, сообщений об ошибках и статусов всегда применяй `/asd-ste100` (`.agents/skills/asd-ste100/SKILL.md`). Для художественного и рекламного текста соблюдай стиль, запрошенный пользователем.
+Use English for all new repository text, GitHub issues and comments, commit messages, pull request text, and agent instructions. Use plain, unambiguous English. Keep sentences short, name the actor, and use each term consistently. Preserve facts, conditions, and uncertainty. Apply `/asd-ste100` (`.agents/skills/asd-ste100/SKILL.md`) to English agent instructions, tool descriptions, error messages, and status reports. Follow the user's requested style for creative or marketing text.
 
 ## Agent skills
 
-Проектные скиллы находятся в `.agents/skills/<name>/SKILL.md`. При вызове `/name` прочитай соответствующий файл и выполни описанный процесс.
+Project skills are in `.agents/skills/<name>/SKILL.md`. When `/name` is invoked, read that file and follow its process.
 
 ### Issue tracker
 
-Задачи и спецификации ведутся в GitHub Issues репозитория `ruslooob/interactive-math-book`. См. `docs/agents/issue-tracker.md`.
+Tasks and specifications are GitHub Issues in `ruslooob/interactive-math-book`. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
-Для входящих GitHub Issues используются стандартные состояния `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human` и `wontfix`. См. `docs/agents/triage-labels.md`.
+Incoming GitHub Issues use `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, and `wontfix`. See `docs/agents/triage-labels.md`.
 
 ### Domain docs
 
-Проект использует единый доменный контекст: `GLOSSARY.md` и `docs/adr/` находятся в корне проекта. См. `docs/agents/domain.md`.
+The project has one domain context. `GLOSSARY.md` and `docs/adr/` are at the repository root. See `docs/agents/domain.md`.
 
-## Этапы разработки и приёмки
+## Development and acceptance stages
 
-1. Для каждой задачи создать отдельную ветку от актуального `master`. Изменения задачи не коммитить непосредственно в `master`.
-2. На этапе реализации изменить код, выполнить автоматические проверки и провести внутреннее ревью. Для изменений UI дополнительно запустить приложение и проверить его в доступном агенту браузере на целевом настольном разрешении, включая требуемые действия мышью и клавиатурой.
-3. Зафиксировать кандидат на ревью в рабочей ветке, отправить ветку в GitHub и через `/pr` открыть Pull Request. Коммит в рабочей ветке фиксирует кандидат и не означает пользовательскую приёмку.
-4. Если обязательная проверка не выполнена, открыть Draft PR, перечислить непроверенные критерии и оставить этап проверки незавершённым. После выполнения агентских проверок перевести PR в состояние Ready for review и передать пользователю ссылку.
-5. Пользовательская приёмка завершается только явным одобрением пользователя. Сборка, тесты и внутреннее ревью не заменяют её. До одобрения не сливать PR, не закрывать Issue и не объявлять задачу решённой.
+1. Create a separate branch from the current `master` for each task. Do not commit task changes directly to `master`.
+2. During implementation, change the code, run automated checks, and conduct an internal review. For UI changes, also run the app and check it in an available browser at the target desktop resolution. Include the required mouse and keyboard actions.
+3. Commit the review candidate on the task branch, push the branch to GitHub, and open a pull request with `/pr`. A commit on the task branch records a candidate. It does not mean the user accepted it.
+4. If a required check is incomplete, open a draft pull request. List the unchecked criteria and leave the verification stage incomplete. After completing agent checks, mark the pull request ready for review and give the user its link.
+5. User acceptance requires explicit user approval. Builds, tests, and internal review do not replace it. Before approval, do not merge the pull request, close the issue, or declare the task resolved.
 
-Статус работы сообщать в формате:
+Report status in this format:
 
-- `Завершён этап: ...`;
-- `Следующий этап: ...`;
-- `Требуется от пользователя: ...`.
+- `Completed stage: ...`;
+- `Next stage: ...`;
+- `User action required: ...`.
 
-## Очистка рабочего каталога
+## Workspace cleanup
 
-1. После проверок удалить временные отчёты, снимки, трассировки, каталоги сборки и кэши инструментов, если они больше не нужны.
-2. Перед завершением задачи проверить `git status` и игнорируемые файлы. Не оставлять артефакты Playwright, временные Markdown-файлы и другие одноразовые файлы.
-3. Не удалять зависимости, пользовательские файлы и воспроизводимые исходные материалы только потому, что Git их игнорирует.
+1. After checks, remove temporary reports, screenshots, traces, build directories, and tool caches when they are no longer needed.
+2. Before finishing, check `git status` and ignored files. Leave no Playwright artifacts, temporary Markdown files, or other one-use files.
+3. Keep dependencies, user files, and reproducible source materials even when Git ignores them.
 
-## Разработка MVP
+## MVP development
 
-Рабочее приложение находится в `app/` и является MVP интерактивной математической книги.
+The working app is in `app/`. It is an MVP interactive mathematics book.
 
-1. Перед изменением учебного поведения прочитать `docs/LEARNING-DESIGN-RULES.md`.
-2. До начала реализации зафиксировать в GitHub Issue цель изменения, критерии готовности и способ проверки.
-3. Если вопрос нельзя надёжно решить обсуждением, сначала создать изолированный одноразовый прототип через `/prototype`, записать вывод и только затем менять MVP.
-4. Работу, рассчитанную более чем на одну сессию, оформить через `/to-spec` и `/to-tickets`.
-5. Каждую задачу реализации выполнять в новой сессии через `/implement`; контекст между задачами не переносить вручную.
+1. Read `docs/LEARNING-DESIGN-RULES.md` before changing learning behavior.
+2. Before implementation, record the change goal, acceptance criteria, and verification method in a GitHub Issue.
+3. If discussion cannot reliably resolve a question, first create an isolated, disposable prototype with `/prototype`. Record the conclusion before changing the MVP.
+4. Use `/to-spec` and `/to-tickets` for work that will take more than one session.
+5. Perform each implementation task in a new session with `/implement`. Do not transfer context manually between tasks.
