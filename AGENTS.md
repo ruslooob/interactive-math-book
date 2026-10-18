@@ -2,13 +2,12 @@
 
 ## General rules
 
-Write briefly and clearly. Prefer Bash for commands.
-
-Use English for all new repository text, GitHub issues and comments, commit messages, pull request text, and agent instructions. Use plain, unambiguous English. Keep sentences short, name the actor, and use each term consistently. Preserve facts, conditions, and uncertainty. Apply `/asd-ste100` (`.agents/skills/asd-ste100/SKILL.md`) to English agent instructions, tool descriptions, error messages, and status reports. Follow the user's requested style for creative or marketing text.
+Write briefly and clearly.
+Use English for replies, repository text, Issues, pull requests, commit messages, and agent instructions.
+Use `/asd-ste100` to write every English reply in simplified English.
+Prefer Bash for commands.
 
 ## Agent skills
-
-Project skills are in `.agents/skills/<name>/SKILL.md`. When `/name` is invoked, read that file and follow its process.
 
 ### Issue tracker
 
