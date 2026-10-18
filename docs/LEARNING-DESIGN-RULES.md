@@ -58,7 +58,7 @@ These rules follow the review of the prototype for §11, «Показатель�
 3. A graph supports direct exploration. Hovering over or touching any point on a curve shows its coordinates.
 4. Do not add a separate parameter if the learner can act more naturally on the animation itself. A graph needs no argument slider to select a point.
 5. Animation parameters contain only actions that change the mathematical state of the model.
-6. Do not use a separate section of toggleable hints. Place essential guides in the animation itself.
+6. Do not use a separate block of toggleable hints. Place essential guides in the animation itself.
 7. Recalculate the value table when animation parameters change.
 8. Let the learner enter an argument value and immediately see the calculated function value.
 
@@ -92,7 +92,7 @@ The current MVP uses the sequential section layout from variant C. It was select
 3. The tree stays open during navigation until the user closes it with the hamburger button.
 4. The tree and main learning content scroll independently.
 5. Do not use a separate table of contents or breadcrumbs. Navigate the book through the tree.
-6. Bottom navigation moves between adjacent pages in the implemented chapter tree. Theory and practice sections take part in this sequence when a section contains both.
+6. Bottom navigation moves between adjacent pages in the implemented chapter tree. Theory and practice pages take part in this sequence when a section contains both.
 7. An unimplemented chapter opens a placeholder. Do not block access or hide its entry.
 8. The learner can open any implemented section directly, regardless of progress in earlier sections.
 

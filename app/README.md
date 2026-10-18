@@ -58,7 +58,7 @@ From the project root, run:
 npm run build
 ```
 
-The §11 shell opens with the confirmed progress snapshot `68 из 282 решено`. New solved subparts on the comparison page are stored locally in the browser. The app does not use server synchronization or content locking.
+The §11 shell opens with the confirmed progress snapshot `68 из 282 решено`. New solved exercise parts on the comparison page are stored locally in the browser. The app does not use server synchronization or content locking.
 
 ## Sources for definitions and formulas
 
@@ -71,7 +71,7 @@ The textbook scan supplies only the book structure and section titles. Definitio
 - [Derivatives of exponential and logarithmic functions](https://openstax.org/books/calculus-volume-1/pages/3-9-derivatives-of-exponential-and-logarithmic-functions).
 - [Formulas for arbitrary bases](https://openstax.org/books/calculus-volume-1/pages/6-7-integrals-exponential-functions-and-logarithms).
 
-Exercise subpart statements and grouping for 11.17–11.18 came from the [approved disposable prototype](../output/visualizations/paragraph-11-progress.html), recorded in commit `a780087`. The production shell and transfer boundaries are described in [issue #21](https://github.com/ruslooob/interactive-math-book/issues/21).
+Exercise part statements and grouping for 11.17–11.18 came from the [approved disposable prototype](../output/visualizations/paragraph-11-progress.html), recorded in commit `a780087`. The production shell and transfer boundaries are described in [issue #21](https://github.com/ruslooob/interactive-math-book/issues/21).
 
 General review conclusions are in [`docs/LEARNING-DESIGN-RULES.md`](../docs/LEARNING-DESIGN-RULES.md). The three original layout options remain in Git history at commit `63917d2`.
 

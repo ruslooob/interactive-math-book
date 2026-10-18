@@ -10,7 +10,7 @@ Practice follows the exercise book's structure and covers the important exercise
 
 Within each chapter, material is organized by section. Each section starts with theory. Self-check questions appear at the end of the theory. Practice pages with trainers follow the theory.
 
-Use §11 as the reference section. First complete its content, range of practice, progress, and feedback. Then apply the confirmed decisions to other sections and chapters. The unit of progress is an exercise subpart. The first correct result sets the status to `решено`. Later attempts do not remove that status.
+Use §11 as the reference section. First complete its content, range of practice, progress, and feedback. Then apply the confirmed decisions to other sections and chapters. The unit of progress is an exercise part. The first correct result sets the status to `решено`. Later attempts do not remove that status.
 
 ## Options considered
 
