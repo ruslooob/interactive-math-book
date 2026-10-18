@@ -1,10 +1,10 @@
-# Рабочие предпочтения
+# Working preferences
 
-- Основное визуальное направление: минимализм, тёплая светлая палитра и ясное разделение текста, анимации и её параметров.
-- Крупная типографика и фокус на одном изменении могут использоваться как дополнительные выразительные приёмы.
-- Проект находится на стадии MVP: изменения должны быть воспроизводимыми, проверяемыми и привязанными к GitHub Issue.
-- Для неясного продуктового или учебного решения сначала использовать `grill-with-docs`; одноразовый `prototype` создавать только тогда, когда ответ необходимо проверить в работающем интерфейсе.
-- Работу длиннее одной сессии разбивать через `to-spec` и `to-tickets`, а каждую задачу реализации начинать в новой сессии через `implement`.
-- До проектирования интерфейса сначала определить тему параграфа, необходимую информацию, краткое введение, действия ученика и способ проверки понимания.
-- Общие правила текста, представления информации и взаимодействия записаны в `docs/LEARNING-DESIGN-RULES.md`.
-- Для §11 выбрана компоновка «Последовательный параграф» из варианта C.
+- The main visual direction is minimalism, a warm light palette, and a clear separation of text, animation, and animation parameters.
+- Large type and focus on one change can provide additional emphasis.
+- The project is at the MVP stage. Changes must be reproducible, verifiable, and linked to a GitHub Issue.
+- For an unclear product or learning decision, use `grill-with-docs` first. Create a disposable `prototype` only when the question requires a working interface.
+- Split work that takes more than one session with `to-spec` and `to-tickets`. Start each implementation task in a new session with `implement`.
+- Before designing the interface, define the section topic, necessary information, brief introduction, learner actions, and a way to check understanding.
+- `docs/LEARNING-DESIGN-RULES.md` records the shared rules for text, presentation, and interaction.
+- Section §11 uses the "Sequential section" layout from variant C.

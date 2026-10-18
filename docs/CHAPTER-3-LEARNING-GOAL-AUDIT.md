@@ -1,23 +1,23 @@
-# Аудит учебных целей главы 3
+# Chapter 3 Learning Goal Audit
 
-Проверка сопоставляет учебную цель каждого параграфа с его текущим содержанием и интерактивами. Первоначальные несоответствия исправлены в §§13, 16–19 по структуре: формы задач → методика решения → наглядность при необходимости → тренажёры → самопроверка.
+This audit compares each section's learning goal with its current content and interactives. Earlier structural gaps in §§13 and 16–19 were corrected with this sequence: problem forms → solution method → visualization when needed → trainers → self-check.
 
-## Результат
+## Results
 
-| Параграф | Учебная цель | Текущий интерактив | Соответствие цели | Следующее изменение |
+| Section | Learning goal | Current interactive | Goal alignment | Next change |
 | --- | --- | --- | --- | --- |
-| §11. Показательная функция | Ввести понятие и показать влияние основания | Анимация с параметрами: график, таблица и вычисление значения | Соответствует | Сохранить текущую структуру |
-| §12. Показательные уравнения | Научить решать методом одинаковых оснований | Слайдер форм задач, методика и два тренажёра | Соответствует | Сохранить текущую структуру |
-| §13. Показательные неравенства | Научить решать неравенства | Наглядная модель, тренажёр направления знака и полное решение | Соответствует | Проверить формулировки и сложность заданий по итогам ревью |
-| §14. Понятие логарифма | Ввести логарифм как показатель степени | Анимация с параметрами: перевод между двумя записями | Соответствует | Сохранить текущую структуру |
-| §15. Логарифмическая функция | Объяснить свойства функции и влияние основания | Анимация с параметрами: интерактивный график | Соответствует | Сохранить текущую структуру |
-| §16. Свойства логарифмов | Научить преобразовывать выражения | Наглядная проверка свойств и тренажёр их применения | Соответствует | Проверить полноту набора свойств по итогам ревью |
-| §17. Логарифмические уравнения | Научить решать уравнения с учётом области допустимых значений | Наглядная модель, тренажёр ОДЗ и полное решение | Соответствует | Проверить формулировки и сложность заданий по итогам ревью |
-| §18. Логарифмические неравенства | Научить решать неравенства с учётом области допустимых значений | Наглядная модель, тренажёр направления знака и полное решение | Соответствует | Проверить формулировки и сложность заданий по итогам ревью |
-| §19. Дифференцирование | Научить находить производные | Анимация касательной, тренажёр выбора формулы и применения формул | Соответствует | Проверить полноту набора функций по итогам ревью |
+| §11. Показательная функция | Introduce the concept and show how the base affects it | Parameterized animation: graph, table, and value calculation | Aligned | Keep the current structure |
+| §12. Показательные уравнения | Teach the equal-bases solution method | Problem-form slider, solution method, and two trainers | Aligned | Keep the current structure |
+| §13. Показательные неравенства | Teach how to solve inequalities | Visual model, inequality direction trainer, and full solution | Aligned | Review task wording and difficulty |
+| §14. Понятие логарифма | Introduce a logarithm as an exponent | Parameterized animation: conversion between two notations | Aligned | Keep the current structure |
+| §15. Логарифмическая функция | Explain function properties and the effect of the base | Parameterized animation: interactive graph | Aligned | Keep the current structure |
+| §16. Свойства логарифмов | Teach expression transformation | Visual check of properties and a trainer for applying them | Aligned | Review whether the property set is complete |
+| §17. Логарифмические уравнения | Teach equation solving with domain restrictions | Visual model, domain trainer, and full solution | Aligned | Review task wording and difficulty |
+| §18. Логарифмические неравенства | Teach inequality solving with domain restrictions | Visual model, inequality direction trainer, and full solution | Aligned | Review task wording and difficulty |
+| §19. Дифференцирование | Teach how to find derivatives | Tangent animation and trainers for formula selection and application | Aligned | Review whether the function set is complete |
 
-## Вывод
+## Conclusion
 
-Параграфы §§11, 14 и 15 построены для введения понятий и используют анимации с параметрами. Параграфы §§12, 13, 16–19 построены для развития навыка и содержат формы задач, методики и тренажёры. Наглядные модели в навыковых параграфах сохранены как вспомогательное объяснение и не подменяют практику.
+Sections §§11, 14, and 15 introduce concepts and use parameterized animations. Sections §§12, 13, and 16–19 develop skills with problem forms, solution methods, and trainers. Visual models in skill-focused sections support explanations and do not replace practice.
 
-Следующий этап — содержательное ревью каждого нового тренажёра: корректность формулировок, достаточность обратной связи и последовательность усложнения заданий.
+Next, review the content of each new trainer. Check task wording, feedback, and the order of increasing difficulty.
