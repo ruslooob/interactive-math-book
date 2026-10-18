@@ -1,15 +1,15 @@
-# Метки triage
+# Triage Labels
 
-Скиллы используют пять канонических состояний triage. Таблица связывает эти состояния с фактическими метками GitHub Issues проекта.
+The skills speak in terms of five canonical triage roles. This file maps those roles to the actual label strings used in this repo's issue tracker.
 
-| Состояние в `mattpocock/skills` | Метка GitHub | Значение |
-| --- | --- | --- |
-| `needs-triage` | `needs-triage` | Требуется оценка сопровождающего |
-| `needs-info` | `needs-info` | Требуется дополнительная информация от автора |
-| `ready-for-agent` | `ready-for-agent` | Задача полностью определена и готова для автономного агента |
-| `ready-for-human` | `ready-for-human` | Реализация или решение требуют участия человека |
-| `wontfix` | `wontfix` | Запрос не будет реализован |
+| Label in mattpocock/skills | Label in our tracker | Meaning                                  |
+| -------------------------- | -------------------- | ---------------------------------------- |
+| `needs-triage`             | `needs-triage`       | Maintainer needs to evaluate this issue  |
+| `needs-info`               | `needs-info`         | Waiting on reporter for more information |
+| `ready-for-agent`          | `ready-for-agent`    | Fully specified, ready for an AFK agent  |
+| `ready-for-human`          | `ready-for-human`    | Requires human implementation            |
+| `wontfix`                  | `wontfix`            | Will not be actioned                     |
 
-Для категории запроса используются стандартные метки GitHub `bug` и `enhancement`. У каждой обработанной задачи должна быть ровно одна категория и ровно одно состояние triage.
+When a skill mentions a role (e.g. "apply the AFK-ready triage label"), use the corresponding label string from this table.
 
-Когда скилл упоминает состояние triage, следует применять соответствующую метку из этой таблицы.
+Edit the "Label in our tracker" column to match whatever vocabulary you actually use.
