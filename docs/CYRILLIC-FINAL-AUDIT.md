@@ -1,32 +1,44 @@
 # Final Cyrillic audit
 
-This audit records the verification work in issue #50 for spec #45. It uses the
-tracked-file boundary from [the baseline inventory](CYRILLIC-INVENTORY.md).
-The scan was run on integration commit `6f0c4ec`, before this English note.
+This audit records the verification work in issue #50 for spec #45. The scan
+covered tracked file contents and filenames on integration commit `6f0c4ec`.
+The occurrence inventory and scanner used during implementation were removed
+after verification, as requested by the user.
 
 ## Remaining occurrences
 
-The scan found 994 Cyrillic occurrences in 148 tracked files: 993 content
-segments and one filename. It found no agent-facing occurrence.
+The scan found 994 Cyrillic occurrences: 993 content segments and one filename.
+All remaining segments matched preserved baseline entries by kind, path, and
+trimmed segment SHA-256 hash, including duplicate counts. The comparison found
+zero new entries, zero missing preserved entries, and zero agent-facing entries.
+The baseline had 1,422 entries: 428 agent-facing, 992 book, and two exceptions.
 
-Each remaining occurrence matches exactly one preserved row in
-[the baseline TSV](CYRILLIC-INVENTORY.tsv). The comparison uses the occurrence
-kind, path, and trimmed segment SHA-256 hash, including duplicate counts.
-The comparison found zero new occurrences and zero missing preserved rows.
-The baseline TSV gives a reason for each matched row:
+Every remaining occurrence in each location below has the reason shown. A
+content segment is text between quotes, backticks, Markdown table bars, or HTML
+tag brackets that contains at least one Cyrillic character.
 
-| Class | Occurrences | Reason |
+| Location | Content segments | Reason to preserve |
 | --- | ---: | --- |
-| Book | 992 | Original textbook contents; learner text, interface text, prototype text, source titles, or exact UI text in tests and documentation. The TSV gives the specific reason for each row. |
-| Exception | 2 | The textbook contents filename is an exact source record path. The ignored local PDF path must match its source filename. |
+| `app/src/content/*.ts` | 555 | Russian learner content and source textbook titles. |
+| `app/src/components/*.tsx` | 200 | Visible or accessible Russian book interface text. |
+| `app/src/App.tsx`, `app/index.html`, `app/src/lib/exponential.ts` | 6 | Visible or accessible Russian book interface text. |
+| `app/README.md` | 1 | Exact displayed progress text. |
+| `books/` original table of contents | 50 | Original textbook source text. |
+| `docs/CHAPTER-3-LEARNING-GOAL-AUDIT.md` | 9 | Exact textbook section titles quoted in the audit. |
+| `docs/LEARNING-DESIGN-RULES.md` | 6 | Exact book title, notation, or displayed text quoted in rules. |
+| `docs/adr/0003-textbook-shaped-practice.md` | 1 | Exact displayed progress status. |
+| `output/visualizations/paragraph-11-progress.html` | 106 | Visible or accessible Russian text in the archived book prototype. |
+| `tests/paragraph-11-practice.spec.ts` | 58 | Exact Russian UI locators or expected learner text. |
+| **Book total** | **992** | All book content stays Russian. |
 
-The book's original Russian table of contents remains in `books/`. All its
-50 Cyrillic content segments and its Cyrillic filename match the baseline.
-The 428 baseline agent-facing entries are absent from the final scan.
+The two exceptions are exact paths. The Cyrillic table-of-contents filename in
+`books/` preserves the source record. The ignored local PDF path in `.gitignore`
+must match the source filename. The original Russian table of contents remains
+unchanged.
 
 ## Checks
 
-- `python scripts/cyrillic_inventory.py --revision HEAD --summary`: 993 content segments and one filename on `6f0c4ec`.
+- The tracked-file scan counted 993 content segments and one filename on `6f0c4ec`.
 - `npm ci`: installed dependencies.
 - `npm run build`: passed. Vite reported a nonblocking bundle-size warning.
 - `npm test`: all 7 Chromium tests passed.
