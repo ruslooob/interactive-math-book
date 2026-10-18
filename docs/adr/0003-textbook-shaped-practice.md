@@ -2,24 +2,24 @@
 status: proposed
 ---
 
-# Практика сохраняет структуру и полноту задачника
+# Practice preserves the exercise book's structure and breadth
 
-Первые тренажёры содержали слишком мало заданий и в основном проверяли узнавание простого ответа. Аудит §11 выявил не менее 23 типов заданий и дополнительные формы внутри них, поэтому несколько коротких викторин не могут считаться достаточной практикой параграфа.
+The first trainers had too few tasks and mainly tested recognition of a simple answer. The §11 audit found at least 23 task types and further forms within them. A few short quizzes therefore do not provide enough practice for the section.
 
-Практика строится по структуре задачника и покрывает существенные типы и формы упражнений. Тренажёрные модули могут группировать их в понятный ученику маршрут, но не заменяют полный каталог несколькими обобщёнными вопросами; каждое задание требует наблюдаемого математического действия, даёт содержательную обратную связь и допускает повторную попытку.
+Practice follows the exercise book's structure and covers the important exercise types and forms. Trainer modules may group tasks into a route that learners can understand. They must not replace the full catalog with a few generic questions. Each task requires an observable mathematical action, gives useful feedback, and permits another attempt.
 
-Внутри главы материал организован по параграфам. В каждом параграфе сначала идёт теория, в конце теории находятся вопросы для самопроверки, а после теории идут практические страницы с тренажёрами.
+Within each chapter, material is organized by section. Each section starts with theory. Self-check questions appear at the end of the theory. Practice pages with trainers follow the theory.
 
-§11 используется как эталонный параграф: сначала для него доводятся до целостности содержание, разнообразие практики, прогресс и обратная связь, затем подтверждённые решения распространяются на остальные параграфы и главы. Единицей прогресса является подпункт упражнения; первый правильный результат закрепляет статус «решено», а последующие попытки его не отменяют.
+Use §11 as the reference section. First complete its content, range of practice, progress, and feedback. Then apply the confirmed decisions to other sections and chapters. The unit of progress is an exercise subpart. The first correct result sets the status to `решено`. Later attempts do not remove that status.
 
-## Рассмотренные варианты
+## Options considered
 
-- Быстро покрыть всю главу небольшим числом иллюстративных заданий — даёт ширину, но не проверяет освоение разнообразных действий из задачника.
-- Сразу реализовать полную практику всей главы — сохраняет полноту, но не позволяет достаточно глубоко проверить модель при обнаруженном объёме работы.
-- Сначала создать полную эталонную практику одного параграфа — замедляет расширение охвата, но позволяет проверить модель до её масштабирования.
+- Cover the whole chapter quickly with a small number of illustrative tasks. This gives breadth but does not check the range of actions in the exercise book.
+- Implement all practice for the whole chapter at once. This preserves breadth but prevents a deep check of the model given the amount of work found.
+- First create complete reference practice for one section. This slows expansion but permits a check of the model before wider use.
 
-## Последствия
+## Consequences
 
-- Завершение одного параграфа требует больше содержания, типов взаимодействия и проверок, чем первоначально предполагалось.
-- Новые главы не должны механически копировать интерфейс §11: распространяются подтверждённые принципы, а конкретные тренажёры определяются учебной целью и формами задач новой темы.
-- Матрица покрытия типов и форм упражнений становится основанием для оценки полноты практики.
+- Completing one section takes more content, interaction types, and checks than first expected.
+- New chapters must not copy the §11 interface mechanically. Apply confirmed principles, and choose trainers for the new topic's learning goal and task forms.
+- Use the coverage matrix of exercise types and forms to judge whether practice is complete.

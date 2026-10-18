@@ -2,22 +2,22 @@
 status: proposed
 ---
 
-# Единое дерево книги размещается в раскрываемой боковой панели
+# Place one book tree in a collapsible sidebar
 
-Отдельное оглавление, хлебные крошки и переходы только между параграфами создавали несколько конкурирующих способов навигации и скрывали положение практических страниц в книге. Основной навигацией становится единое дерево `книга → глава → параграф → страница`, расположенное в раскрываемой боковой панели и доступное по кнопке-гамбургеру на всех страницах реализованного материала.
+A separate table of contents, breadcrumbs, and links between sections created competing navigation paths. They also hid the position of practice pages in the book. Use one tree, `book → chapter → section → page`, as the main navigation. Place it in a collapsible sidebar. A hamburger button opens it on every implemented content page.
 
-Теория и практические рубрики представлены соседними страницами параграфа. Панель сохраняет открытое состояние при переходах, пока ученик не закроет её явно; нижняя навигация следует тому же порядку страниц дерева, а отдельное оглавление и хлебные крошки не используются.
+Theory and practice categories are adjacent pages within each section. The sidebar stays open across navigation until the learner explicitly closes it. Bottom navigation follows the same page order as the tree. Do not use a separate table of contents or breadcrumbs.
 
-Такое устройство оставляет структуру книги доступной без постоянного уменьшения рабочего пространства и даёт теории и практике одну понятную модель переходов.
+This arrangement makes the book structure available without permanently reducing the space for learning material. It gives theory and practice one clear navigation model.
 
-## Рассмотренные варианты
+## Options considered
 
-- Постоянно видимая боковая панель — хорошо показывает структуру, но постоянно отнимает место у учебного материала.
-- Отдельное оглавление и хлебные крошки — привычны по отдельности, но дублируют переходы и разделяют представление структуры книги.
-- Раскрываемое единое дерево — скрывается, когда не нужно, и остаётся общей точкой навигации для всей книги.
+- An always-visible sidebar shows the structure well but permanently uses space needed for the learning material.
+- A separate table of contents and breadcrumbs are familiar individually but duplicate navigation and split the representation of the book structure.
+- One collapsible tree can be hidden when unnecessary and remains the navigation point for the whole book.
 
-## Последствия
+## Consequences
 
-- Структура книги, доступные страницы и их последовательность должны иметь единый источник данных.
-- Добавление практической страницы изменяет одновременно дерево и последовательность соседних переходов.
-- Состояние панели относится к оболочке книги и не должно сбрасываться при переходе между её страницами.
+- The book structure, available pages, and their order must have one data source.
+- Adding a practice page changes both the tree and the adjacent-page navigation order.
+- Sidebar state belongs to the book shell and must not reset when the learner changes pages.
