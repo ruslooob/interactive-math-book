@@ -56,7 +56,7 @@ export function App() {
         saved.forEach((id) => typeof id === 'string' && validIds.has(id) && solved.add(id))
       }
     } catch {
-      // Повреждённые локальные данные не должны блокировать учебную страницу.
+      // Invalid local data must not prevent the lesson page from loading.
     }
     return solved
   })
@@ -94,7 +94,7 @@ export function App() {
     try {
       window.localStorage.setItem(paragraph11ProgressStorageKey, JSON.stringify([...solvedComparisonSubpointIds]))
     } catch {
-      // Недоступное локальное хранилище не должно блокировать текущую попытку.
+      // Unavailable local storage must not interrupt the current attempt.
     }
   }, [solvedComparisonSubpointIds])
 
