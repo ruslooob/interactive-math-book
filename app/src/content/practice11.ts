@@ -21,7 +21,7 @@ export type ParagraphPageSummary = {
 export const paragraph11ProgressStorageKey = 'interactive-math-book:paragraph-11-progress:v1'
 export const paragraph11TotalSubpoints = 282
 
-// Исходный снимок представляет результаты ученика, полученные до открытия реализованной страницы.
+// The initial snapshot includes results the learner earned before opening this page.
 export const paragraph11InitialProgress = {
   solvedSubpointsOutsideListedPages: 54,
 } as const
