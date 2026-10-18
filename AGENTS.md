@@ -2,10 +2,10 @@
 
 ## General rules
 
-Write briefly and clearly.
-Use English for replies, repository text, Issues, pull requests, commit messages, and agent instructions.
-Use `/asd-ste100` to write every English reply in simplified English.
-Prefer Bash for commands.
+- Write briefly and clearly.
+- Prefer Bash for commands.
+- Use English for replies, repository text, Issues, pull requests, commit messages, and agent instructions.
+- Use `/asd-ste100` to write every English reply in simplified English.
 
 ## Agent skills
 
