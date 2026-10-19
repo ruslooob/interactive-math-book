@@ -63,7 +63,9 @@ export function availableParagraph11Exercises(definitions: readonly ExerciseCont
       && content.parts.every((part) => part.prompt.length > 0
         && part.prompt.every((block) => block.value.trim().length > 0)
         && typeof part.checkAnswer === 'function')
-    return complete ? [{ ...exercise, content }] : []
+    if (!complete) return []
+    const orderedParts = exercise.parts.map((part) => content.parts.find((candidate) => candidate.id === part.id)!)
+    return [{ ...exercise, content: { ...content, parts: orderedParts } }]
   })
 }
 

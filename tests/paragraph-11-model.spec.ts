@@ -112,6 +112,8 @@ test('only complete ready exercises enter the learner route, in catalog order', 
   const first = valueContent('11.1')
   const later = valueContent('11.64')
   expect(availableParagraph11Exercises([later, first]).map((exercise) => exercise.id)).toEqual(['11.1', '11.64'])
+  expect(availableParagraph11Exercises([{ ...later, parts: [...later.parts].reverse() }])[0]
+    .content.parts.map((part) => part.id)).toEqual(['11.64-a', '11.64-b'])
   expect(availableParagraph11Exercises([{ ...first, status: 'draft' }])).toEqual([])
   expect(availableParagraph11Exercises([{ ...first, parts: first.parts.slice(1) }])).toEqual([])
   expect(availableParagraph11Exercises([{ ...first, parts: [first.parts[0], first.parts[0], ...first.parts.slice(2)] }])).toEqual([])

@@ -64,6 +64,10 @@ The previous progress snapshot and provisional comparison tasks are removed. Pra
 
 Shared practice interfaces are in `src/content/exerciseContent.ts`. They cover calculated values, choices, comparisons, ordered steps, intervals, and structured graphs. Exercise tickets supply mathematical checks and add complete definitions to `paragraph11ExerciseContent`. `availableParagraph11Exercises` admits an exercise only when it is ready and every catalog part has content and a check. `submitParagraph11Answer` returns feedback and the resulting solved IDs. `saveParagraph11Progress` persists those IDs. The `v2` storage key keeps provisional results separate from the verified catalog.
 
+## Checks
+
+Run `make check` for type checks, the production build, model tests, and browser navigation tests. Run `make test-model` to check catalog integrity, content availability, answer feedback, and saved progress without a browser or app server. Run one model test file with `make test-model TEST_ARGS=tests/paragraph-11-model.spec.ts`. Run `make test-ui` for the existing navigation checks.
+
 ## Sources for definitions and formulas
 
 The textbook scan supplies only the book structure and section titles. Definitions and formulas were checked against open OpenStax textbooks:
