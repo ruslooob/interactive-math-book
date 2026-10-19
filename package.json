@@ -7,9 +7,11 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace interactive-math-book-app",
-    "build": "npm run build --workspace interactive-math-book-app",
+    "build": "tsc -p tsconfig.tests.json && npm run build --workspace interactive-math-book-app",
     "preview": "npm run preview --workspace interactive-math-book-app",
-    "test": "playwright test",
+    "test": "npm run test:model && npm run test:ui",
+    "test:model": "playwright test --config=playwright.model.config.ts",
+    "test:ui": "playwright test",
     "test:e2e:install": "playwright install chromium"
   },
   "dependencies": {
