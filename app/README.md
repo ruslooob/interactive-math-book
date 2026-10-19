@@ -58,7 +58,15 @@ From the project root, run:
 npm run build
 ```
 
-The §11 shell opens with the confirmed progress snapshot `68 из 282 решено`. New solved exercise parts on the comparison page are stored locally in the browser. The app does not use server synchronization or content locking.
+The §11 catalog contains 78 exercises and 284 exercise parts. Progress starts at zero and stores solved part IDs locally in the browser. Later attempts preserve solved status. The app does not use server synchronization or content locking. Source pages are internal metadata and do not appear as learner citations.
+
+The previous progress snapshot and provisional comparison tasks are removed. Practice pages remain unavailable until the exercise tickets supply complete prompts and answer checks. Section §12 remains accessible at every progress value.
+
+Shared practice interfaces are in `src/content/exerciseContent.ts`. They cover calculated values, choices, comparisons, ordered steps, intervals, and structured graphs. Exercise tickets supply mathematical checks and add complete definitions to `paragraph11ExerciseContent`. `availableParagraph11Exercises` admits an exercise only when it is ready and every catalog part has content and a check. `submitParagraph11Answer` returns feedback and the resulting solved IDs. `saveParagraph11Progress` persists those IDs. The `v2` storage key keeps provisional results separate from the verified catalog.
+
+## Checks
+
+Run `make check` for type checks, the production build, model tests, and browser navigation tests. Run `make test-model` to check catalog integrity, content availability, answer feedback, and saved progress without a browser or app server. Run one model test file with `make test-model TEST_ARGS=tests/paragraph-11-model.spec.ts`. Run `make test-ui` for the existing navigation checks.
 
 ## Sources for definitions and formulas
 
@@ -71,7 +79,7 @@ The textbook scan supplies only the book structure and section titles. Definitio
 - [Derivatives of exponential and logarithmic functions](https://openstax.org/books/calculus-volume-1/pages/3-9-derivatives-of-exponential-and-logarithmic-functions).
 - [Formulas for arbitrary bases](https://openstax.org/books/calculus-volume-1/pages/6-7-integrals-exponential-functions-and-logarithms).
 
-Exercise part statements and grouping for 11.17–11.18 came from the [approved disposable prototype](../output/visualizations/paragraph-11-progress.html), recorded in commit `a780087`. The production shell and transfer boundaries are described in [issue #21](https://github.com/ruslooob/interactive-math-book/issues/21).
+The provisional 11.17–11.18 statements came from the disposable prototype recorded in commit `a780087`. They did not match those book numbers and are excluded from the learner route. The new catalog follows the source checks in [`docs/PARAGRAPH-11-EXERCISE-INVENTORY.md`](../docs/PARAGRAPH-11-EXERCISE-INVENTORY.md). Printed page 71 contains two parts for 11.64, which corrects the earlier 286-part inventory to 284 parts. The original shell transfer is described in [issue #21](https://github.com/ruslooob/interactive-math-book/issues/21).
 
 General review conclusions are in [`docs/LEARNING-DESIGN-RULES.md`](../docs/LEARNING-DESIGN-RULES.md). The three original layout options remain in Git history at commit `63917d2`.
 
