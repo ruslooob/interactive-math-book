@@ -4,6 +4,7 @@
 
 - Write briefly and clearly.
 - Prefer Bash for commands.
+- The root `Makefile` lists all available project commands. Use its targets for project tasks.
 - Write replies in simplified English with `/asd-ste100`. Use English for repository text, Issues, pull requests, commit messages, and agent instructions.
 
 ## Agent skills
