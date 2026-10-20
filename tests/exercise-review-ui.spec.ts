@@ -1,0 +1,93 @@
+import { expect, test } from '@playwright/test'
+
+test.use({ viewport: { width: 1440, height: 900 } })
+
+test('side navigation reveals destinations and the tree has one current page', async ({ page }) => {
+  await page.goto('/?section=11&page=calculate-expression&exercise=11.7')
+  const previous = page.getByRole('button', { name: 'Предыдущая страница: Упражнение 11.6', exact: true })
+  const next = page.getByRole('button', { name: 'Следующая страница: Упражнение 11.8', exact: true })
+  await expect(next.getByRole('tooltip')).not.toBeVisible()
+  await next.hover()
+  await expect(next.getByRole('tooltip')).toHaveText('Упражнение 11.8')
+  await previous.focus()
+  await expect(previous.getByRole('tooltip')).toBeVisible()
+  for (const open of [true, false]) {
+    await page.getByRole('button', { name: open ? 'Открыть дерево книги' : 'Закрыть дерево книги', exact: true }).click()
+    await expect.poll(() => page.evaluate(() => {
+      const card = document.querySelector('.task-card')!.getBoundingClientRect()
+      const left = document.querySelector('.page-arrow--previous')!.getBoundingClientRect()
+      const right = document.querySelector('.page-arrow--next')!.getBoundingClientRect()
+      return left.right < card.left && right.left > card.right && Math.abs(left.y - right.y) < 1
+    })).toBe(true)
+  }
+  await page.getByRole('button', { name: 'Открыть дерево книги' }).click()
+  const tree = page.getByRole('navigation', { name: 'Дерево книги' })
+  await tree.getByRole('button', { name: /Найдите значение выражения/ }).click()
+  await expect(tree.locator('[aria-current="page"]')).toHaveCount(1)
+  await expect(tree.locator('[aria-current="page"]')).toHaveText('Упражнение 11.1')
+})
+
+test('graph displays partial input and redraws only learner coordinates', async ({ page }) => {
+  await page.goto('/?section=11&page=draw-graph&exercise=11.13')
+  const graph = page.getByRole('img', { name: 'Эскиз по введённым точкам' })
+  await expect(graph.locator('circle')).toHaveCount(0)
+  await expect(graph.locator('polyline')).toHaveCount(0)
+  // One requested function label, with no duplicate prompt formula.
+  await expect(page.locator('.exercise-answer .katex')).toHaveCount(1)
+  const y0 = page.getByLabel('График 1: y(0)', { exact: true })
+  await y0.fill('1')
+  await expect(graph.locator('circle')).toHaveCount(1)
+  await expect(graph.locator('polyline')).toHaveCount(0)
+  await page.getByLabel('График 1: y(-1)', { exact: true }).fill('1/2')
+  await page.getByLabel('График 1: y(1)', { exact: true }).fill('2')
+  const curve = graph.locator('polyline')
+  await expect(curve).toHaveCount(1)
+  const before = await curve.getAttribute('points')
+  await y0.fill('1.5')
+  expect(await curve.getAttribute('points')).not.toBe(before)
+  await y0.fill('bad')
+  await expect(graph.locator('circle')).toHaveCount(2)
+  await expect(curve).toHaveCount(0)
+})
+
+test('pointer drag changes learner order and preserves progress after replay', async ({ page }) => {
+  await page.goto('/?section=11&page=compare-values&exercise=11.24')
+  await page.getByRole('button', { name: 'Часть б', exact: true }).click()
+  const rows = page.locator('.power-order li')
+  const drag = async (from: number, to: number) => {
+    const start = await rows.nth(from).boundingBox()
+    const end = await rows.nth(to).boundingBox()
+    await page.mouse.move(start!.x + 50, start!.y + start!.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(end!.x + 50, end!.y + end!.height / 2, { steps: 10 })
+    await page.mouse.up()
+  }
+  await drag(2, 0)
+  await drag(1, 2)
+  expect(await rows.evaluateAll((items) => items.map((item) => item.getAttribute('data-order-id')))).toEqual(['v1', 'v2', 'v3'])
+  await page.getByRole('button', { name: 'Проверить', exact: true }).click()
+  await expect(page.locator('.answer-correct')).toContainText('Порядок верен')
+  await page.getByRole('button', { name: 'Решить снова' }).click()
+  await page.reload()
+  await expect(page.getByText('1 из 284 решено')).toBeVisible()
+})
+
+test('touch input can reorder values and use the side navigation on a narrow screen', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
+  const page = await context.newPage()
+  await page.goto('/?section=11&page=compare-values&exercise=11.25')
+  await page.getByRole('button', { name: 'Часть б', exact: true }).tap()
+  const rows = page.locator('.power-order li')
+  await rows.nth(2).scrollIntoViewIfNeeded()
+  const start = await rows.nth(2).boundingBox()
+  const end = await rows.nth(0).boundingBox()
+  const session = await context.newCDPSession(page)
+  await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: start!.x + 40, y: start!.y + 20 }] })
+  await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: end!.x + 40, y: end!.y + 20 }] })
+  await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
+  await expect(rows.first()).toHaveAttribute('data-order-id', 'v1')
+  await page.getByRole('button', { name: 'Предыдущая страница: Упражнение 11.24', exact: true }).tap()
+  await expect(page.getByRole('heading', { name: 'Упражнение 11.24', exact: true })).toBeVisible()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await context.close()
+})

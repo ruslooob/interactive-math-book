@@ -105,10 +105,10 @@ export function BookShell({
                               return (
                                 <div key={page.id}>
                                 <button
-                                  className={`tree-entry${isCurrent ? ' is-current' : ''}${isComplete ? ' is-complete' : ''}`}
+                                  className={`tree-entry${isCurrent && pageExercises.length === 0 ? ' is-current' : ''}${isComplete ? ' is-complete' : ''}`}
                                   type="button"
                                   aria-label={accessibleName}
-                                  aria-current={isCurrent ? 'page' : undefined}
+                                  aria-current={isCurrent && pageExercises.length === 0 ? 'page' : undefined}
                                   onClick={() => opensPlaceholder ? onOpenChapter(chapter) : onOpenPage(paragraph.number, page.id)}
                                 >
                                   <span>{page.title}</span>
@@ -142,19 +142,21 @@ export function BookShell({
 
         <section className="book-shell-content" data-testid="book-content" ref={contentRef}>
           <div className="book-shell-page">
-            {children}
+            <div className="book-page-content">{children}</div>
             {(previousPage || nextPage) && (
               <nav className="paragraph-pagination" aria-label="Переход между страницами книги">
                 {previousPage ? (
-                  <button type="button" aria-label={`Предыдущая страница: ${previousPage.label}`}
-                    onClick={() => onOpenPage(previousPage.paragraphNumber, previousPage.pageId, previousPage.exerciseId)}>
-                    <span aria-hidden="true">← </span>Назад · {previousPage.label}
+                  <button className="page-arrow page-arrow--previous" type="button" aria-label={`Предыдущая страница: ${previousPage.label}`} aria-describedby="previous-destination"
+                    onPointerUp={(event) => { if (event.pointerType === 'touch') { event.preventDefault(); onOpenPage(previousPage.paragraphNumber, previousPage.pageId, previousPage.exerciseId) } }}
+                    onClick={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== 'touch') onOpenPage(previousPage.paragraphNumber, previousPage.pageId, previousPage.exerciseId) }}>
+                    <span className="page-arrow__symbol" aria-hidden="true">&lt;</span><span className="page-arrow__tooltip" role="tooltip" id="previous-destination">{previousPage.label}</span>
                   </button>
                 ) : <span />}
                 {nextPage ? (
-                  <button type="button" aria-label={`Следующая страница: ${nextPage.label}`}
-                    onClick={() => onOpenPage(nextPage.paragraphNumber, nextPage.pageId, nextPage.exerciseId)}>
-                    Далее · {nextPage.label}<span aria-hidden="true"> →</span>
+                  <button className="page-arrow page-arrow--next" type="button" aria-label={`Следующая страница: ${nextPage.label}`} aria-describedby="next-destination"
+                    onPointerUp={(event) => { if (event.pointerType === 'touch') { event.preventDefault(); onOpenPage(nextPage.paragraphNumber, nextPage.pageId, nextPage.exerciseId) } }}
+                    onClick={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== 'touch') onOpenPage(nextPage.paragraphNumber, nextPage.pageId, nextPage.exerciseId) }}>
+                    <span className="page-arrow__symbol" aria-hidden="true">&gt;</span><span className="page-arrow__tooltip" role="tooltip" id="next-destination">{nextPage.label}</span>
                   </button>
                 ) : <span />}
               </nav>
