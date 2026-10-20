@@ -4,6 +4,8 @@ import { BookShell } from './components/BookShell'
 import { ChapterPlaceholder } from './components/BookViews'
 import { ParagraphPage } from './components/ParagraphPage'
 import { PracticePagePlaceholder } from './components/PracticePagePlaceholder'
+import { GraphComparisonPractice, graphComparisonAvailable } from './components/GraphComparisonPractice'
+import { recordParagraph11Result } from './content/paragraph11Progress'
 import { book, type BookChapter } from './content/book'
 import { chapter3Paragraphs } from './content/chapter3'
 import { chapter3PageSequence } from './content/navigation'
@@ -15,7 +17,7 @@ import {
 import { loadParagraph11Progress, saveParagraph11Progress, summarizeParagraph11Progress } from './content/paragraph11Progress'
 
 type Route =
-  | { kind: 'paragraph'; number: number; pageId: Paragraph11PageId }
+  | { kind: 'paragraph'; number: number; pageId: Paragraph11PageId; exerciseId?: string }
   | { kind: 'chapter'; number: number }
 
 function routeFromLocation(): Route {
@@ -26,7 +28,7 @@ function routeFromLocation(): Route {
   if (chapter3Paragraphs[paragraph]) {
     const requestedPage = params.get('page')
     const pageId = paragraph === 11 && isParagraph11PageId(requestedPage) ? requestedPage : 'theory'
-    return { kind: 'paragraph', number: paragraph, pageId }
+    return { kind: 'paragraph', number: paragraph, pageId, exerciseId: params.get('exercise') ?? undefined }
   }
   return { kind: 'paragraph', number: 11, pageId: 'theory' }
 }
@@ -39,7 +41,7 @@ function initialBase() {
 export function App() {
   const [route, setRoute] = useState<Route>(routeFromLocation)
   const [base, setBase] = useState(initialBase)
-  const [solvedPartIds] = useState(() => loadParagraph11Progress())
+  const [solvedPartIds, setSolvedPartIds] = useState(() => loadParagraph11Progress())
   const progress = useMemo(() => summarizeParagraph11Progress(solvedPartIds), [solvedPartIds])
 
   useEffect(() => {
@@ -83,10 +85,12 @@ export function App() {
     url.searchParams.delete('page')
     url.searchParams.delete('step')
     url.searchParams.delete('subpoint')
+    url.searchParams.delete('exercise')
     if (next.kind === 'chapter') url.searchParams.set('chapter', String(next.number))
     if (next.kind === 'paragraph') {
       url.searchParams.set('section', String(next.number))
       url.searchParams.set('page', next.pageId)
+      if (next.exerciseId) url.searchParams.set('exercise', next.exerciseId)
     }
     window.history.pushState({}, '', url)
     setRoute(next)
@@ -117,7 +121,12 @@ export function App() {
     content = currentPage.kind === 'theory' ? (
       <ParagraphPage paragraph={paragraph} state={state} actions={actions} />
     ) : (
-      <PracticePagePlaceholder title={currentPage.title} />
+      graphComparisonAvailable.some((exercise) => exercise.practiceGroup === currentPage.id) ? <div className="practice-surface">
+        <h2 className="practice-title">{currentPage.title}</h2>
+        <GraphComparisonPractice key={`${currentPage.id}:${route.exerciseId ?? ''}`} group={currentPage.id} exerciseId={route.exerciseId} solvedIds={solvedPartIds}
+          onSelect={(exerciseId) => navigate({ ...route, exerciseId })}
+          onResult={(id, result) => setSolvedPartIds((ids) => recordParagraph11Result(ids, id, result))} />
+      </div> : <PracticePagePlaceholder title={currentPage.title} />
     )
   }
 
@@ -126,10 +135,12 @@ export function App() {
       currentChapterNumber={currentChapterNumber}
       currentParagraphNumber={route.kind === 'paragraph' ? route.number : undefined}
       currentPageId={route.kind === 'paragraph' ? route.pageId : undefined}
+      currentExerciseId={route.kind === 'paragraph' ? route.exerciseId : undefined}
       progress={progress}
       previousPage={previousPage}
       nextPage={nextPage}
       onOpenPage={openPage}
+      onOpenExercise={(exerciseId, pageId) => navigate({ kind: 'paragraph', number: 11, pageId, exerciseId })}
       onOpenChapter={openChapter}
     >
       {content}

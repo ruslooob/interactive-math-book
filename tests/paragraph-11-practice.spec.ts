@@ -27,7 +27,7 @@ test('book tree is available on theory pages and stays open during navigation', 
   const tree = page.getByRole('navigation', { name: 'Дерево книги' })
   await expect(tree.getByText('Алгебра и начала математического анализа. 11 класс')).toBeVisible()
   await expect(tree.getByText(/^Глава /)).toHaveCount(6)
-  await expect(tree.getByText(/Упражнение 11\.17/)).toHaveCount(0)
+  await expect(tree.getByText(/Упражнение 11\.17/)).toHaveCount(1)
 
   await tree.getByText('§19. Дифференцирование показательной и логарифмической функций', { exact: true }).click()
   await tree.getByRole('button', { name: '§19. Дифференцирование показательной и логарифмической функций — 📖 Теория' }).click()

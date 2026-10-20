@@ -1,4 +1,5 @@
 import { paragraph11Catalog, type BookExercise, type ExercisePartId } from './paragraph11Catalog'
+import { graphComparisonExercises } from './graphComparison11'
 
 export type AnswerCheckResult =
   | { readonly correct: true; readonly feedback: string }
@@ -13,6 +14,7 @@ export type ExerciseAnswers = {
   'calculated-values': { readonly values: readonly string[] }
   choices: { readonly selectedIds: readonly string[] }
   comparison: 'less' | 'equal' | 'greater'
+  ordering: { readonly valueIds: readonly string[] }
   'ordered-steps': { readonly stepIds: readonly string[] }
   intervals: { readonly intervals: readonly AnswerInterval[] }
   graph: {
@@ -70,4 +72,4 @@ export function availableParagraph11Exercises(definitions: readonly ExerciseCont
 }
 
 // Exercise tickets add their complete content here. Provisional tasks are excluded.
-export const paragraph11ExerciseContent: readonly ExerciseContent[] = []
+export const paragraph11ExerciseContent: readonly ExerciseContent[] = graphComparisonExercises

@@ -933,3 +933,23 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
   .math-line { gap: 12px; padding: 22px 12px; }
   .comparison-select { min-width: 62px; }
 }
+/* Exercise controls keep the book's reading order. */
+.exercise-practice { max-width: 900px; }
+.exercise-parts, .coordinate-inputs { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+.exercise-practice label { display: flex; flex-direction: column; gap: 6px; }
+.exercise-practice input, .exercise-practice select { font: inherit; padding: 9px; border: 1px solid #aaa; border-radius: 6px; max-width: 100%; }
+.exercise-practice input { width: 150px; }
+.exercise-practice button { font: inherit; padding: 9px 15px; margin: 4px; cursor: pointer; border: 1px solid #aaa; border-radius: 6px; background: white; }
+.exercise-practice button[aria-pressed="true"] { background: #e6edff; border-color: #3151b7; }
+.exercise-practice :focus-visible { outline: 3px solid #3151b7; outline-offset: 3px; }
+.exercise-practice fieldset { border: 1px solid #ccc; border-radius: 8px; margin: 16px 0; min-width: 0; }
+.exercise-answer > .katex-display { overflow-x: auto; }
+.exercise-sketch { width: 100%; max-width: 650px; display: block; background: #fafbfe; margin: 16px 0; }
+.coordinate-notation { font-size: .85rem; color: #555; }
+.answer-correct { color: #146342; }
+.answer-error { color: #8d301d; }
+.power-order { max-width: 680px; padding-left: 32px; }
+.power-order li { padding: 8px; margin: 8px 0; border-bottom: 1px solid #ddd; }
+.power-order li > span:last-child { display: inline-flex; margin-left: 16px; }
+.exercise-practice button:disabled { opacity: .4; cursor: default; }
+.tree-entry.tree-exercise { padding-left: 30px; font-size: .9em; }
