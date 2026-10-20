@@ -61,11 +61,11 @@ test('keyboard actions classify a function and enter three values', async ({ pag
   await page.screenshot({ path: testInfo.outputPath('desktop-values.png'), fullPage: true })
 })
 
-test('tree exposes all twelve optional exercises and section 12 remains accessible', async ({ page }) => {
+test('tree exposes all 25 optional exercises and section 12 remains accessible', async ({ page }) => {
   await page.goto('/?section=11&page=calculate-expression')
   await page.getByRole('button', { name: 'Открыть дерево книги' }).click()
   const tree = page.getByRole('navigation', { name: 'Дерево книги' })
-  await expect(tree.getByRole('button', { name: /^Упражнение 11\./ })).toHaveCount(12)
+  await expect(tree.getByRole('button', { name: /^Упражнение 11\./ })).toHaveCount(25)
   await tree.getByRole('button', { name: 'Упражнение 11.12', exact: true }).click()
   await expect(page).toHaveURL(/exercise=11.12/)
   await page.getByRole('button', { name: 'Закрыть дерево книги' }).click()

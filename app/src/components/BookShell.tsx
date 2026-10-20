@@ -100,7 +100,7 @@ export function BookShell({
                                 : 0
                               const isComplete = total !== undefined && solved === total
                               const opensPlaceholder = chapter.number !== 3
-                              const accessibleName = `§${paragraph.number}. ${paragraph.title} — ${page.title}`
+                              const accessibleName = `§${paragraph.number}. ${paragraph.title} — ${page.title}${isComplete ? ' — решено' : ''}`
                               const pageExercises = paragraph.number === 11 ? exercises.filter((exercise) => exercise.practiceGroup === page.id) : []
                               return (
                                 <div key={page.id}>
@@ -117,12 +117,13 @@ export function BookShell({
                                 {pageExercises.length > 0 && <div className="tree-children">
                                   {pageExercises.map((exercise) => {
                                     const isSelected = isCurrent && (currentExerciseId ?? pageExercises[0]?.id) === exercise.id
+                                    const isSolved = progress.completedExerciseIds.includes(exercise.id)
                                     return <button type="button" key={exercise.id}
-                                    className={`tree-entry${isSelected ? ' is-current' : ''}`}
+                                    className={`tree-entry${isSelected ? ' is-current' : ''}${isSolved ? ' is-solved' : ''}`}
+                                    aria-label={`Упражнение ${exercise.id}${isSolved ? ' — решено' : ''}`}
                                     aria-current={isSelected ? 'page' : undefined}
                                     onClick={() => onOpenPage(11, page.id, exercise.id)}>
                                     <span>Упражнение {exercise.id}</span>
-                                    <span className="tree-count">{progress.completedExerciseIds.includes(exercise.id) ? '✓' : ''}</span>
                                   </button>})}
                                 </div>}
                                 </div>
@@ -145,13 +146,15 @@ export function BookShell({
             {(previousPage || nextPage) && (
               <nav className="paragraph-pagination" aria-label="Переход между страницами книги">
                 {previousPage ? (
-                  <button type="button" onClick={() => onOpenPage(previousPage.paragraphNumber, previousPage.pageId)}>
-                    <span aria-hidden="true">← </span>{previousPage.label}
+                  <button type="button" aria-label={`Предыдущая страница: ${previousPage.label}`}
+                    onClick={() => onOpenPage(previousPage.paragraphNumber, previousPage.pageId, previousPage.exerciseId)}>
+                    <span aria-hidden="true">← </span>Назад · {previousPage.label}
                   </button>
                 ) : <span />}
                 {nextPage ? (
-                  <button type="button" onClick={() => onOpenPage(nextPage.paragraphNumber, nextPage.pageId)}>
-                    {nextPage.label}<span aria-hidden="true"> →</span>
+                  <button type="button" aria-label={`Следующая страница: ${nextPage.label}`}
+                    onClick={() => onOpenPage(nextPage.paragraphNumber, nextPage.pageId, nextPage.exerciseId)}>
+                    Далее · {nextPage.label}<span aria-hidden="true"> →</span>
                   </button>
                 ) : <span />}
               </nav>

@@ -5,11 +5,12 @@ import { ChapterPlaceholder } from './components/BookViews'
 import { ParagraphPage } from './components/ParagraphPage'
 import { PracticePagePlaceholder } from './components/PracticePagePlaceholder'
 import { ExercisePracticePage } from './components/ExercisePracticePage'
+import { GraphComparisonPractice } from './components/GraphComparisonPractice'
 import { availableParagraph11Exercises, paragraph11ExerciseContent, type AnswerCheckResult } from './content/exerciseContent'
 import type { ExercisePartId } from './content/paragraph11Catalog'
 import { book, type BookChapter } from './content/book'
 import { chapter3Paragraphs } from './content/chapter3'
-import { chapter3PageSequence } from './content/navigation'
+import { adjacentBookPages } from './content/navigation'
 import {
   isParagraph11PageId,
   paragraph11Pages,
@@ -106,11 +107,13 @@ export function App() {
   const openChapter = (chapter: BookChapter) => navigate({ kind: 'chapter', number: chapter.number })
 
   const currentChapterNumber = route.kind === 'chapter' ? route.number : 3
-  const currentPageIndex = route.kind === 'paragraph'
-    ? chapter3PageSequence.findIndex((page) => page.paragraphNumber === route.number && page.pageId === route.pageId)
-    : -1
-  const previousPage = currentPageIndex > 0 ? chapter3PageSequence[currentPageIndex - 1] : undefined
-  const nextPage = currentPageIndex >= 0 ? chapter3PageSequence[currentPageIndex + 1] : undefined
+  const currentExercise = route.kind === 'paragraph' && route.number === 11
+    ? availableExercises.find((exercise) => exercise.practiceGroup === route.pageId && exercise.id === route.exerciseId)
+      ?? availableExercises.find((exercise) => exercise.practiceGroup === route.pageId)
+    : undefined
+  const { previous: previousPage, next: nextPage } = route.kind === 'paragraph'
+    ? adjacentBookPages({ paragraphNumber: route.number, pageId: route.pageId, exerciseId: currentExercise?.id })
+    : { previous: undefined, next: undefined }
 
   let content
   if (route.kind === 'chapter') {
@@ -124,10 +127,16 @@ export function App() {
 
     content = currentPage.kind === 'theory' ? (
       <ParagraphPage paragraph={paragraph} state={state} actions={actions} />
-    ) : availableExercises.some((exercise) => exercise.practiceGroup === route.pageId) ? (
-      <ExercisePracticePage key={`${route.pageId}-${route.exerciseId ?? ''}`} title={currentPage.title}
-        pageId={route.pageId} exerciseId={route.exerciseId} solvedIds={solvedPartIds}
-        onOpenExercise={(id) => openPage(11, route.pageId, id)} onResult={recordResult} />
+    ) : currentExercise ? (
+      currentExercise.content.parts[0].kind === 'graph' || currentExercise.content.parts[0].kind === 'comparison'
+        || currentExercise.content.parts[0].kind === 'ordering' ? (
+        <div className="practice-surface">
+          <h2 className="practice-title">{currentPage.title}</h2>
+          <GraphComparisonPractice key={currentExercise.id} group={currentExercise.practiceGroup}
+            exerciseId={currentExercise.id} solvedIds={solvedPartIds} onResult={recordResult} />
+        </div>
+      ) : <ExercisePracticePage key={currentExercise.id} title={currentPage.title}
+        pageId={route.pageId} exerciseId={currentExercise.id} solvedIds={solvedPartIds} onResult={recordResult} />
     ) : (
       <PracticePagePlaceholder title={currentPage.title} />
     )
@@ -138,7 +147,7 @@ export function App() {
       currentChapterNumber={currentChapterNumber}
       currentParagraphNumber={route.kind === 'paragraph' ? route.number : undefined}
       currentPageId={route.kind === 'paragraph' ? route.pageId : undefined}
-      currentExerciseId={route.kind === 'paragraph' ? route.exerciseId : undefined}
+      currentExerciseId={currentExercise?.id}
       progress={progress}
       previousPage={previousPage}
       nextPage={nextPage}

@@ -25,7 +25,9 @@ The commands are the same on Windows, macOS, and Linux. Open the address printed
 - The tree shows chapter, section, and page titles.
 - §§11–19 open implemented material.
 - Other chapters open a placeholder.
-- Bottom buttons move between adjacent pages in the implemented chapter's tree.
+- One bottom Previous/Next pair moves between theory and available exercises in book order, across practice groups and sections.
+- Top letter selectors choose exercise parts. Solved selectors and completed exercises in the tree use a pale yellow-green background.
+- A border marks the current selector. A separate outline marks keyboard focus. Accessible names preserve solved status without visible checkmarks.
 - The material is not locked and does not require sequential completion.
 
 Direct links use URL parameters:
@@ -61,11 +63,15 @@ npm run build
 
 The §11 catalog contains 78 exercises and 284 exercise parts. Progress starts at zero and stores solved part IDs locally in the browser. Later attempts preserve solved status. The app does not use server synchronization or content locking. Source pages are internal metadata and do not appear as learner citations.
 
-Exercises 11.1–11.12 now provide 48 optional parts. They cover power calculations, function classification, and direct and inverse function values. The tree lists each exercise in book order. Parts appear inside the selected exercise. Other practice groups remain unavailable until their exercise tickets supply complete content. Section §12 remains accessible at every progress value.
+Exercises 11.1–11.25 provide 94 optional parts. They cover power calculations, function classification, direct and inverse function values, graph construction, comparisons, and ordering. The tree lists each available exercise. Parts appear inside the selected exercise. Unfinished groups open placeholders and do not enter the exercise route. The shared route runs from §11 theory through 11.1–11.25 to §12. Section §12 remains accessible at every progress value.
 
 Calculated answers accept decimal points or commas, fractions, powers, `sqrt(2)`, and `root(3;2)`. Checks compare finite numerical values with a tolerance of `1e-10 * max(1, |expected|)`. The parser accepts arithmetic only and does not execute code. Exercise 11.10 checks three values in their given order. Feedback appears after submission. Replay preserves solved status. Source and worked-result checks are in [the verification notes](../docs/PARAGRAPH-11-EXERCISES-1-12-VERIFICATION.md).
 
 Shared practice interfaces are in `src/content/exerciseContent.ts`. They cover calculated values, choices, comparisons, ordered steps, intervals, and structured graphs. Exercise tickets supply mathematical checks and add complete definitions to `paragraph11ExerciseContent`. `availableParagraph11Exercises` admits an exercise only when it is ready and every catalog part has content and a check. `submitParagraph11Answer` returns feedback and the resulting solved IDs. `saveParagraph11Progress` persists those IDs. The `v2` storage key keeps provisional results separate from the verified catalog.
+
+Graph and comparison source checks remain in [the verification notes](../docs/PARAGRAPH-11-GRAPH-COMPARISON-VERIFICATION.md). Integration and navigation checks are in [the issue #71 notes](../docs/ISSUE-71-VERIFICATION.md).
+
+For an isolated local preview, run `make dev DEV_ARGS="--host=127.0.0.1 --port=5173 --strictPort"` from the repository root.
 
 ## Checks
 

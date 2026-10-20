@@ -48,12 +48,11 @@ function PartAnswer({ part, onResult }: { part: AnyExercisePartContent; onResult
   )
 }
 
-export function ExercisePracticePage({ title, pageId, exerciseId, solvedIds, onOpenExercise, onResult }: {
+export function ExercisePracticePage({ title, pageId, exerciseId, solvedIds, onResult }: {
   title: string
   pageId: string
   exerciseId?: string
   solvedIds: ReadonlySet<ExercisePartId>
-  onOpenExercise: (id: string) => void
   onResult: (id: ExercisePartId, result: AnswerCheckResult) => void
 }) {
   const exercises = available.filter((exercise) => exercise.practiceGroup === pageId)
@@ -63,7 +62,6 @@ export function ExercisePracticePage({ title, pageId, exerciseId, solvedIds, onO
   if (!exercise) return null
   const part = exercise.content.parts[partIndex]
   const complete = exercise.parts.every((item) => solvedIds.has(item.id))
-  const exerciseIndex = exercises.indexOf(exercise)
   return (
     <div className="practice-surface">
       <span className="page-label">Практическая страница</span>
@@ -76,26 +74,18 @@ export function ExercisePracticePage({ title, pageId, exerciseId, solvedIds, onO
           </div>
           <nav className="exercise-parts" aria-label="Части упражнения">
             {exercise.parts.map((item, index) => <button type="button" key={item.id}
+              className={solvedIds.has(item.id) ? 'is-solved' : undefined}
               aria-current={index === partIndex ? 'step' : undefined}
               aria-label={`Часть ${item.letter}${solvedIds.has(item.id) ? ' — решено' : ''}`}
-              onClick={() => setPartIndex(index)}>{item.letter}{solvedIds.has(item.id) && ' ✓'}</button>)}
+              onClick={() => setPartIndex(index)}>{item.letter}</button>)}
           </nav>
         </header>
         <PartAnswer key={`${part.id}-${replay}`} part={part} onResult={onResult} />
-        <div className="exercise-navigation">
-          <button type="button" disabled={partIndex === 0} onClick={() => setPartIndex((index) => index - 1)}>← Предыдущая часть</button>
-          {partIndex < exercise.parts.length - 1 && <button type="button" onClick={() => setPartIndex((index) => index + 1)}>Следующая часть →</button>}
-        </div>
         {complete && <div className="exercise-complete" role="status">
           <strong>Все части упражнения {exercise.id} решены.</strong>
           <button type="button" onClick={() => { setPartIndex(0); setReplay((value) => value + 1) }}>Решить ещё раз</button>
         </div>}
       </section>
-      <nav className="exercise-navigation" aria-label="Упражнения рубрики">
-        <button type="button" disabled={exerciseIndex === 0} onClick={() => onOpenExercise(exercises[exerciseIndex - 1].id)}>← Предыдущее упражнение</button>
-        <span>{exerciseIndex + 1} из {exercises.length}</span>
-        <button type="button" disabled={exerciseIndex === exercises.length - 1} onClick={() => onOpenExercise(exercises[exerciseIndex + 1].id)}>Следующее упражнение →</button>
-      </nav>
     </div>
   )
 }

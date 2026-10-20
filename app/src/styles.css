@@ -925,7 +925,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
   color: var(--ink); background: var(--paper-strong); cursor: pointer;
 }
 .exercise-parts button { min-width: 48px; }
-.exercise-parts button[aria-current] { color: #fff; background: var(--ink); }
+.exercise-parts button[aria-current] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); font-weight: 700; }
 .exercise-navigation button:disabled { opacity: .45; cursor: default; }
 .exercise-formula { overflow-x: auto; padding: 16px 4px; font-size: 21px; }
 .exercise-inputs { display: flex; flex-wrap: wrap; gap: 16px; margin: 10px 0 22px; }
@@ -953,3 +953,33 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
   .math-line { gap: 12px; padding: 22px 12px; }
   .comparison-select { min-width: 62px; }
 }
+/* Exercise controls keep the book's reading order. */
+.exercise-practice { max-width: 900px; }
+.exercise-parts, .coordinate-inputs { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+.graph-comparison-practice label { display: flex; flex-direction: column; gap: 6px; }
+.graph-comparison-practice input, .graph-comparison-practice select { font: inherit; padding: 9px; border: 1px solid #aaa; border-radius: 6px; max-width: 100%; }
+.graph-comparison-practice input { width: 150px; }
+.graph-comparison-practice button { font: inherit; padding: 9px 15px; margin: 4px; cursor: pointer; border: 1px solid #aaa; border-radius: 6px; background: white; }
+.exercise-practice :focus-visible { outline: 3px solid #3151b7; outline-offset: 3px; }
+.graph-comparison-practice fieldset { border: 1px solid #ccc; border-radius: 8px; margin: 16px 0; min-width: 0; }
+.exercise-answer > .katex-display { overflow-x: auto; }
+.exercise-sketch { width: 100%; max-width: 650px; display: block; background: #fafbfe; margin: 16px 0; }
+.coordinate-notation { font-size: .85rem; color: #555; }
+.answer-correct { color: #146342; }
+.answer-error { color: #8d301d; }
+.power-order { max-width: 680px; padding-left: 32px; }
+.power-order li { padding: 8px; margin: 8px 0; border-bottom: 1px solid #ddd; }
+.power-order li > span:last-child { display: inline-flex; margin-left: 16px; }
+.exercise-practice button:disabled { opacity: .4; cursor: default; }
+.tree-entry.tree-exercise { padding-left: 30px; font-size: .9em; }
+
+/* Solved status uses the same pale yellow-green in both navigation areas. */
+.exercise-parts button.is-solved,
+.tree-entry.is-solved,
+.tree-entry.is-complete,
+.tree-entry.is-solved:hover,
+.tree-entry.is-complete:hover { color: var(--ink); background: #edf3d5; }
+.tree-entry.is-current.is-solved,
+.tree-entry.is-current.is-complete { box-shadow: inset 0 0 0 2px var(--ink); font-weight: 700; }
+.tree-entry.is-current.is-solved .tree-count,
+.tree-entry.is-current.is-complete .tree-count { color: var(--ink); }

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { availableParagraph11Exercises, paragraph11ExerciseContent } from '../app/src/content/exerciseContent'
+import { powerValueExercises } from '../app/src/content/powerValueExercises'
 import { numericAnswer } from '../app/src/lib/numericAnswer'
 import { loadParagraph11Progress, saveParagraph11Progress, submitParagraph11Answer, summarizeParagraph11Progress } from '../app/src/content/paragraph11Progress'
 import type { ExercisePartId } from '../app/src/content/paragraph11Catalog'
@@ -92,7 +93,7 @@ const workedValues = [
 ]
 
 test('all 48 parts check wrong, correct, replay, and stored solved results', () => {
-  const exercises = availableParagraph11Exercises(paragraph11ExerciseContent)
+  const exercises = availableParagraph11Exercises(powerValueExercises)
   expect(exercises.map((exercise) => exercise.id)).toEqual(Array.from({ length: 12 }, (_, i) => `11.${i + 1}`))
   expect(exercises.flatMap((exercise) => exercise.parts)).toHaveLength(48)
   let solved: ReadonlySet<ExercisePartId> = new Set()

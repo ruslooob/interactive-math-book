@@ -27,7 +27,7 @@ test('book tree is available on theory pages and stays open during navigation', 
   const tree = page.getByRole('navigation', { name: 'Дерево книги' })
   await expect(tree.getByText('Алгебра и начала математического анализа. 11 класс')).toBeVisible()
   await expect(tree.getByText(/^Глава /)).toHaveCount(6)
-  await expect(tree.getByText(/Упражнение 11\.17/)).toHaveCount(0)
+  await expect(tree.getByText(/Упражнение 11\.17/)).toHaveCount(1)
 
   await tree.getByText('§19. Дифференцирование показательной и логарифмической функций', { exact: true }).click()
   await tree.getByRole('button', { name: '§19. Дифференцирование показательной и логарифмической функций — 📖 Теория' }).click()
@@ -60,16 +60,16 @@ test('bottom navigation follows tree pages without a contents link', async ({ pa
   const pagination = page.getByRole('navigation', { name: 'Переход между страницами книги' })
   await expect(pagination.getByRole('button', { name: 'Оглавление' })).toHaveCount(0)
 
-  await pagination.getByRole('button', { name: '🧮 Найдите значение выражения' }).click()
+  await pagination.getByRole('button', { name: 'Следующая страница: Упражнение 11.1' }).click()
   await expect(page).toHaveURL(/section=11&page=calculate-expression/)
-  await pagination.getByRole('button', { name: '§11. Показательная функция, её свойства и график' }).click()
+  await pagination.getByRole('button', { name: 'Предыдущая страница: §11. Показательная функция, её свойства и график' }).click()
   await expect(page).toHaveURL(/section=11&page=theory/)
 
   await page.goto('/?section=11&page=find-integer-values')
-  await pagination.getByRole('button', { name: '§12. Показательные уравнения' }).click()
+  await pagination.getByRole('button', { name: 'Следующая страница: §12. Показательные уравнения' }).click()
   await expect(page).toHaveURL(/section=12&page=theory/)
-  await pagination.getByRole('button', { name: '🔢 Найдите целые значения' }).click()
-  await expect(page).toHaveURL(/section=11&page=find-integer-values/)
+  await pagination.getByRole('button', { name: 'Предыдущая страница: Упражнение 11.25' }).click()
+  await expect(page).toHaveURL(/section=11&page=compare-values&exercise=11.25/)
 })
 
 test('legacy contents route opens the book without breadcrumbs', async ({ page }) => {

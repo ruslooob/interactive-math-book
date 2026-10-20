@@ -18,7 +18,7 @@ install:
 	npm ci
 
 dev:
-	npm run dev
+	npm run dev --workspace interactive-math-book-app -- $(DEV_ARGS)
 
 build:
 	npm run build
