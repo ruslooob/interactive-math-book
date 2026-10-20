@@ -2,7 +2,7 @@
 
 Source: A. G. Mordkovich, *Algebra and Introduction to Mathematical Analysis, Grade 11*, §11, printed pages 62–73 (local scan PDF pages 63–74). The teacher preface on printed page 3 defines three levels: no mark means simple, a hollow circle means medium, and a filled circle means difficult.
 
-This inventory records exercise numbers, parts, levels, and mathematical actions. It does not reproduce task instructions. A range includes every exercise number in that range. The source has 65 four-part exercises and 13 two-part exercises: **286 parts** in total.
+This inventory records exercise numbers, parts, levels, and mathematical actions. It does not reproduce task instructions. A range includes every exercise number in that range. The source has 64 four-part exercises and 14 two-part exercises: **284 parts** in total.
 
 The implementation requirements are in [Issue #56](https://github.com/ruslooob/interactive-math-book/issues/56).
 
@@ -39,7 +39,9 @@ The implementation requirements are in [Issue #56](https://github.com/ruslooob/i
 | 71 | 11.59 | 4 | Simple | Solve equations by converting both sides to one base. |
 | 71 | 11.60 | 4 | Medium | Solve equations with radical bases. |
 | 71 | 11.61–11.62 | 4 | Medium | Solve exponential-versus-linear equations. |
-| 71 | 11.63–11.65 | 4 | Medium | Solve exponential-versus-reciprocal equations. |
+| 71 | 11.63 | 4 | Medium | Solve exponential-versus-reciprocal equations. |
+| 71 | 11.64 | 2 | Medium | Solve exponential-versus-reciprocal equations. |
+| 71 | 11.65 | 4 | Medium | Solve exponential-versus-reciprocal equations. |
 | 72 | 11.66 | 4 | Medium | Solve exponential-versus-square-root equations. |
 | 72 | 11.67–11.68 | 4 | Simple | Solve direct exponential inequalities. |
 | 72 | 11.69 | 4 | Medium | Solve inequalities with compound radical bases. |
@@ -50,8 +52,8 @@ The implementation requirements are in [Issue #56](https://github.com/ruslooob/i
 
 ## Source checks for the specification
 
-- The current app declares 282 parts. The PDF count is 286.
+- The original app declared 282 parts. A second source check found 284 parts: 11.64 has only parts а and б on printed page 71. The earlier inventory incorrectly counted four parts for 11.64. The user confirmed that coverage must follow the original book, regardless of the total.
 - The app's tasks labeled 11.17 and 11.18 do not match the mathematical content under those numbers in the book.
 - The 23-type list in Issue #17 omits the integer-count task in 11.78(b).
 - The printed wording of 11.38(b) appears to say “maximum” twice. The second stated value is smaller. The answer key does not include 11.38, so the intended word remains uncertain.
-- Issue #56 records the editorial decision to use “minimum” for that second value and show a source note in the app.
+- Issue #56 records the editorial decision to use “minimum” for that second value. The user later confirmed that source notes belong only in repository verification notes. The app must not show book citations or source notes.
