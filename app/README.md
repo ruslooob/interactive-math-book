@@ -33,6 +33,7 @@ Direct links use URL parameters:
 ```text
 ?section=14
 ?section=11&page=compare-values
+?section=11&page=calculate-expression&exercise=11.7
 ?chapter=4
 ```
 
@@ -60,7 +61,9 @@ npm run build
 
 The §11 catalog contains 78 exercises and 284 exercise parts. Progress starts at zero and stores solved part IDs locally in the browser. Later attempts preserve solved status. The app does not use server synchronization or content locking. Source pages are internal metadata and do not appear as learner citations.
 
-The previous progress snapshot and provisional comparison tasks are removed. Practice pages remain unavailable until the exercise tickets supply complete prompts and answer checks. Section §12 remains accessible at every progress value.
+Exercises 11.1–11.12 now provide 48 optional parts. They cover power calculations, function classification, and direct and inverse function values. The tree lists each exercise in book order. Parts appear inside the selected exercise. Other practice groups remain unavailable until their exercise tickets supply complete content. Section §12 remains accessible at every progress value.
+
+Calculated answers accept decimal points or commas, fractions, powers, `sqrt(2)`, and `root(3;2)`. Checks compare finite numerical values with a tolerance of `1e-10 * max(1, |expected|)`. The parser accepts arithmetic only and does not execute code. Exercise 11.10 checks three values in their given order. Feedback appears after submission. Replay preserves solved status. Source and worked-result checks are in [the verification notes](../docs/PARAGRAPH-11-EXERCISES-1-12-VERIFICATION.md).
 
 Shared practice interfaces are in `src/content/exerciseContent.ts`. They cover calculated values, choices, comparisons, ordered steps, intervals, and structured graphs. Exercise tickets supply mathematical checks and add complete definitions to `paragraph11ExerciseContent`. `availableParagraph11Exercises` admits an exercise only when it is ready and every catalog part has content and a check. `submitParagraph11Answer` returns feedback and the resulting solved IDs. `saveParagraph11Progress` persists those IDs. The `v2` storage key keeps provisional results separate from the verified catalog.
 
@@ -70,7 +73,7 @@ Run `make check` for type checks, the production build, model tests, and browser
 
 ## Sources for definitions and formulas
 
-The textbook scan supplies only the book structure and section titles. Definitions and formulas were checked against open OpenStax textbooks:
+The textbook scan supplies book structure, section titles, and exercise mathematics. Definitions and theory formulas were checked against open OpenStax textbooks:
 
 - [Key concepts for the chapter on exponential and logarithmic functions](https://openstax.org/books/precalculus-2e/pages/4-key-concepts).
 - [Exponential and logarithmic equations](https://openstax.org/books/precalculus-2e/pages/4-6-exponential-and-logarithmic-equations).

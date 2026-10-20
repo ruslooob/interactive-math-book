@@ -917,6 +917,26 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
 }
 .practice-placeholder p { margin: 9px 0 0; color: var(--muted); line-height: 1.6; }
 
+.exercise-practice { padding: 16px; }
+.exercise-level { color: var(--muted); font-size: 13px; }
+.exercise-parts { display: flex; gap: 8px; margin-top: 22px; }
+.exercise-parts button, .exercise-navigation button, .exercise-complete button {
+  padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px;
+  color: var(--ink); background: var(--paper-strong); cursor: pointer;
+}
+.exercise-parts button { min-width: 48px; }
+.exercise-parts button[aria-current] { color: #fff; background: var(--ink); }
+.exercise-navigation button:disabled { opacity: .45; cursor: default; }
+.exercise-formula { overflow-x: auto; padding: 16px 4px; font-size: 21px; }
+.exercise-inputs { display: flex; flex-wrap: wrap; gap: 16px; margin: 10px 0 22px; }
+.exercise-inputs label { display: grid; gap: 8px; font-size: 14px; }
+.exercise-inputs input { width: 170px; max-width: 100%; padding: 11px; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
+.exercise-inputs small { flex-basis: 100%; color: var(--muted); }
+.exercise-choices { display: grid; gap: 12px; margin-bottom: 22px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; }
+.exercise-choices label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.exercise-navigation { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-top: 22px; }
+.exercise-complete { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 20px; padding: 18px; border-radius: 10px; background: var(--green-soft); }
+
 @media (max-width: 820px) {
   .book-shell-header { grid-template-columns: 1fr; padding: 17px 16px; }
   .book-shell-content, .book-shell.is-tree-open .book-shell-content { margin-left: 0; padding: 82px 14px 54px; }
