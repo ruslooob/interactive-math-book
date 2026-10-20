@@ -4,6 +4,9 @@ import { BookShell } from './components/BookShell'
 import { ChapterPlaceholder } from './components/BookViews'
 import { ParagraphPage } from './components/ParagraphPage'
 import { PracticePagePlaceholder } from './components/PracticePagePlaceholder'
+import { ExercisePracticePage } from './components/ExercisePracticePage'
+import { availableParagraph11Exercises, paragraph11ExerciseContent, type AnswerCheckResult } from './content/exerciseContent'
+import type { ExercisePartId } from './content/paragraph11Catalog'
 import { book, type BookChapter } from './content/book'
 import { chapter3Paragraphs } from './content/chapter3'
 import { chapter3PageSequence } from './content/navigation'
@@ -12,10 +15,12 @@ import {
   paragraph11Pages,
   type Paragraph11PageId,
 } from './content/practice11'
-import { loadParagraph11Progress, saveParagraph11Progress, summarizeParagraph11Progress } from './content/paragraph11Progress'
+import { loadParagraph11Progress, recordParagraph11Result, saveParagraph11Progress, summarizeParagraph11Progress } from './content/paragraph11Progress'
+
+const availableExercises = availableParagraph11Exercises(paragraph11ExerciseContent)
 
 type Route =
-  | { kind: 'paragraph'; number: number; pageId: Paragraph11PageId }
+  | { kind: 'paragraph'; number: number; pageId: Paragraph11PageId; exerciseId?: string }
   | { kind: 'chapter'; number: number }
 
 function routeFromLocation(): Route {
@@ -26,7 +31,7 @@ function routeFromLocation(): Route {
   if (chapter3Paragraphs[paragraph]) {
     const requestedPage = params.get('page')
     const pageId = paragraph === 11 && isParagraph11PageId(requestedPage) ? requestedPage : 'theory'
-    return { kind: 'paragraph', number: paragraph, pageId }
+    return { kind: 'paragraph', number: paragraph, pageId, exerciseId: params.get('exercise') ?? undefined }
   }
   return { kind: 'paragraph', number: 11, pageId: 'theory' }
 }
@@ -39,7 +44,7 @@ function initialBase() {
 export function App() {
   const [route, setRoute] = useState<Route>(routeFromLocation)
   const [base, setBase] = useState(initialBase)
-  const [solvedPartIds] = useState(() => loadParagraph11Progress())
+  const [solvedPartIds, setSolvedPartIds] = useState(() => loadParagraph11Progress())
   const progress = useMemo(() => summarizeParagraph11Progress(solvedPartIds), [solvedPartIds])
 
   useEffect(() => {
@@ -83,10 +88,12 @@ export function App() {
     url.searchParams.delete('page')
     url.searchParams.delete('step')
     url.searchParams.delete('subpoint')
+    url.searchParams.delete('exercise')
     if (next.kind === 'chapter') url.searchParams.set('chapter', String(next.number))
     if (next.kind === 'paragraph') {
       url.searchParams.set('section', String(next.number))
       url.searchParams.set('page', next.pageId)
+      if (next.exerciseId) url.searchParams.set('exercise', next.exerciseId)
     }
     window.history.pushState({}, '', url)
     setRoute(next)
@@ -94,7 +101,8 @@ export function App() {
 
   const state: AnimationState = useMemo(() => ({ base }), [base])
   const actions: AnimationActions = { setBase }
-  const openPage = (number: number, pageId: Paragraph11PageId) => navigate({ kind: 'paragraph', number, pageId })
+  const openPage = (number: number, pageId: Paragraph11PageId, exerciseId?: string) => navigate({ kind: 'paragraph', number, pageId, exerciseId })
+  const recordResult = (id: ExercisePartId, result: AnswerCheckResult) => setSolvedPartIds((previous) => recordParagraph11Result(previous, id, result))
   const openChapter = (chapter: BookChapter) => navigate({ kind: 'chapter', number: chapter.number })
 
   const currentChapterNumber = route.kind === 'chapter' ? route.number : 3
@@ -116,6 +124,10 @@ export function App() {
 
     content = currentPage.kind === 'theory' ? (
       <ParagraphPage paragraph={paragraph} state={state} actions={actions} />
+    ) : availableExercises.some((exercise) => exercise.practiceGroup === route.pageId) ? (
+      <ExercisePracticePage key={`${route.pageId}-${route.exerciseId ?? ''}`} title={currentPage.title}
+        pageId={route.pageId} exerciseId={route.exerciseId} solvedIds={solvedPartIds}
+        onOpenExercise={(id) => openPage(11, route.pageId, id)} onResult={recordResult} />
     ) : (
       <PracticePagePlaceholder title={currentPage.title} />
     )
@@ -126,6 +138,7 @@ export function App() {
       currentChapterNumber={currentChapterNumber}
       currentParagraphNumber={route.kind === 'paragraph' ? route.number : undefined}
       currentPageId={route.kind === 'paragraph' ? route.pageId : undefined}
+      currentExerciseId={route.kind === 'paragraph' ? route.exerciseId : undefined}
       progress={progress}
       previousPage={previousPage}
       nextPage={nextPage}

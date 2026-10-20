@@ -1,4 +1,5 @@
 import { paragraph11Catalog, type BookExercise, type ExercisePartId } from './paragraph11Catalog'
+import { powerValueExercises } from './powerValueExercises'
 
 export type AnswerCheckResult =
   | { readonly correct: true; readonly feedback: string }
@@ -38,6 +39,8 @@ export type ExercisePartContent<K extends AnswerKind> = {
   readonly kind: K
   readonly prompt: readonly PromptBlock[]
   readonly checkAnswer: (answer: ExerciseAnswers[K]) => AnswerCheckResult
+  readonly answerLabels?: readonly string[]
+  readonly choices?: readonly { readonly id: string; readonly label: string }[]
 }
 
 export type AnyExercisePartContent = {
@@ -70,4 +73,4 @@ export function availableParagraph11Exercises(definitions: readonly ExerciseCont
 }
 
 // Exercise tickets add their complete content here. Provisional tasks are excluded.
-export const paragraph11ExerciseContent: readonly ExerciseContent[] = []
+export const paragraph11ExerciseContent: readonly ExerciseContent[] = powerValueExercises
