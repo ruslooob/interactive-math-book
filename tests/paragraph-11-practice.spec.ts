@@ -21,13 +21,13 @@ test('book tree is available on theory pages and stays open during navigation', 
   await page.goto('/?section=12')
   await expect(page.getByRole('heading', { name: 'Interactive Books' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '§12. Показательные уравнения' })).toBeVisible()
-  await expect(page.getByText('68 из 282 решено')).toBeVisible()
+  await expect(page.getByText('0 из 284 решено')).toBeVisible()
   await openBookTree(page)
 
   const tree = page.getByRole('navigation', { name: 'Дерево книги' })
   await expect(tree.getByText('Алгебра и начала математического анализа. 11 класс')).toBeVisible()
   await expect(tree.getByText(/^Глава /)).toHaveCount(6)
-  await expect(tree.getByText(/Упражнение 11\.17/)).toHaveCount(0)
+  await expect(tree.getByText(/Упражнение 11\.17/)).toHaveCount(1)
 
   await tree.getByText('§19. Дифференцирование показательной и логарифмической функций', { exact: true }).click()
   await tree.getByRole('button', { name: '§19. Дифференцирование показательной и логарифмической функций — 📖 Теория' }).click()
@@ -42,10 +42,10 @@ test('book tree is available on theory pages and stays open during navigation', 
   await expect(page.getByRole('heading', { name: '§11. Показательная функция, её свойства и график' })).toBeVisible()
   await expect(tree).toBeInViewport()
 
-  const completedPage = tree.getByRole('button', { name: '§11. Показательная функция, её свойства и график — 🧮 Найдите значение выражения' })
-  await expect(completedPage).toHaveClass(/is-complete/)
-  await expect(completedPage).toHaveCSS('border-left-width', '0px')
-  await completedPage.click()
+  const practicePage = tree.getByRole('button', { name: '§11. Показательная функция, её свойства и график — 🧮 Найдите значение выражения' })
+  await expect(practicePage).not.toHaveClass(/is-complete/)
+  await expect(practicePage).toHaveCSS('border-left-width', '0px')
+  await practicePage.click()
   await expect(page).toHaveURL(/section=11&page=calculate-expression/)
   await expect(page.getByRole('heading', { name: '🧮 Найдите значение выражения' })).toBeVisible()
   await expect(tree).toBeInViewport()
@@ -60,16 +60,16 @@ test('bottom navigation follows tree pages without a contents link', async ({ pa
   const pagination = page.getByRole('navigation', { name: 'Переход между страницами книги' })
   await expect(pagination.getByRole('button', { name: 'Оглавление' })).toHaveCount(0)
 
-  await pagination.getByRole('button', { name: '🧮 Найдите значение выражения' }).click()
+  await pagination.getByRole('button', { name: 'Следующая страница: Упражнение 11.1' }).click()
   await expect(page).toHaveURL(/section=11&page=calculate-expression/)
-  await pagination.getByRole('button', { name: '§11. Показательная функция, её свойства и график' }).click()
+  await pagination.getByRole('button', { name: 'Предыдущая страница: §11. Показательная функция, её свойства и график' }).click()
   await expect(page).toHaveURL(/section=11&page=theory/)
 
-  await page.goto('/?section=11&page=solve-inequality')
-  await pagination.getByRole('button', { name: '§12. Показательные уравнения' }).click()
+  await page.goto('/?section=11&page=find-integer-values')
+  await pagination.getByRole('button', { name: 'Следующая страница: §12. Показательные уравнения' }).click()
   await expect(page).toHaveURL(/section=12&page=theory/)
-  await pagination.getByRole('button', { name: '⚠️ Решите неравенство' }).click()
-  await expect(page).toHaveURL(/section=11&page=solve-inequality/)
+  await pagination.getByRole('button', { name: 'Предыдущая страница: Упражнение 11.25' }).click()
+  await expect(page).toHaveURL(/section=11&page=compare-values&exercise=11.25/)
 })
 
 test('legacy contents route opens the book without breadcrumbs', async ({ page }) => {
@@ -78,55 +78,6 @@ test('legacy contents route opens the book without breadcrumbs', async ({ page }
   await expect(page.getByRole('navigation', { name: 'Положение в книге' })).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Оглавление' })).toHaveCount(0)
   await expect(page.getByRole('heading', { name: '§11. Показательная функция, её свойства и график' })).toBeVisible()
-})
-
-test('correct answers preserve progress across navigation, reload, and another attempt', async ({ page }) => {
-  await expect(page.getByText('1 из 8')).toBeVisible()
-  const currentSegment = page.getByRole('button', { name: '1 из 8: текущий, не решён' })
-  await currentSegment.focus()
-  await currentSegment.press('ArrowRight')
-  const secondSegment = page.getByRole('button', { name: '2 из 8: текущий, не решён' })
-  await expect(secondSegment).toBeFocused()
-  await expect(page.getByText('2 из 8')).toBeVisible()
-  await expect(page.getByText('Упражнение 11.17')).toBeVisible()
-  await expect(page.getByText('Подпункт б')).toBeVisible()
-
-  await page.getByLabel('Знак сравнения').selectOption('less')
-  await page.getByRole('button', { name: 'Проверить' }).click()
-  await expect(page.getByText(/Верно:/)).toBeVisible()
-  await expect(page.getByRole('button', { name: '2 из 8: текущий, решён' })).toHaveClass(/is-solved/)
-  await expect(page.getByText('69 из 282 решено')).toBeVisible()
-
-  await page.getByRole('button', { name: '1 из 8: не решён' }).click()
-  await page.getByRole('button', { name: '2 из 8: решён' }).click()
-  await page.reload()
-  await expect(page.getByRole('button', { name: '2 из 8: текущий, решён' })).toHaveClass(/is-solved/)
-
-  await page.getByLabel('Знак сравнения').selectOption('greater')
-  await page.getByRole('button', { name: 'Проверить' }).click()
-  await expect(page.getByText('Проверьте основание функции и сначала сравните показатели.')).toBeVisible()
-  await expect(page.getByRole('button', { name: '2 из 8: текущий, решён' })).toHaveClass(/is-solved/)
-})
-
-test('exercise completes only after all its parts are solved', async ({ page }) => {
-  const answers = ['less', 'less', 'greater', 'greater', 'less', 'less', 'less', 'less']
-
-  for (let index = 0; index < answers.length; index += 1) {
-    await page.getByRole('button', { name: new RegExp(`^${index + 1} из 8:`) }).click()
-    await page.getByLabel('Знак сравнения').selectOption(answers[index])
-    await page.getByRole('button', { name: 'Проверить' }).click()
-    if (index < 3) {
-      await expect(page.getByLabel('Упражнение 11.17: не завершено')).toBeVisible()
-    }
-    if (index >= 4 && index < 7) {
-      await expect(page.getByLabel('Упражнение 11.18: не завершено')).toBeVisible()
-    }
-    if (index === 3) await expect(page.getByLabel('Упражнение 11.17: завершено')).toBeVisible()
-  }
-
-  await expect(page.getByLabel('Упражнение 11.18: завершено')).toBeVisible()
-  await openBookTree(page)
-  await expect(page.getByRole('button', { name: '§11. Показательная функция, её свойства и график — ⚖️ Сравните значения функции' })).toHaveClass(/is-complete/)
 })
 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {

@@ -1,21 +1,22 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { book, type BookChapter } from '../content/book'
-import {
-  paragraph11SolvedSubpointCount,
-  paragraph11TotalSubpoints,
-  type Paragraph11PageId,
-} from '../content/practice11'
+import type { Paragraph11PageId } from '../content/practice11'
+import type { summarizeParagraph11Progress } from '../content/paragraph11Progress'
 import { pagesForParagraph, type BookPageTarget } from '../content/navigation'
+import { availableParagraph11Exercises, paragraph11ExerciseContent } from '../content/exerciseContent'
+
+const exercises = availableParagraph11Exercises(paragraph11ExerciseContent)
 
 type BookShellProps = {
   currentChapterNumber: number
   currentParagraphNumber?: number
   currentPageId?: Paragraph11PageId
-  solvedComparisonSubpointCount: number
+  currentExerciseId?: string
+  progress: ReturnType<typeof summarizeParagraph11Progress>
   previousPage?: BookPageTarget
   nextPage?: BookPageTarget
   children: ReactNode
-  onOpenPage: (paragraphNumber: number, pageId: Paragraph11PageId) => void
+  onOpenPage: (paragraphNumber: number, pageId: Paragraph11PageId, exerciseId?: string) => void
   onOpenChapter: (chapter: BookChapter) => void
 }
 
@@ -23,7 +24,8 @@ export function BookShell({
   currentChapterNumber,
   currentParagraphNumber,
   currentPageId,
-  solvedComparisonSubpointCount,
+  currentExerciseId,
+  progress,
   previousPage,
   nextPage,
   children,
@@ -32,27 +34,29 @@ export function BookShell({
 }: BookShellProps) {
   const [treeOpen, setTreeOpen] = useState(false)
   const contentRef = useRef<HTMLElement>(null)
-  const solvedCount = paragraph11SolvedSubpointCount(solvedComparisonSubpointCount)
+  const solvedCount = progress.solvedParts
+  const totalParts = progress.totalParts
 
   useEffect(() => {
     if (contentRef.current) contentRef.current.scrollTop = 0
-  }, [currentChapterNumber, currentParagraphNumber, currentPageId])
+  }, [currentChapterNumber, currentParagraphNumber, currentPageId, currentExerciseId])
 
   return (
     <main className={`book-shell${treeOpen ? ' is-tree-open' : ''}`}>
       <header className="book-shell-header">
         <h1>Interactive Books</h1>
         <div className="header-progress" aria-label="Прогресс параграфа §11">
-          <div className="progress-copy">{solvedCount} из {paragraph11TotalSubpoints} решено</div>
+          <div className="progress-copy">{solvedCount} из {totalParts} решено</div>
+          {progress.allPartsSolved && <p role="status">Все задания §11 решены.</p>}
           <div
             className="progress-track"
             role="progressbar"
             aria-label="Выполнение практики §11"
             aria-valuemin={0}
-            aria-valuemax={paragraph11TotalSubpoints}
+            aria-valuemax={totalParts}
             aria-valuenow={solvedCount}
           >
-            <div className="progress-fill" style={{ width: `${solvedCount / paragraph11TotalSubpoints * 100}%` }} />
+            <div className="progress-fill" style={{ width: `${solvedCount / totalParts * 100}%` }} />
           </div>
         </div>
       </header>
@@ -85,30 +89,44 @@ export function BookShell({
                         <details className="tree-group" open={currentParagraph || undefined} key={paragraph.number}>
                           <summary>
                             <span>§{paragraph.number}. {paragraph.title}</span>
-                            {paragraph.number === 11 && <span className="tree-count">{solvedCount}/{paragraph11TotalSubpoints}</span>}
+                            {paragraph.number === 11 && <span className="tree-count">{solvedCount}/{totalParts}</span>}
                           </summary>
                           <div className="tree-children">
                             {pages.map((page) => {
                               const isCurrent = currentParagraph && page.id === currentPageId
                               const total = 'total' in page ? page.total : undefined
-                              const solved = page.id === 'compare-values'
-                                ? solvedComparisonSubpointCount
-                                : ('initiallySolved' in page ? page.initiallySolved : 0)
+                              const solved = paragraph.number === 11
+                                ? progress.groups.find((group) => group.id === page.id)?.solvedParts ?? 0
+                                : 0
                               const isComplete = total !== undefined && solved === total
                               const opensPlaceholder = chapter.number !== 3
-                              const accessibleName = `§${paragraph.number}. ${paragraph.title} — ${page.title}`
+                              const accessibleName = `§${paragraph.number}. ${paragraph.title} — ${page.title}${isComplete ? ' — решено' : ''}`
+                              const pageExercises = paragraph.number === 11 ? exercises.filter((exercise) => exercise.practiceGroup === page.id) : []
                               return (
+                                <div key={page.id}>
                                 <button
-                                  className={`tree-entry${isCurrent ? ' is-current' : ''}${isComplete ? ' is-complete' : ''}`}
+                                  className={`tree-entry${isCurrent && pageExercises.length === 0 ? ' is-current' : ''}${isComplete ? ' is-complete' : ''}`}
                                   type="button"
                                   aria-label={accessibleName}
-                                  aria-current={isCurrent ? 'page' : undefined}
-                                  key={page.id}
+                                  aria-current={isCurrent && pageExercises.length === 0 ? 'page' : undefined}
                                   onClick={() => opensPlaceholder ? onOpenChapter(chapter) : onOpenPage(paragraph.number, page.id)}
                                 >
                                   <span>{page.title}</span>
                                   {total !== undefined && <span className="tree-count">{solved}/{total}</span>}
                                 </button>
+                                {pageExercises.length > 0 && <div className="tree-children">
+                                  {pageExercises.map((exercise) => {
+                                    const isSelected = isCurrent && (currentExerciseId ?? pageExercises[0]?.id) === exercise.id
+                                    const isSolved = progress.completedExerciseIds.includes(exercise.id)
+                                    return <button type="button" key={exercise.id}
+                                    className={`tree-entry${isSelected ? ' is-current' : ''}${isSolved ? ' is-solved' : ''}`}
+                                    aria-label={`Упражнение ${exercise.id}${isSolved ? ' — решено' : ''}`}
+                                    aria-current={isSelected ? 'page' : undefined}
+                                    onClick={() => onOpenPage(11, page.id, exercise.id)}>
+                                    <span>Упражнение {exercise.id}</span>
+                                  </button>})}
+                                </div>}
+                                </div>
                               )
                             })}
                           </div>
@@ -124,17 +142,21 @@ export function BookShell({
 
         <section className="book-shell-content" data-testid="book-content" ref={contentRef}>
           <div className="book-shell-page">
-            {children}
+            <div className="book-page-content">{children}</div>
             {(previousPage || nextPage) && (
               <nav className="paragraph-pagination" aria-label="Переход между страницами книги">
                 {previousPage ? (
-                  <button type="button" onClick={() => onOpenPage(previousPage.paragraphNumber, previousPage.pageId)}>
-                    <span aria-hidden="true">← </span>{previousPage.label}
+                  <button className="page-arrow page-arrow--previous" type="button" aria-label={`Предыдущая страница: ${previousPage.label}`} aria-describedby="previous-destination"
+                    onPointerUp={(event) => { if (event.pointerType === 'touch') { event.preventDefault(); onOpenPage(previousPage.paragraphNumber, previousPage.pageId, previousPage.exerciseId) } }}
+                    onClick={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== 'touch') onOpenPage(previousPage.paragraphNumber, previousPage.pageId, previousPage.exerciseId) }}>
+                    <span className="page-arrow__symbol" aria-hidden="true">&lt;</span><span className="page-arrow__tooltip" role="tooltip" id="previous-destination">{previousPage.label}</span>
                   </button>
                 ) : <span />}
                 {nextPage ? (
-                  <button type="button" onClick={() => onOpenPage(nextPage.paragraphNumber, nextPage.pageId)}>
-                    {nextPage.label}<span aria-hidden="true"> →</span>
+                  <button className="page-arrow page-arrow--next" type="button" aria-label={`Следующая страница: ${nextPage.label}`} aria-describedby="next-destination"
+                    onPointerUp={(event) => { if (event.pointerType === 'touch') { event.preventDefault(); onOpenPage(nextPage.paragraphNumber, nextPage.pageId, nextPage.exerciseId) } }}
+                    onClick={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== 'touch') onOpenPage(nextPage.paragraphNumber, nextPage.pageId, nextPage.exerciseId) }}>
+                    <span className="page-arrow__symbol" aria-hidden="true">&gt;</span><span className="page-arrow__tooltip" role="tooltip" id="next-destination">{nextPage.label}</span>
                   </button>
                 ) : <span />}
               </nav>

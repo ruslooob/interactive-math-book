@@ -25,7 +25,9 @@ The commands are the same on Windows, macOS, and Linux. Open the address printed
 - The tree shows chapter, section, and page titles.
 - §§11–19 open implemented material.
 - Other chapters open a placeholder.
-- Bottom buttons move between adjacent pages in the implemented chapter's tree.
+- One bottom Previous/Next pair moves between theory and available exercises in book order, across practice groups and sections.
+- Top letter selectors choose exercise parts. Solved selectors and completed exercises in the tree use a pale yellow-green background.
+- A border marks the current selector. A separate outline marks keyboard focus. Accessible names preserve solved status without visible checkmarks.
 - The material is not locked and does not require sequential completion.
 
 Direct links use URL parameters:
@@ -33,6 +35,7 @@ Direct links use URL parameters:
 ```text
 ?section=14
 ?section=11&page=compare-values
+?section=11&page=calculate-expression&exercise=11.7
 ?chapter=4
 ```
 
@@ -58,11 +61,25 @@ From the project root, run:
 npm run build
 ```
 
-The §11 shell opens with the confirmed progress snapshot `68 из 282 решено`. New solved exercise parts on the comparison page are stored locally in the browser. The app does not use server synchronization or content locking.
+The §11 catalog contains 78 exercises and 284 exercise parts. Progress starts at zero and stores solved part IDs locally in the browser. Later attempts preserve solved status. The app does not use server synchronization or content locking. Source pages are internal metadata and do not appear as learner citations.
+
+Exercises 11.1–11.25 provide 94 optional parts. They cover power calculations, function classification, direct and inverse function values, graph construction, comparisons, and ordering. The tree lists each available exercise. Parts appear inside the selected exercise. Unfinished groups open placeholders and do not enter the exercise route. The shared route runs from §11 theory through 11.1–11.25 to §12. Section §12 remains accessible at every progress value.
+
+Calculated answers accept decimal points or commas, fractions, powers, `sqrt(2)`, and `root(3;2)`. Checks compare finite numerical values with a tolerance of `1e-10 * max(1, |expected|)`. The parser accepts arithmetic only and does not execute code. Exercise 11.10 checks three values in their given order. Feedback appears after submission. Replay preserves solved status. Source and worked-result checks are in [the verification notes](../docs/PARAGRAPH-11-EXERCISES-1-12-VERIFICATION.md).
+
+Shared practice interfaces are in `src/content/exerciseContent.ts`. They cover calculated values, choices, comparisons, ordered steps, intervals, and structured graphs. Exercise tickets supply mathematical checks and add complete definitions to `paragraph11ExerciseContent`. `availableParagraph11Exercises` admits an exercise only when it is ready and every catalog part has content and a check. `submitParagraph11Answer` returns feedback and the resulting solved IDs. `saveParagraph11Progress` persists those IDs. The `v2` storage key keeps provisional results separate from the verified catalog.
+
+Graph and comparison source checks remain in [the verification notes](../docs/PARAGRAPH-11-GRAPH-COMPARISON-VERIFICATION.md). Integration and navigation checks are in [the issue #71 notes](../docs/ISSUE-71-VERIFICATION.md).
+
+For an isolated local preview, run `make dev DEV_ARGS="--host=127.0.0.1 --port=5173 --strictPort"` from the repository root.
+
+## Checks
+
+Run `make check` for type checks, the production build, model tests, and browser navigation tests. Run `make test-model` to check catalog integrity, content availability, answer feedback, and saved progress without a browser or app server. Run one model test file with `make test-model TEST_ARGS=tests/paragraph-11-model.spec.ts`. Run `make test-ui` for the existing navigation checks.
 
 ## Sources for definitions and formulas
 
-The textbook scan supplies only the book structure and section titles. Definitions and formulas were checked against open OpenStax textbooks:
+The textbook scan supplies book structure, section titles, and exercise mathematics. Definitions and theory formulas were checked against open OpenStax textbooks:
 
 - [Key concepts for the chapter on exponential and logarithmic functions](https://openstax.org/books/precalculus-2e/pages/4-key-concepts).
 - [Exponential and logarithmic equations](https://openstax.org/books/precalculus-2e/pages/4-6-exponential-and-logarithmic-equations).
@@ -71,7 +88,7 @@ The textbook scan supplies only the book structure and section titles. Definitio
 - [Derivatives of exponential and logarithmic functions](https://openstax.org/books/calculus-volume-1/pages/3-9-derivatives-of-exponential-and-logarithmic-functions).
 - [Formulas for arbitrary bases](https://openstax.org/books/calculus-volume-1/pages/6-7-integrals-exponential-functions-and-logarithms).
 
-Exercise part statements and grouping for 11.17–11.18 came from the [approved disposable prototype](../output/visualizations/paragraph-11-progress.html), recorded in commit `a780087`. The production shell and transfer boundaries are described in [issue #21](https://github.com/ruslooob/interactive-math-book/issues/21).
+The provisional 11.17–11.18 statements came from the disposable prototype recorded in commit `a780087`. They did not match those book numbers and are excluded from the learner route. The new catalog follows the source checks in [`docs/PARAGRAPH-11-EXERCISE-INVENTORY.md`](../docs/PARAGRAPH-11-EXERCISE-INVENTORY.md). Printed page 71 contains two parts for 11.64, which corrects the earlier 286-part inventory to 284 parts. The original shell transfer is described in [issue #21](https://github.com/ruslooob/interactive-math-book/issues/21).
 
 General review conclusions are in [`docs/LEARNING-DESIGN-RULES.md`](../docs/LEARNING-DESIGN-RULES.md). The three original layout options remain in Git history at commit `63917d2`.
 
